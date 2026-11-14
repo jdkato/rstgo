@@ -124,18 +124,16 @@ does not match is listed in `testdata/known_failures.txt`.
 
 ### Known gaps
 
-* **Math output of the html4css1 writer.** With the default
-  `--math-output="HTML math.css"`, Docutils converts LaTeX math to HTML+CSS
-  with its `math2html` module. That converter is not ported: `rst2html`
-  writes math as with `--math-output=LaTeX` (`<tt class="math">` /
-  `<pre class="math">` containing the LaTeX source) and does not embed
-  `math.css`. This is the cause of all known html4 corpus failures; the
-  same documents are identical to Docutils when both sides use
-  `--math-output=LaTeX` (the `html4m`/`html5m` corpus runs).
-  `--math-output=MathJax` and `LaTeX` are implemented for both writers, and
-  the html5 writer's default MathML output is a port of Docutils'
-  `latex2mathml` (external converters such as `--math-output="MathML
-  pandoc"` are not supported).
+* **Math.** All four `--math-output` formats are implemented: `HTML`
+  (the html4css1 default, a port of Docutils' `math2html` including the
+  `math.css` stylesheet and the diagnostics it prints to stderr), `MathML`
+  (the html5 default, a port of `latex2mathml`), `MathJax` and `LaTeX`.
+  External MathML converters (`--math-output="MathML pandoc"` etc.) are not
+  supported. On some malformed formulas (for example `\frac12`, `\bar` or
+  `\begin` without an argument) Docutils' `math2html` raises a Python
+  exception and `rst2html` dies with a traceback; rstgo detects these
+  cases (`TestMath2HTML` checks that it is the same set) and fails with an
+  error that names the exception, and exit status 1.
 * **Syntax highlighting.** Pygments is not available; `code` directives and
   roles behave like Docutils without Pygments installed (a warning and no
   output for a `code` block that names a language, unless the report level
@@ -149,11 +147,19 @@ does not match is listed in `testdata/known_failures.txt`.
   (`:loading: embed`) inserts a `data:` URI instead of inline `<svg>`.
 * **Network.** `raw`/`csv-table` `:url:` only supports `file:` URLs.
 * **Encodings.** Input must be UTF-8 (Latin-1 for `:encoding: latin-1`).
-* **Environment-dependent paths.** `.. include:: <isonum.txt>` and friends
-  use embedded copies of Docutils' standard include files; messages that
-  mention their location show `<isonum.txt>` instead of the path of a
-  Docutils installation. With `--link-stylesheet`, the bundled default
-  stylesheets are linked by bare file name.
+* **Installation-dependent paths.** Two directories of a Docutils
+  installation can show up in its output; no implementation can reproduce
+  them on another machine. (1) `.. include:: <isonum.txt>` and friends:
+  rstgo embeds Docutils' standard include files and reports them under
+  the notional location `rstgo.StandardIncludeDir`
+  (`/usr/lib/python3/site-packages/docutils/parsers/rst/include/`) in
+  messages (nonexistent file) and in the `source` attribute of literal
+  includes, where Docutils shows the path of its installed `include`
+  directory. (2) With `--link-stylesheet`, Docutils links its default
+  stylesheets (`html4css1.css`, `math.css`, ...) by their path in the
+  installation; rstgo links the bundled ones by bare file name. The corpus
+  test maps exactly these two directory prefixes (recorded by
+  `scripts/regen.py` in `testdata/docutils_paths.txt`) before comparing.
 * Not implemented: other writers (LaTeX, ODT, man, XML, S5), the PEP reader,
   configuration files, `--record-dependencies`, `--stylesheet-dirs`,
   `--template`, `--id-prefix`/`--auto-id-prefix`, `:parser:` other than rst
@@ -162,35 +168,39 @@ does not match is listed in `testdata/known_failures.txt`.
 * **Document tree API.** `Node.Rawsource` is not recorded for `list_item`,
   `block_quote`, `description` and `definition_list_item` elements (Docutils
   stores the joined source block there; no output depends on it).
-* Where Docutils itself crashes with a Python exception (there are a few
-  such inputs), rstgo produces some output instead; no attempt is made to
-  be compatible there.
+* Where Docutils itself crashes with a Python exception outside of
+  `math2html` (there are a few such inputs), rstgo produces some output
+  instead; no attempt is made to be compatible there.
 
 ### Test status
 
 <!-- test-status -->
-Corpus: 1120 documents (956 Docutils unit-test inputs, 132 Docutils
-documentation / functional-test documents, 32 project fixtures). Each is
+Corpus: 1125 documents (956 Docutils unit-test inputs, 132 Docutils
+documentation / functional-test documents, 37 project fixtures). Each is
 compared in three forms, output and stderr both byte for byte
 (`go test -run TestCorpus -v .`):
 
 | Output | Identical to Docutils 0.23 |
 |--------|----------------------------|
-| pseudo-XML document tree (`pxml`) | 1119 / 1120 |
-| html4css1 document (`html4`, the `rst2html` default) | 1091 / 1120 |
-| html5 document (`html5`) | 1119 / 1120 |
+| pseudo-XML document tree (`pxml`) | 1125 / 1125 |
+| html4css1 document (`html4`, the `rst2html` default) | 1125 / 1125 |
+| html5 document (`html5`) | 1125 / 1125 |
 | html4css1 with `--math-output=LaTeX`, 23 documents containing math (`html4m`) | 23 / 23 |
 | html5 with `--math-output=LaTeX`, same 23 documents (`html5m`) | 23 / 23 |
 
-The 31 known failures (`testdata/known_failures.txt`):
+There are no known failures (`testdata/known_failures.txt` is empty). The
+comparison is exact except for the two installation-dependent directory
+prefixes described under [Known gaps](#known-gaps), which occur in 3
+documents.
 
-* 28 html4 cases are documents containing math (unported `math2html`
-  conversion, see above);
-* 3 cases (one input, all three outputs) are an error message that contains
-  the installation path of Docutils' standard include directory
-  (`.. include:: <nonexistent>`).
+`TestMath2HTML` checks the `math2html` port formula by formula against
+results recorded from Docutils (`testdata/math2html.json`, generated by
+`scripts/gen_math_cases.py`): 3547 formulas (those of the corpus, a list
+of hand-written constructs and 2500 random mutations), comparing the HTML,
+the diagnostics and, for the 44 formulas on which Docutils raises an
+exception, the exception.
 
-Robustness: `TestMutatedCorpus` converts about 19 700 truncated or randomly
+Robustness: `TestMutatedCorpus` converts about 19 800 truncated or randomly
 damaged variants of the corpus inputs, `TestPathological` a set of deeply
 nested and unterminated constructs, and `FuzzConvert` is a native fuzz
 target; none may panic or hang.
@@ -265,6 +275,8 @@ rewrites the list from the current results).
 
 Other scripts: `scripts/gen_unidata.py` regenerates the Unicode tables
 (`unidata.go`, `mathdata.go`) from Python's `unicodedata` and Docutils;
+`scripts/gen_math2html.py` the tables of the `math2html` port
+(`math2htmldata.go`);
 `scripts/import_docutils_tests.py` extracts the unit-test inputs from a
 Docutils source distribution.
 

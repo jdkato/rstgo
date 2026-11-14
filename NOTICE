@@ -30,6 +30,10 @@ docutils/utils/math/__init__.py, docutils/utils/math/latex2mathml.py
     Copyright (c) 2010, 2021, 2024 Günter Milde
     -> mathml.go, htmlmath.go
 
+docutils/utils/math/math2html.py (derived from eLyXer)
+    Copyright (c) 2009, 2010 Alex Fernández; 2021 Günter Milde
+    -> math2html.go, math2htmldata.go
+
 docutils/utils/math/mathml_elements.py,
 docutils/utils/math/mathalphabet2unichar.py,
 docutils/utils/math/tex2unichar.py
