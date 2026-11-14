@@ -1,0 +1,83 @@
+<document source="testdata/fixtures/indent_nonascii.rst">
+    <bullet_list bullet="•">
+        <list_item>
+            <paragraph>
+                item one
+                continued
+        <list_item>
+            <paragraph>
+                item two
+    <paragraph>
+          quoted?
+    <definition_list>
+        <definition_list_item>
+            <term>
+                term
+            <definition>
+                <paragraph>
+                    def line
+                    second
+    <literal_block xml:space="preserve">
+        lit
+        lit2
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                enum
+                more
+    <system_message level="2" line="19" source="testdata/fixtures/indent_nonascii.rst" type="WARNING">
+        <paragraph>
+            Enumerated list ends without a blank line; unexpected unindent.
+    <field_list>
+        <field>
+            <field_name>
+                fiéld
+            <field_body>
+                <paragraph>
+                    body
+                    more
+        <field>
+            <field_name>
+                fiéld2
+            <field_body>
+                <paragraph>
+                    x
+    <definition_list>
+        <definition_list_item>
+            <term>
+                -ö  option desc
+            <definition>
+                <paragraph>
+                    more
+    <substitution_definition names="é">
+        text
+        more
+    <citation dupnames="é" ids="e">
+        <label>
+            é
+        <paragraph>
+            citation
+            more
+    <system_message level="2" line="34" source="testdata/fixtures/indent_nonascii.rst" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "é".
+    <target dupnames="é" ids="e-1" refuri="http://xy">
+    <comment xml:space="preserve">
+        é comment
+        more
+    <bullet_list bullet="•">
+        <list_item>
+            <paragraph>
+                a
+            <bullet_list bullet="•">
+                <list_item>
+                    <paragraph>
+                        nested
+                        more
+    <bullet_list bullet="‣">
+        <list_item>
+            <paragraph>
+                x
+        <list_item>
+            <paragraph>
+                y

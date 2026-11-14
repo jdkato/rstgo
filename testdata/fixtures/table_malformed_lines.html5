@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>table_malformed_lines.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/table_malformed_lines.rst</span>, line 3)</p>
+<p>Unexpected indentation.</p>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/table_malformed_lines.rst</span>, line 2)</p>
+<p>Malformed table.
+Bottom border missing or corrupt.</p>
+<pre class="literal-block">+-------+-------+-------+
++       +-------+-------+</pre>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/table_malformed_lines.rst</span>, line 3)</p>
+<p>Blank line required after table.</p>
+</aside>
+<blockquote>
+<p>rows  | b     | c     |</p>
+</blockquote>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/table_malformed_lines.rst</span>, line 4)</p>
+<p>Block quote ends without a blank line; unexpected unindent.</p>
+</aside>
+<table>
+<tbody>
+</tbody>
+</table>
+<p>Text.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/table_malformed_lines.rst</span>, line 11)</p>
+<p>Malformed table.
+Right border not aligned or missing.</p>
+<pre class="literal-block">+------+
+| a    |
++------+
+| b
++------+</pre>
+</aside>
+</main>
+</body>
+</html>

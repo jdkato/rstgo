@@ -26,7 +26,7 @@ func init() {
 
 func (s *rstState) footnote(m lineMatch) ([]*Node, bool) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
-	indented, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
+	indented, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, true)
 	label := m.Group(1)
 	name := fullyNormalizeName(label)
 	footnote := newElem("footnote", indented.join())
@@ -62,7 +62,7 @@ func (s *rstState) footnote(m lineMatch) ([]*Node, bool) {
 
 func (s *rstState) citation(m lineMatch) ([]*Node, bool) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
-	indented, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
+	indented, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, true)
 	label := m.Group(1)
 	name := fullyNormalizeName(label)
 	citation := newElem("citation", indented.join())
@@ -81,7 +81,7 @@ func (s *rstState) citation(m lineMatch) ([]*Node, bool) {
 
 func (s *rstState) hyperlinkTarget(m lineMatch) ([]*Node, bool) {
 	lineno := s.sm.absLineNumber()
-	sl, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), true, false, true)
+	sl, _, _, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), true, false, true)
 	blocktext := m.s[:m.End(0)] + sl.join()
 	block := make([]string, len(sl.data))
 	for i, line := range sl.data {
@@ -192,7 +192,7 @@ func (s *rstState) addTarget(targetname, refuri string, target *Node, lineno int
 
 func (s *rstState) substitutionDef(m lineMatch) ([]*Node, bool) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
-	block, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, false, true)
+	block, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, false, true)
 	blocktext := m.s[:m.End(0)] + block.join()
 	block.disconnect()
 	if len(block.data) == 0 {
@@ -314,7 +314,7 @@ type directiveError struct {
 func (s *rstState) runDirective(spec *directiveSpec, m lineMatch, typeName string, optionPresets map[string]any) ([]*Node, bool) {
 	lineno := s.sm.absLineNumber()
 	initialLineOffset := s.sm.lineOffset
-	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, false)
+	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, false)
 	a, b := clampSlice(initialLineOffset, s.sm.lineOffset+1, len(s.sm.inputLines.data))
 	blockText := strings.Join(s.sm.inputLines.data[a:b], "\n")
 	var d *directive
@@ -544,7 +544,7 @@ func (s *rstState) comment(m lineMatch) ([]*Node, bool) {
 			return nil, true
 		}
 	}
-	indented, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
+	indented, _, _, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, true)
 	for len(indented.data) > 0 && isBlank(indented.data[len(indented.data)-1]) {
 		indented.trimEnd(1)
 	}
@@ -611,7 +611,7 @@ func bodyAnonymous(s *rstState, m lineMatch, context []string, nextState string)
 
 func (s *rstState) anonymousTarget(m lineMatch) ([]*Node, bool) {
 	lineno := s.sm.absLineNumber()
-	sl, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), true, true, true)
+	sl, _, _, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), true, true, true)
 	blocktext := m.s[:m.End(0)] + sl.join()
 	block := make([]string, len(sl.data))
 	for i, line := range sl.data {
@@ -650,7 +650,7 @@ func bulletListBullet(s *rstState, m lineMatch, context []string, nextState stri
 	if m.s[:w] != s.parent().str("bullet") {
 		invalidInput(s, m, context, nextState)
 	}
-	listitem, blankFinish := s.listItem(m.End(0))
+	listitem, blankFinish := s.listItem(m.endCol())
 	s.parent().append(listitem)
 	s.blankFinish = blankFinish
 	return []string{}, nextState
@@ -670,7 +670,7 @@ func enumeratedListEnumerator(s *rstState, m lineMatch, context []string, nextSt
 	if sequence == "#" {
 		s.auto = true
 	}
-	listitem, blankFinish := s.listItem(m.End(0))
+	listitem, blankFinish := s.listItem(m.endCol())
 	s.parent().append(listitem)
 	s.blankFinish = blankFinish
 	s.lastordinal = ordinal

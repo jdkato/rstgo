@@ -1483,6 +1483,9 @@ func (t *htmlTranslator) visitSystemMessage(node *Node) {
 	line := ""
 	if node.has("line") {
 		line = ", line " + node.str("line")
+		if v, ok := node.Attrs["line"]; ok && v == nil {
+			line = ", line None"
+		}
 	}
 	if t.v4 {
 		t.out(fmt.Sprintf("System Message: %s/%s (<tt class=\"docutils\">%s</tt>%s)%s</p>\n",

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"unicode/utf8"
 )
 
 type rstState struct {
@@ -514,7 +515,7 @@ func (s *rstState) splitAttribution(indented *stringList, lineOffset int) (*stri
 					attributionEnd, indent := s.checkAttribution(indented, i)
 					if attributionEnd > 0 {
 						aLines := indented.slice(i, attributionEnd)
-						aLines.trimLeft(matchEnd, 0, 1)
+						aLines.trimLeft(utf8.RuneCountInString(line[:matchEnd]), 0, 1)
 						aLines.trimLeft(indent, 1, len(aLines.data))
 						return indented.slice(0, i), aLines, i, indented.from(attributionEnd), lineOffset + attributionEnd
 					}
@@ -538,7 +539,7 @@ func (s *rstState) checkAttribution(indented *stringList, attributionStart int) 
 			broke = true
 			break
 		}
-		li := len(line) - len(pyLstrip(line))
+		li := utf8.RuneCountInString(line[:len(line)-len(pyLstrip(line))])
 		if indent < 0 {
 			indent = li
 		} else if li != indent {
@@ -574,7 +575,7 @@ func bodyBullet(s *rstState, m lineMatch, context []string, nextState string) ([
 	s.parent().append(ul)
 	_, w := firstRune(m.s)
 	ul.setAttr("bullet", m.s[:w])
-	i, blankFinish := s.listItem(m.End(0))
+	i, blankFinish := s.listItem(m.endCol())
 	ul.append(i)
 	offset := s.sm.lineOffset + 1
 	newLineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
@@ -625,7 +626,7 @@ func bodyEnumerator(s *rstState, m lineMatch, context []string, nextState string
 			nil, baseNode(enumlist))
 		s.parent().append(msg)
 	}
-	listitem, blankFinish := s.listItem(m.End(0))
+	listitem, blankFinish := s.listItem(m.endCol())
 	enumlist.append(listitem)
 	offset := s.sm.lineOffset + 1
 	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
@@ -759,7 +760,7 @@ func (s *rstState) field(m lineMatch) (*Node, bool) {
 	name := parseFieldMarker(m)
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
 	lineno := s.sm.absLineNumber()
-	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
+	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, true)
 	fieldNode := newElem("field", "")
 	fieldNode.setSrcLine(src, hasSrc, srcline, hasLine)
 	nameNodes, nameMessages := s.inlineText(name, lineno)
@@ -801,7 +802,7 @@ func bodyOptionMarker(s *rstState, m lineMatch, context []string, nextState stri
 	if err != nil {
 		msg := s.reporter.error("Invalid option list marker: "+err.msg, nil)
 		s.parent().append(msg)
-		indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
+		indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, true)
 		elements := s.blockQuote(indented, lineOffset)
 		s.parent().extend(elements)
 		if !blankFinish {
@@ -827,7 +828,7 @@ func (s *rstState) optionListItem(m lineMatch) (*Node, bool, *markupError) {
 	if err != nil {
 		return nil, false, err
 	}
-	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
+	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), false, true, true)
 	if len(indented.data) == 0 {
 		s.gotoLine(offset)
 		panic(&transitionCorrection{"text"})
@@ -915,7 +916,7 @@ func bodyLineBlock(s *rstState, m lineMatch, context []string, nextState string)
 }
 
 func (s *rstState) lineBlockLine(m lineMatch, lineno int) (*Node, []*Node, bool) {
-	indented, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), true, true, true)
+	indented, _, _, blankFinish := s.sm.getFirstKnownIndented(m.endCol(), true, true, true)
 	text := indented.join()
 	textNodes, messages := s.inlineText(text, lineno)
 	line := newTextElem("line", text, "", textNodes...)
@@ -1030,23 +1031,22 @@ func (s *rstState) isolateGridTable() (*stringList, []*Node, bool) {
 	block.disconnect()
 	block.padDoubleWidth(doubleWidthPadChar)
 	width := runeLen(pyStrip(block.data[0]))
+	// i mirrors Python's loop variable, which keeps its last value: the
+	// index of the removed line after a break, else the last index.
 	i := 0
+	broke := false
 	for i = 0; i < len(block.data); i++ {
 		block.data[i] = pyStrip(block.data[i])
 		if c := block.data[i][0]; c != '+' && c != '|' {
 			blankFinish = false
 			s.sm.previousLine(len(block.data) - i)
 			block.deleteRange(i, len(block.data))
+			broke = true
 			break
 		}
 	}
-	if i >= len(block.data) && i > 0 {
-		// Python leaves the loop variable at its last value
-		if i > len(block.data) {
-			i = len(block.data)
-		} else if !(i == len(block.data) && !blankFinish) {
-			i = len(block.data) - 1
-		}
+	if !broke && i > 0 {
+		i = len(block.data) - 1
 	}
 	if len(block.data) == 0 {
 		return nil, messages, blankFinish

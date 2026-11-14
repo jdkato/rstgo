@@ -573,7 +573,11 @@ func (n *Node) astext() string {
 	case "image":
 		return n.str("alt")
 	case "system_message":
-		return fmt.Sprintf("%s:%s: (%s/%s) %s", n.str("source"), n.str("line"),
+		line := n.str("line")
+		if v, ok := n.Attrs["line"]; ok && v == nil {
+			line = "None"
+		}
+		return fmt.Sprintf("%s:%s: (%s/%s) %s", n.str("source"), line,
 			n.str("type"), n.str("level"), n.elementText())
 	case "option_argument":
 		d := " "

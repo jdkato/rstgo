@@ -1,6 +1,9 @@
 package rstgo
 
-import "strings"
+import (
+	"strings"
+	"unicode/utf8"
+)
 
 // lineInfo records where an input line came from: (source, offset).  All
 // lines of one file share the source string.
@@ -209,20 +212,35 @@ func (sl *stringList) trimLeft(length, start, end int) {
 	}
 }
 
-// cutPrefix returns s[n:] (clamped).
-func cutPrefix(s string, n int) string {
+// charOffset returns the byte offset of the n-th character of s (clamped
+// to len(s)). Indentation is counted in characters, as in Python; it
+// differs from the byte count only if a multi-byte character (such as a
+// no-break space) occurs in the first n characters.
+func charOffset(s string, n int) int {
 	if n >= len(s) {
-		return ""
+		n = len(s)
 	}
-	return s[n:]
+	for i := 0; i < n; i++ {
+		if s[i] >= utf8.RuneSelf {
+			return charOffsetSlow(s, i, n-i)
+		}
+	}
+	return n
 }
 
-func prefix(s string, n int) string {
-	if n >= len(s) {
-		return s
+func charOffsetSlow(s string, i, n int) int {
+	for ; n > 0 && i < len(s); n-- {
+		_, w := utf8.DecodeRuneInString(s[i:])
+		i += w
 	}
-	return s[:n]
+	return i
 }
+
+// cutPrefix returns s[n:] (clamped), n counting characters.
+func cutPrefix(s string, n int) string { return s[charOffset(s, n):] }
+
+// prefix returns s[:n] (clamped), n counting characters.
+func prefix(s string, n int) string { return s[:charOffset(s, n)] }
 
 type unexpectedIndentation struct {
 	block *stringList
@@ -292,6 +310,12 @@ func (sl *stringList) getIndented(start int, untilBlank, stripIndent bool, block
 			}
 		} else if blockIndent < 0 {
 			lineIndent := len(line) - len(stripped)
+			for i := 0; i < lineIndent; i++ {
+				if line[i] >= utf8.RuneSelf {
+					lineIndent = utf8.RuneCountInString(line[:lineIndent])
+					break
+				}
+			}
 			if indent < 0 || lineIndent < indent {
 				indent = lineIndent
 			}

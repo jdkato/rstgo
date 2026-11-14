@@ -1,0 +1,16 @@
+testdata/fixtures/table_malformed_lines.rst:3: (ERROR/3) Unexpected indentation.
+testdata/fixtures/table_malformed_lines.rst:2: (ERROR/3) Malformed table.
+Bottom border missing or corrupt.
+
++-------+-------+-------+
++       +-------+-------+
+testdata/fixtures/table_malformed_lines.rst:3: (WARNING/2) Blank line required after table.
+testdata/fixtures/table_malformed_lines.rst:4: (WARNING/2) Block quote ends without a blank line; unexpected unindent.
+testdata/fixtures/table_malformed_lines.rst:11: (ERROR/3) Malformed table.
+Right border not aligned or missing.
+
++------+
+| a    |
++------+
+| b
++------+

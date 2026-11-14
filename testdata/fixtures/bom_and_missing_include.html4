@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>bom_and_missing_include.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<p>﻿Leading BOM is kept
+﻿as is this one</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/bom_and_missing_include.rst</tt>, line 4)</p>
+<p>Problems with &quot;include&quot; directive path:
+InputError: [Errno 2] No such file or directory: 'testdata/fixtures/no\\\\such\\\\file.txt'.</p>
+<pre class="literal-block">
+.. include:: no\\such\\file.txt
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/bom_and_missing_include.rst</tt>, line 6)</p>
+<p>Problems with &quot;include&quot; directive path:
+InputError: [Errno 2] No such file or directory: &quot;testdata/fixtures/it's-missing.txt&quot;.</p>
+<pre class="literal-block">
+.. include:: it's-missing.txt
+</pre>
+</div>
+</div>
+</body>
+</html>

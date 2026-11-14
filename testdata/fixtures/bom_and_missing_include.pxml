@@ -1,0 +1,16 @@
+<document source="testdata/fixtures/bom_and_missing_include.rst">
+    <paragraph>
+        ﻿Leading BOM is kept
+        ﻿as is this one
+    <system_message level="3" line="4" source="testdata/fixtures/bom_and_missing_include.rst" type="ERROR">
+        <paragraph>
+            Problems with "include" directive path:
+            InputError: [Errno 2] No such file or directory: 'testdata/fixtures/no\\\\such\\\\file.txt'.
+        <literal_block xml:space="preserve">
+            .. include:: no\\such\\file.txt
+    <system_message level="3" line="6" source="testdata/fixtures/bom_and_missing_include.rst" type="ERROR">
+        <paragraph>
+            Problems with "include" directive path:
+            InputError: [Errno 2] No such file or directory: "testdata/fixtures/it's-missing.txt".
+        <literal_block xml:space="preserve">
+            .. include:: it's-missing.txt

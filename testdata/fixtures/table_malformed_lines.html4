@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>table_malformed_lines.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/table_malformed_lines.rst</tt>, line 3)</p>
+Unexpected indentation.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/table_malformed_lines.rst</tt>, line 2)</p>
+<p>Malformed table.
+Bottom border missing or corrupt.</p>
+<pre class="literal-block">
++-------+-------+-------+
++       +-------+-------+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/table_malformed_lines.rst</tt>, line 3)</p>
+Blank line required after table.</div>
+<blockquote>
+rows  | b     | c     |</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/table_malformed_lines.rst</tt>, line 4)</p>
+Block quote ends without a blank line; unexpected unindent.</div>
+<table border="1" class="docutils">
+<tbody valign="top">
+</tbody>
+</table>
+<p>Text.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/table_malformed_lines.rst</tt>, line 11)</p>
+<p>Malformed table.
+Right border not aligned or missing.</p>
+<pre class="literal-block">
++------+
+| a    |
++------+
+| b
++------+
+</pre>
+</div>
+</div>
+</body>
+</html>

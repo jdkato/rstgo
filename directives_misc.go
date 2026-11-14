@@ -108,7 +108,7 @@ func adaptPath(path, source, rootPrefix string) string {
 
 func ioErrorString(err error, path string) string {
 	if os.IsNotExist(err) {
-		return fmt.Sprintf("InputError: [Errno 2] No such file or directory: '%s'", path)
+		return fmt.Sprintf("InputError: [Errno 2] No such file or directory: %s", pyStrRepr(path))
 	}
 	if os.IsPermission(err) {
 		return fmt.Sprintf("InputError: [Errno 13] Permission denied: '%s'", path)
@@ -120,7 +120,7 @@ func ioErrorString(err error, path string) string {
 }
 
 // decodeInput decodes file content like docutils.io.FileInput (UTF-8 with
-// optional BOM; Latin-1 on request).
+// Latin-1 on request). Like Docutils, a leading BOM is kept.
 func decodeInput(data []byte, encoding string) (string, error) {
 	enc := strings.ToLower(encoding)
 	switch enc {
@@ -132,7 +132,9 @@ func decodeInput(data []byte, encoding string) (string, error) {
 		return string(rs), nil
 	}
 	s := string(data)
-	s = strings.TrimPrefix(s, "\xef\xbb\xbf")
+	if enc == "utf-8-sig" || enc == "utf_8_sig" {
+		s = strings.TrimPrefix(s, "\xef\xbb\xbf")
+	}
 	if !utf8.ValidString(s) {
 		return "", fmt.Errorf("UnicodeDecodeError: 'utf-8' codec can't decode bytes")
 	}
@@ -174,7 +176,7 @@ func runInclude(d *directive) []*Node {
 	if strings.HasPrefix(readPath, standardIncludePrefix) {
 		data, err := standardIncludes.ReadFile("include/" + strings.TrimPrefix(readPath, standardIncludePrefix))
 		if err != nil {
-			d.fail(3, fmt.Sprintf("Problems with \"%s\" directive path:\nInputError: [Errno 2] No such file or directory: '%s'.", d.name, path))
+			d.fail(3, fmt.Sprintf("Problems with \"%s\" directive path:\nInputError: [Errno 2] No such file or directory: %s.", d.name, pyStrRepr(path)))
 		}
 		text = string(data)
 	} else {

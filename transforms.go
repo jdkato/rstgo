@@ -275,7 +275,7 @@ func xClassAttribute(d *Document, pending *Node) {
 		node = node.Parent
 	}
 	e := d.reporter.error(fmt.Sprintf(`No suitable element following "%s" directive`, pending.pend().details["directive"]),
-		[]*Node{newTextElem("literal_block", pending.Rawsource, pending.Rawsource)}, atLine(pending.Line))
+		[]*Node{newTextElem("literal_block", pending.Rawsource, pending.Rawsource)}, atNodeLine(pending))
 	pending.replaceSelf(e)
 }
 

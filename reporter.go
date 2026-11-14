@@ -35,6 +35,7 @@ type msgOpt func(*msgConf)
 type msgConf struct {
 	line      int
 	hasLine   bool
+	lineNone  bool // line=None was passed explicitly
 	source    string
 	hasSource bool
 	base      *Node
@@ -44,6 +45,19 @@ type msgConf struct {
 }
 
 func atLine(n int) msgOpt { return func(c *msgConf) { c.line, c.hasLine = n, true } }
+
+// atNodeLine is line=node.line: if the node has no line, the keyword is
+// passed as None, which stays in the message's attributes unless the
+// current position of the parser supplies a line.
+func atNodeLine(n *Node) msgOpt {
+	return func(c *msgConf) {
+		if n.hasLine {
+			c.line, c.hasLine = n.Line, true
+		} else {
+			c.lineNone = true
+		}
+	}
+}
 func atSrcLine(src string, hasSrc bool, line int, hasLine bool) msgOpt {
 	return func(c *msgConf) {
 		c.source, c.hasSource = src, true
@@ -86,6 +100,8 @@ func (r *reporter) systemMessage(level int, message string, children []*Node, op
 	}
 	if c.hasLine {
 		attrs["line"] = c.line
+	} else if c.lineNone {
+		attrs["line"] = nil
 	}
 	if c.base != nil {
 		src, hasSrc, line, hasLine := getSourceLine(c.base)
@@ -103,8 +119,8 @@ func (r *reporter) systemMessage(level int, message string, children []*Node, op
 	if _, ok := attrs["source"]; !ok {
 		if r.getSourceAndLine != nil {
 			ln, has := 0, false
-			if v, ok := attrs["line"]; ok {
-				ln, has = v.(int), true
+			if v, ok := attrs["line"].(int); ok {
+				ln, has = v, true
 			}
 			src, hasSrc, line, hasLine := r.getSourceAndLine(ln, has)
 			if hasSrc {

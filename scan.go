@@ -22,6 +22,17 @@ type lineMatch struct {
 
 func (m lineMatch) End(int) int { return m.end }
 
+// endCol is the end of the match counted in characters (Python's
+// match.end()), for use as an indentation width.
+func (m lineMatch) endCol() int {
+	for i := 0; i < m.end; i++ {
+		if m.s[i] >= utf8.RuneSelf {
+			return utf8.RuneCountInString(m.s[:m.end])
+		}
+	}
+	return m.end
+}
+
 func (m lineMatch) Group(i int) string {
 	if i == 0 {
 		return m.s[:m.end]

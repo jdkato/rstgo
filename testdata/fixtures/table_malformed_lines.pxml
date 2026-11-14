@@ -1,0 +1,35 @@
+<document source="testdata/fixtures/table_malformed_lines.rst">
+    <system_message level="3" line="3" source="testdata/fixtures/table_malformed_lines.rst" type="ERROR">
+        <paragraph>
+            Unexpected indentation.
+    <system_message level="3" line="2" source="testdata/fixtures/table_malformed_lines.rst" type="ERROR">
+        <paragraph>
+            Malformed table.
+            Bottom border missing or corrupt.
+        <literal_block xml:space="preserve">
+            +-------+-------+-------+
+            +       +-------+-------+
+    <system_message level="2" line="3" source="testdata/fixtures/table_malformed_lines.rst" type="WARNING">
+        <paragraph>
+            Blank line required after table.
+    <block_quote>
+        <paragraph>
+            rows  | b     | c     |
+    <system_message level="2" line="4" source="testdata/fixtures/table_malformed_lines.rst" type="WARNING">
+        <paragraph>
+            Block quote ends without a blank line; unexpected unindent.
+    <table>
+        <tgroup cols="0">
+            <tbody>
+    <paragraph>
+        Text.
+    <system_message level="3" line="11" source="testdata/fixtures/table_malformed_lines.rst" type="ERROR">
+        <paragraph>
+            Malformed table.
+            Right border not aligned or missing.
+        <literal_block xml:space="preserve">
+            +------+
+            | a    |
+            +------+
+            | b
+            +------+
