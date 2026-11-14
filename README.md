@@ -15,10 +15,13 @@ states.go, inliner.go                 nodes.go           transforms*.go   html*.
 
 * the block-level parser is a port of `docutils.parsers.rst.states` and
   `docutils.statemachine` (same states, same transitions, same patterns);
-* Docutils' regular expressions are used verbatim, compiled by a small
-  backtracking engine (`pyre.go`) that implements the parts of Python's `re`
-  that Go's RE2 lacks (look-ahead, look-behind, backreferences, Unicode-aware
-  `\w`/`\s`);
+* Docutils' regular expressions are implemented as hand-written scanners
+  (`scan*.go`) that reproduce the matching order of the original patterns
+  (look-ahead, look-behind, backtracking, Unicode-aware `\w`/`\s`). No
+  regular-expression engine runs during a conversion; a small engine with
+  Python `re` semantics (`pyre_engine_test.go`) is kept in the tests, where
+  every scanner is checked against the pattern it replaces
+  (`oracle_test.go`);
 * the document tree uses the element and attribute names of `docutils.nodes`
   and can be dumped as pseudo-XML exactly like `rst2pseudoxml`;
 * the transforms (doctitle, docinfo, substitutions, hyperlink and footnote
@@ -156,6 +159,9 @@ does not match is listed in `testdata/known_failures.txt`.
   `--template`, `--id-prefix`/`--auto-id-prefix`, `:parser:` other than rst
   for `include`, Sphinx directives and roles (they are reported as unknown,
   exactly like Docutils does).
+* **Document tree API.** `Node.Rawsource` is not recorded for `list_item`,
+  `block_quote`, `description` and `definition_list_item` elements (Docutils
+  stores the joined source block there; no output depends on it).
 * Where Docutils itself crashes with a Python exception (there are a few
   such inputs), rstgo produces some output instead; no attempt is made to
   be compatible there.
@@ -163,16 +169,16 @@ does not match is listed in `testdata/known_failures.txt`.
 ### Test status
 
 <!-- test-status -->
-Corpus: 1116 documents (956 Docutils unit-test inputs, 132 Docutils
-documentation / functional-test documents, 28 project fixtures). Each is
+Corpus: 1120 documents (956 Docutils unit-test inputs, 132 Docutils
+documentation / functional-test documents, 32 project fixtures). Each is
 compared in three forms, output and stderr both byte for byte
 (`go test -run TestCorpus -v .`):
 
 | Output | Identical to Docutils 0.23 |
 |--------|----------------------------|
-| pseudo-XML document tree (`pxml`) | 1115 / 1116 |
-| html4css1 document (`html4`, the `rst2html` default) | 1087 / 1116 |
-| html5 document (`html5`) | 1115 / 1116 |
+| pseudo-XML document tree (`pxml`) | 1119 / 1120 |
+| html4css1 document (`html4`, the `rst2html` default) | 1091 / 1120 |
+| html5 document (`html5`) | 1119 / 1120 |
 | html4css1 with `--math-output=LaTeX`, 23 documents containing math (`html4m`) | 23 / 23 |
 | html5 with `--math-output=LaTeX`, same 23 documents (`html5m`) | 23 / 23 |
 
@@ -184,7 +190,7 @@ The 31 known failures (`testdata/known_failures.txt`):
   the installation path of Docutils' standard include directory
   (`.. include:: <nonexistent>`).
 
-Robustness: `TestMutatedCorpus` converts about 19 600 truncated or randomly
+Robustness: `TestMutatedCorpus` converts about 19 700 truncated or randomly
 damaged variants of the corpus inputs, `TestPathological` a set of deeply
 nested and unterminated constructs, and `FuzzConvert` is a native fuzz
 target; none may panic or hang.
@@ -192,14 +198,41 @@ target; none may panic or hang.
 
 ## Performance
 
-`go test -bench Convert -benchmem` converts four corpus documents. On a
-generated 150 KB document (headings, paragraphs with inline markup, lists,
-code blocks, block quotes) written equivalently in reStructuredText and
-Markdown, rstgo runs at roughly 2.5 MB/s against roughly 19 MB/s for
-[goldmark](https://github.com/yuin/goldmark) on the same machine, and
-allocates about 6x as much. Most of the time and allocation is in the
-closure-based regex engine (`pyre.go`) that runs Docutils' patterns
-unchanged.
+No regular-expression engine runs during a conversion (see above), and the
+document tree, the transforms and the writers avoid per-node allocations
+where they can. `benchmarks/` is a separate module that converts a
+generated document (headings, paragraphs with inline markup, lists, code
+blocks, block quotes), written equivalently in reStructuredText and
+Markdown, with rstgo (`ConvertBody`) and with
+[goldmark](https://github.com/yuin/goldmark):
+
+```
+cd benchmarks && go test -bench Convert -benchmem
+```
+
+Best of 8 runs on one machine (4 cores, Intel Xeon 2.1 GHz, Go 1.24);
+sections / input size:
+
+| Document | | time | throughput | B/op | allocs/op |
+|----------|---|------|-----------|------|-----------|
+| 8 sections (15 KB) | goldmark | 0.75 ms | 19.5 MB/s | 413 KB | 2 714 |
+| | rstgo | 1.02 ms | 15.1 MB/s | 444 KB | 1 635 |
+| 80 sections (150 KB) | goldmark | 8.5 ms | 17.1 MB/s | 3.98 MB | 26 910 |
+| | rstgo | 10.7 ms | 14.2 MB/s | 4.13 MB | 14 057 |
+| 800 sections (1.5 MB) | goldmark | 79.9 ms | 18.2 MB/s | 38.8 MB | 268 843 |
+| | rstgo | 108.5 ms | 14.1 MB/s | 40.8 MB | 137 943 |
+
+That is 1.25x to 1.4x goldmark's time at about the same memory and half the
+allocations, and linear in the input size. `go test -bench Convert -benchmem .`
+in the root module converts four documents of the corpus to complete html4css1
+documents (same machine, best of 6):
+
+| Document | size | time | B/op | allocs/op |
+|----------|------|------|------|-----------|
+| Docutils README | 12 KB | 1.18 ms | 385 KB | 2 544 |
+| Docutils FAQ | 46 KB | 3.47 ms | 1.27 MB | 7 798 |
+| reStructuredText specification | 124 KB | 9.16 ms | 3.26 MB | 18 297 |
+| Docutils HISTORY | 173 KB | 14.5 ms | 4.98 MB | 21 938 |
 
 ## Development
 

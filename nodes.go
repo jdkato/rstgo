@@ -21,6 +21,8 @@ type Node struct {
 	Children []*Node
 	Parent   *Node
 	// Rawsource is the source text the node was generated from, if known.
+	// It is not recorded for list_item, block_quote, description and
+	// definition_list_item elements.
 	Rawsource string
 	Source    string
 	Line      int // 0 if unknown
