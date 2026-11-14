@@ -1546,6 +1546,13 @@ func (t *htmlTranslator) departDocument(node *Node) {
 	t.bodyPrefix = append(t.bodyPrefix, t.starttag(node, t.documentTag, "\n", atts))
 	t.bodySuffix = append([]string{"</" + t.documentTag + ">\n"}, t.bodySuffix...)
 	t.fragment = t.body
+}
+
+// buildHTMLBody assembles the "html_body" part.
+func (t *htmlTranslator) buildHTMLBody() []byte {
+	if t.htmlBody != nil {
+		return t.htmlBody
+	}
 	size := len(t.body)
 	for _, part := range [][]string{t.bodyPrefix[1:], t.bodyPreDocinfo, t.docinfo, t.bodySuffix[:len(t.bodySuffix)-1]} {
 		for _, x := range part {
@@ -1562,6 +1569,7 @@ func (t *htmlTranslator) departDocument(node *Node) {
 	for _, x := range t.bodySuffix[:len(t.bodySuffix)-1] {
 		t.htmlBody = append(t.htmlBody, x...)
 	}
+	return t.htmlBody
 }
 
 // ---------------------------------------------------------------- images

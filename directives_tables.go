@@ -418,7 +418,7 @@ func runCSVTable(d *directive) (result []*Node) {
 			info, _, ok2 := d.sm.inputLines.info(d.lineno - 1 - d.sm.inputOffset)
 			hsrc, hhas := "", false
 			if ok2 {
-				hsrc, hhas = info.source, info.hasSource
+				hsrc, hhas = info.src()
 			}
 			var rows [][]*tableCell
 			rows, maxHeaderCols = d.parseCSVDataIntoRows(strings.Split(h.(string), "\n"), hsrc, hhas)
@@ -482,7 +482,8 @@ func (d *directive) getCSVData() ([]string, string, bool) {
 				d.literalBlockOfSource(), atLine(d.lineno)))
 		}
 		info, _, _ := d.content.info(0)
-		return d.content.data, info.source, info.hasSource
+		src, hasSrc := info.src()
+		return d.content.data, src, hasSrc
 	} else if f, ok := d.options["file"]; ok {
 		if d.hasOpt("url") {
 			d.propagate(d.reporter().error(fmt.Sprintf(`The "file" and "url" options may not be simultaneously specified for the "%s" directive.`, d.name),

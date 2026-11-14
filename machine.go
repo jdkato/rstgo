@@ -91,7 +91,8 @@ func (sm *stateMachine) notifyObservers() {
 		sm.document.noteSource("", false, 0, false)
 		return
 	}
-	sm.document.noteSource(info.source, info.hasSource, info.offset, hasOffset)
+	src, hasSrc := info.src()
+	sm.document.noteSource(src, hasSrc, info.offset, hasOffset)
 }
 
 func (sm *stateMachine) lineAt(off int) (string, bool) {
@@ -166,7 +167,8 @@ func (sm *stateMachine) srcLineAtOffset(offset int, depth int) (string, bool, in
 		}
 		return src, hasSrc, line + 1, true
 	}
-	return info.source, info.hasSource, info.offset + 1, true
+	src, hasSrc := info.src()
+	return src, hasSrc, info.offset + 1, true
 }
 
 func (sm *stateMachine) curSrcLine() (string, bool, int, bool) {
@@ -174,10 +176,11 @@ func (sm *stateMachine) curSrcLine() (string, bool, int, bool) {
 }
 
 func (sm *stateMachine) insertInput(lines []string, source string) {
+	after, before := "internal padding after "+source, "internal padding before "+source
 	sm.inputLines.insertLine(sm.lineOffset+1, "",
-		lineInfo{"internal padding after " + source, true, len(lines)})
+		lineInfo{&after, len(lines)})
 	sm.inputLines.insertLine(sm.lineOffset+1, "",
-		lineInfo{"internal padding before " + source, true, -1})
+		lineInfo{&before, -1})
 	sm.inputLines.insertList(sm.lineOffset+2, newStringList(lines, source, true))
 }
 
@@ -189,6 +192,22 @@ func (sm *stateMachine) getTextBlock(flushLeft bool) (*stringList, *unexpectedIn
 	}
 	sm.nextLine(len(block.data) - 1)
 	return block, nil
+}
+
+// getTextLines is getTextBlock for callers that only read the lines: it
+// returns them without copying.
+func (sm *stateMachine) getTextLines(flushLeft bool) ([]string, *unexpectedIndentation) {
+	sl := sm.inputLines
+	end, indentAt := sl.textBlockEnd(sm.lineOffset, flushLeft)
+	if indentAt >= 0 {
+		info, _, _ := sl.info(indentAt)
+		err := &unexpectedIndentation{sl.slice(sm.lineOffset, end), info, info.offset + 1}
+		sm.nextLine(len(err.block.data) - 1)
+		return err.block.data, err
+	}
+	lines := sl.data[sm.lineOffset:end:end]
+	sm.nextLine(len(lines) - 1)
+	return lines, nil
 }
 
 func (sm *stateMachine) getIndented(untilBlank, stripIndent bool) (*stringList, int, int, bool) {

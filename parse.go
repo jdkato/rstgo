@@ -23,5 +23,5 @@ func parseInto(doc *Document, text string) {
 	}
 	sm := newStateMachine("Body", nil)
 	src := doc.Root.str("source")
-	sm.runTop(newStringList(inputlines, src, true), doc, m)
+	sm.runTop(newStringListOwned(inputlines, src, true), doc, m)
 }

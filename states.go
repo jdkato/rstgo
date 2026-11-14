@@ -483,7 +483,7 @@ func bodyIndent(s *rstState, m lineMatch, context []string, nextState string) ([
 func (s *rstState) blockQuote(indented *stringList, lineOffset int) []*Node {
 	var elements []*Node
 	for indented != nil && len(indented.data) > 0 {
-		blockquote := newElem("block_quote", indented.join())
+		blockquote := newElem("block_quote", "")
 		blockquote.setSrcLine(s.sm.getSourceAndLine(lineOffset+1, true))
 		bqLines, attrLines, attrOffset, rest, newLineOffset := s.splitAttribution(indented, lineOffset)
 		s.nestedParse(bqLines, lineOffset, blockquote, false)
@@ -596,7 +596,7 @@ func (s *rstState) listItem(indent int) (*Node, bool) {
 	} else {
 		indented, _, lineOffset, blankFinish = s.sm.getFirstKnownIndented(indent, false, true, true)
 	}
-	listitem := newElem("list_item", indented.join())
+	listitem := newElem("list_item", "")
 	listitem.setSrcLine(src, hasSrc, srcline, hasLine)
 	if len(indented.data) > 0 {
 		s.nestedParse(indented, lineOffset, listitem, false)
@@ -833,7 +833,7 @@ func (s *rstState) optionListItem(m lineMatch) (*Node, bool, *markupError) {
 		panic(&transitionCorrection{"text"})
 	}
 	optionGroup := newElem("option_group", "", options...)
-	description := newElem("description", indented.join())
+	description := newElem("description", "")
 	item := newElem("option_list_item", "", optionGroup, description)
 	if len(indented.data) > 0 {
 		s.nestedParse(indented, lineOffset, description, false)
@@ -879,8 +879,8 @@ func (s *rstState) parseOptionMarker(m lineMatch) ([]*Node, *markupError) {
 
 func bodyDoctest(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	line, hasLine := s.document.currentLine, s.document.hasCurrentLine
-	block, _ := s.sm.getTextBlock(false)
-	data := block.join()
+	block, _ := s.sm.getTextLines(false)
+	data := strings.Join(block, "\n")
 	n := newTextElem("doctest_block", data, data)
 	n.setLine(line, hasLine)
 	s.parent().append(n)
@@ -1022,8 +1022,9 @@ func (s *rstState) isolateGridTable() (*stringList, []*Node, bool) {
 	blankFinish := true
 	block, uerr := s.sm.getTextBlock(true)
 	if uerr != nil {
+		src, hasSrc := uerr.info.src()
 		messages = append(messages, s.reporter.error("Unexpected indentation.", nil,
-			atSrcLine(uerr.info.source, uerr.info.hasSource, uerr.line, true)))
+			atSrcLine(src, hasSrc, uerr.line, true)))
 		blankFinish = false
 	}
 	block.disconnect()

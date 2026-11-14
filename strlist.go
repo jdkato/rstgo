@@ -2,11 +2,18 @@ package rstgo
 
 import "strings"
 
-// lineInfo records where an input line came from: (source, offset).
+// lineInfo records where an input line came from: (source, offset).  All
+// lines of one file share the source string.
 type lineInfo struct {
-	source    string
-	hasSource bool
-	offset    int
+	source *string // nil: unknown (None)
+	offset int
+}
+
+func (li lineInfo) src() (string, bool) {
+	if li.source == nil {
+		return "", false
+	}
+	return *li.source, true
 }
 
 // stringList is a port of docutils.statemachine.StringList (a ViewList of
@@ -20,9 +27,18 @@ type stringList struct {
 }
 
 func newStringList(lines []string, source string, hasSource bool) *stringList {
-	sl := &stringList{data: append([]string{}, lines...), items: make([]lineInfo, len(lines))}
+	return newStringListOwned(append([]string{}, lines...), source, hasSource)
+}
+
+// newStringListOwned is newStringList taking ownership of lines.
+func newStringListOwned(lines []string, source string, hasSource bool) *stringList {
+	sl := &stringList{data: lines, items: make([]lineInfo, len(lines))}
+	var src *string
+	if hasSource {
+		src = &source
+	}
 	for i := range lines {
-		sl.items[i] = lineInfo{source, hasSource, i}
+		sl.items[i] = lineInfo{src, i}
 	}
 	return sl
 }
@@ -181,7 +197,7 @@ func (sl *stringList) info(i int) (info lineInfo, hasOffset bool, ok bool) {
 	}
 	if i == n && n > 0 {
 		it := sl.items[n-1]
-		return lineInfo{it.source, it.hasSource, 0}, false, true
+		return lineInfo{it.source, 0}, false, true
 	}
 	return lineInfo{}, false, false
 }
@@ -212,6 +228,23 @@ type unexpectedIndentation struct {
 	block *stringList
 	info  lineInfo
 	line  int
+}
+
+// textBlockEnd returns the end of the text block starting at start; indentAt
+// is the index of an unexpectedly indented line (flushLeft), or -1.
+func (sl *stringList) textBlockEnd(start int, flushLeft bool) (end, indentAt int) {
+	end = start
+	for end < len(sl.data) {
+		line := sl.data[end]
+		if isBlank(line) {
+			break
+		}
+		if flushLeft && line[0] == ' ' {
+			return end, end
+		}
+		end++
+	}
+	return end, -1
 }
 
 // getTextBlock mirrors StringList.get_text_block.

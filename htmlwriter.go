@@ -218,8 +218,9 @@ func (t *htmlTranslator) encode(text string) string {
 		return text
 	}
 	var b strings.Builder
-	for _, r := range text {
-		switch r {
+	b.Grow(len(text) + 16)
+	for i := 0; i < len(text); i++ {
+		switch c := text[i]; c {
 		case '&':
 			b.WriteString("&amp;")
 		case '<':
@@ -230,14 +231,15 @@ func (t *htmlTranslator) encode(text string) string {
 			b.WriteString("&gt;")
 		case '@':
 			b.WriteString("&#64;")
-		case 0xa0:
-			if t.v4 {
+		case 0xc2:
+			if t.v4 && i+1 < len(text) && text[i+1] == 0xa0 {
 				b.WriteString("&nbsp;")
+				i++
 			} else {
-				b.WriteRune(r)
+				b.WriteByte(c)
 			}
 		default:
-			b.WriteRune(r)
+			b.WriteByte(c)
 		}
 	}
 	return b.String()

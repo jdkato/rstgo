@@ -363,7 +363,7 @@ func ConvertBody(src []byte, opts Options) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return t.htmlBody, nil
+	return t.buildHTMLBody(), nil
 }
 
 // translate runs the whole pipeline and returns the writer state.
@@ -406,7 +406,7 @@ func convert(src []byte, opts *Options) (parts *Parts, res Result, err error) {
 	}
 	j := func(l []string) string { return strings.Join(l, "") }
 	parts = &Parts{
-		HTMLBody: string(t.htmlBody), Body: string(t.body), Fragment: string(t.fragment),
+		HTMLBody: string(t.buildHTMLBody()), Body: string(t.body), Fragment: string(t.fragment),
 		Title: j(t.title), Subtitle: j(t.subtitle), HTMLTitle: j(t.htmlTitle),
 		HTMLSubtitle: j(t.htmlSubtitle), Docinfo: j(t.docinfo), Header: j(t.header),
 		Footer: j(t.footer), Head: j(t.head), Stylesheet: j(t.stylesheet), Meta: j(t.meta),

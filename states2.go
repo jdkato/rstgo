@@ -801,12 +801,12 @@ func textUnderline(s *rstState, m lineMatch, context []string, nextState string)
 func textText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	startline := s.sm.absLineNumber() - 1
 	var msg *Node
-	block, uerr := s.sm.getTextBlock(true)
+	block, uerr := s.sm.getTextLines(true)
 	if uerr != nil {
-		msg = s.reporter.error("Unexpected indentation.", nil,
-			atSrcLine(uerr.info.source, uerr.info.hasSource, uerr.line, true))
+		src, hasSrc := uerr.info.src()
+		msg = s.reporter.error("Unexpected indentation.", nil, atSrcLine(src, hasSrc, uerr.line, true))
 	}
-	paragraph, messages, literalnext := s.paragraph(context, block.data, startline)
+	paragraph, messages, literalnext := s.paragraph(context, block, startline)
 	s.parent().append(paragraph)
 	s.parent().extend(messages)
 	s.parent().append(msg)
@@ -848,7 +848,7 @@ func (s *rstState) definitionListItem(termline []string) (*Node, bool) {
 	ddLineno := s.sm.absLineNumber()
 	dtLineno := ddLineno - 1
 	indented, _, lineOffset, blankFinish := s.sm.getIndented(false, true)
-	dlItem := newElem("definition_list_item", strings.Join(append(append([]string{}, termline...), indented.data...), "\n"))
+	dlItem := newElem("definition_list_item", "")
 	dlItem.setSrcLine(s.sm.getSourceAndLine(dtLineno, true))
 	dtNodes, messages := s.term(termline, dtLineno)
 	dlItem.extend(dtNodes)
