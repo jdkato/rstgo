@@ -459,7 +459,10 @@ func xSubstitutions(d *Document, _ *Node) {
 	normed := d.substitutionNames
 	nested := map[string][]string{}
 	origin := map[*Node]*Node{}
-	subreflist := d.Root.findTag("substitution_reference")
+	var subreflist []*Node
+	if d.tagKinds()&kindSubstitutionRef != 0 {
+		subreflist = d.Root.findTag("substitution_reference")
+	}
 	for idx := 0; idx < len(subreflist); idx++ {
 		ref := subreflist[idx]
 		var msg *Node

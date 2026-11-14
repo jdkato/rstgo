@@ -15,6 +15,9 @@ type Document struct {
 	settings *settings
 	reporter *reporter
 
+	kinds      int // see tagKinds
+	kindsKnown bool
+
 	currentSource    string
 	hasCurrentSource bool
 	currentLine      int

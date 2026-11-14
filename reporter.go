@@ -13,6 +13,7 @@ type reporter struct {
 	haltLevel   int
 	stream      io.Writer
 	maxLevel    int
+	created     int // number of system messages generated
 	observer    func(*Node)
 	// getSourceAndLine is installed by the parser (first state machine).
 	getSourceAndLine func(lineno int, hasLineno bool) (src string, hasSrc bool, line int, hasLine bool)
@@ -118,6 +119,7 @@ func (r *reporter) systemMessage(level int, message string, children []*Node, op
 		attrs["source"] = r.source
 	}
 	msg := newElem("system_message", "")
+	r.created++
 	if message != "" {
 		msg.append(newTextElem("paragraph", "", message))
 	}

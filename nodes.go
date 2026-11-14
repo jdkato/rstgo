@@ -80,8 +80,8 @@ const textTag = "#text"
 // consists of many small nodes, and allocating them one by one dominates
 // the cost of building the tree.
 type nodeSlab struct {
-	nodes [64]Node
 	n     int
+	nodes [64]Node
 }
 
 type childSlab struct {
@@ -647,6 +647,48 @@ func (n *Node) findall(cond func(*Node) bool) []*Node {
 	}
 	walk(n)
 	return out
+}
+
+// Tag classes recorded by Document.tagKinds.
+const (
+	kindTransition = 1 << iota
+	kindSubstitutionRef
+	kindAdmonition
+)
+
+// tagKinds reports which of a few rarely used element kinds occur in the
+// parsed document, so that transforms for absent kinds need not walk the
+// tree. None of these kinds is created by a transform, so the result of the
+// first walk stays valid.
+func (d *Document) tagKinds() int {
+	if !d.kindsKnown {
+		d.kinds = collectKinds(d.Root)
+		d.kindsKnown = true
+	}
+	return d.kinds
+}
+
+func collectKinds(n *Node) int {
+	k := 0
+	for _, c := range n.Children {
+		switch len(c.Tag) {
+		case 3, 4, 5, 6, 7, 9, 10, 22:
+			switch c.Tag {
+			case "transition":
+				k |= kindTransition
+			case "substitution_reference":
+				k |= kindSubstitutionRef
+			default:
+				if admonitionTags[c.Tag] {
+					k |= kindAdmonition
+				}
+			}
+		}
+		if len(c.Children) != 0 {
+			k |= collectKinds(c)
+		}
+	}
+	return k
 }
 
 func (n *Node) findTag(tag string) []*Node {

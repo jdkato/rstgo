@@ -12,9 +12,25 @@ import (
 // Helpers reproducing the behaviour of Python string methods where it
 // differs from the Go standard library.
 
-func pyStrip(s string) string  { return strings.TrimFunc(s, isPySpace) }
-func pyLstrip(s string) string { return strings.TrimLeftFunc(s, isPySpace) }
-func pyRstrip(s string) string { return strings.TrimRightFunc(s, isPySpace) }
+func pyStrip(s string) string { return pyLstrip(pyRstrip(s)) }
+
+// plainEdge reports whether c is an ASCII byte that is not whitespace, i.e.
+// a string starting or ending with it needs no stripping at that end.
+func plainEdge(c byte) bool { return c > ' ' && c < utf8.RuneSelf }
+
+func pyLstrip(s string) string {
+	if len(s) > 0 && plainEdge(s[0]) {
+		return s
+	}
+	return strings.TrimLeftFunc(s, isPySpace)
+}
+
+func pyRstrip(s string) string {
+	if len(s) > 0 && plainEdge(s[len(s)-1]) {
+		return s
+	}
+	return strings.TrimRightFunc(s, isPySpace)
+}
 
 // pySplit is str.split() (whitespace separated, no empty fields).
 func pySplit(s string) []string { return strings.FieldsFunc(s, isPySpace) }
@@ -48,7 +64,15 @@ func pySplitlines(s string, keepends bool) []string {
 	start := 0
 	i := 0
 	for i < len(s) {
-		r, w := utf8.DecodeRuneInString(s[i:])
+		c := s[i]
+		if c < utf8.RuneSelf && (c > 0x1e || c < '\n') {
+			i++
+			continue
+		}
+		r, w := rune(c), 1
+		if c >= utf8.RuneSelf {
+			r, w = utf8.DecodeRuneInString(s[i:])
+		}
 		brk := 0
 		switch r {
 		case '\n', '\v', '\f', 0x1c, 0x1d, 0x1e, 0x85, 0x2028, 0x2029:

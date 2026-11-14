@@ -163,6 +163,12 @@ func xMessages(d *Document, _ *Node) {
 }
 
 func xFilterMessages(d *Document, _ *Node) {
+	if d.reporter.created == 0 {
+		// No system message was ever generated, so there are neither
+		// messages nor problematic nodes to filter.
+		xFilterMessageSections(d)
+		return
+	}
 	removed := map[string]bool{}
 	for _, n := range d.Root.findTag("system_message") {
 		if lv, _ := n.get("level").(int); lv < d.reporter.reportLevel {
@@ -178,6 +184,10 @@ func xFilterMessages(d *Document, _ *Node) {
 			n.Parent.replace(n, newText(n.astext()))
 		}
 	}
+	xFilterMessageSections(d)
+}
+
+func xFilterMessageSections(d *Document) {
 	for _, n := range d.Root.findTag("section") {
 		if containsStr(n.list("classes"), "system-messages") && len(n.Children) == 1 && n.Parent != nil {
 			n.Parent.remove(n)
@@ -221,6 +231,9 @@ var admonitionLabels = map[string]string{
 }
 
 func xAdmonitions(d *Document, _ *Node) {
+	if d.tagKinds()&kindAdmonition == 0 {
+		return
+	}
 	for _, node := range d.Root.findall(func(n *Node) bool { return admonitionTags[n.Tag] }) {
 		name := node.Tag
 		node.appendTo("classes", name)
@@ -276,6 +289,9 @@ var bodyParents = set(`admonition attention block_quote caution citation compoun
 	system_message tip topic warning`)
 
 func xTransitions(d *Document, _ *Node) {
+	if d.tagKinds()&kindTransition == 0 {
+		return
+	}
 	for _, node := range d.Root.findTag("transition") {
 		warn := func(msg string) {
 			w := d.reporter.warning(msg, nil, baseNode(node))
