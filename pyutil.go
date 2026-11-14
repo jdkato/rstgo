@@ -242,3 +242,30 @@ func atoi(s string) int {
 	n, _ := strconv.Atoi(s)
 	return n
 }
+
+// Character classes with the semantics of Python's str methods and "re"
+// module (\s, \w, \d on str patterns).
+
+func isPySpace(r rune) bool {
+	switch {
+	case r >= 0x09 && r <= 0x0d, r >= 0x1c && r <= 0x20, r == 0x85, r == 0xa0,
+		r == 0x1680, r >= 0x2000 && r <= 0x200a, r == 0x2028, r == 0x2029,
+		r == 0x202f, r == 0x205f, r == 0x3000:
+		return true
+	}
+	return false
+}
+
+func isPyWord(r rune) bool {
+	if r < 0x80 {
+		return r == '_' || (r >= '0' && r <= '9') || (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z')
+	}
+	return unicode.IsLetter(r) || unicode.IsNumber(r)
+}
+
+func isPyDigit(r rune) bool {
+	if r < 0x80 {
+		return r >= '0' && r <= '9'
+	}
+	return unicode.IsDigit(r)
+}

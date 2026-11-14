@@ -585,22 +585,12 @@ var bibliographicFields = set(`author authors organization address contact
 
 var biblioLabels = map[string]string{"dedication": "Dedication", "abstract": "Abstract"}
 
-var rcsKeywordSubstitutions = []struct {
-	re   *pyRegexp
-	repl func(m *pyMatch) string
-}{
-	{pyCompile(`\$Date: (\d\d\d\d)[-/](\d\d)[-/](\d\d)[ T][\d:]+[^$]* \$`, reIgnoreCase),
-		func(m *pyMatch) string { return m.Group(1) + "-" + m.Group(2) + "-" + m.Group(3) }},
-	{pyCompile(`\$RCSfile: (.+),v \$`, reIgnoreCase), func(m *pyMatch) string { return m.Group(1) }},
-	{pyCompile(`\$[a-zA-Z]+: (.+) \$`), func(m *pyMatch) string { return m.Group(1) }},
-}
-
 func cleanRCSKeywords(paragraph *Node) {
 	if len(paragraph.Children) == 1 && paragraph.Children[0].IsText() {
 		textnode := paragraph.Children[0]
-		for _, s := range rcsKeywordSubstitutions {
-			if s.re.Search(textnode.Text) != nil {
-				paragraph.Children[0] = newText(s.re.ReplaceAllFunc(textnode.Text, s.repl))
+		for n := 0; n < 3; n++ {
+			if text, ok := rcsKeywordSub(n, textnode.Text); ok {
+				paragraph.Children[0] = newText(text)
 				paragraph.setupChild(paragraph.Children[0])
 				return
 			}
@@ -808,8 +798,8 @@ func authorsFromOneParagraph(field *Node) ([][]*Node, bool) {
 		return nil, false
 	}
 	var names []string
-	for _, sep := range []string{";", ","} {
-		names = pyCompile(`(?<!\x00)` + sep).Split(text)
+	for _, sep := range []byte{';', ','} {
+		names = splitUnescaped(text, sep)
 		if len(names) > 1 {
 			break
 		}

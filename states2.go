@@ -7,68 +7,24 @@ import (
 
 // ---------------------------------------------------------------- explicit markup
 
-var explicitTargetPat = pyCompile(`
-                            (
-                              _               # anonymous target
-                            |               # *OR*
-                              (?!_)           # no underscore at the beginning
-                              (?P<quote>`+"`"+`?)   # optional open quote
-                              (?![ `+"`"+`])        # first char. not space or
-                              (?P<name>       # reference name
-                                .+?
-                              )
-                              (?<![\s\x00])
-                              (?P=quote)      # close quote if open quote used
-                            )
-                            (?<!(?<!\x00):) # no unescaped colon at end
-                            (?<![\s\x00])
-                            [ ]?            # optional space
-                            :               # end of reference name
-                            ([ ]+|$)        # followed by whitespace
-                            `, reVerbose)
-
-var explicitReferencePat = pyCompile(`
-                               (
-                                 (?P<simple>`+simplename+`)_
-                               |                  # *OR*
-                                 `+"`"+`                  # open backquote
-                                 (?![ ])            # not space
-                                 (?P<phrase>.+?)    # hyperlink phrase
-                                 (?<![\s\x00])
-                                 `+"`"+`_                 # close backquote,
-                               )
-                               $                  # end of string
-                               `, reVerbose)
-
-var explicitSubstitutionPat = pyCompile(`
-                                  (
-                                    (?![ ])          # first char. not space
-                                    (?P<name>.+?)    # substitution text
-                                    (?<![\s\x00])
-                                    \|               # close delimiter
-                                  )
-                                  ([ ]+|$)           # followed by whitespace
-                                  `, reVerbose)
-
 type explicitConstruct struct {
-	method  func(s *rstState, m *pyMatch) ([]*Node, bool)
-	pattern *pyRegexp
+	method func(s *rstState, m lineMatch) ([]*Node, bool)
+	scan   lineScanner
 }
 
 var explicitConstructs []explicitConstruct
 
 func init() {
 	explicitConstructs = []explicitConstruct{
-		{(*rstState).footnote, pyCompile(`\.\.[ ]+\[([0-9]+|\#|\#` + simplename + `|\*)\]([ ]+|$)`)},
-		{(*rstState).citation, pyCompile(`\.\.[ ]+\[(` + simplename + `)\]([ ]+|$)`)},
-		{(*rstState).hyperlinkTarget, pyCompile(`\.\.[ ]+_(?![ ]|$)`)},
-		{(*rstState).substitutionDef, pyCompile(`\.\.[ ]+\|(?![ ]|$)`)},
-		{func(s *rstState, m *pyMatch) ([]*Node, bool) { return s.directive(m, nil) },
-			pyCompile(`\.\.[ ]+(` + simplename + `)[ ]?::([ ]+|$)`)},
+		{(*rstState).footnote, scanFootnote},
+		{(*rstState).citation, scanCitation},
+		{(*rstState).hyperlinkTarget, scanHyperlinkTarget},
+		{(*rstState).substitutionDef, scanSubstitutionDef},
+		{func(s *rstState, m lineMatch) ([]*Node, bool) { return s.directive(m, nil) }, scanDirective},
 	}
 }
 
-func (s *rstState) footnote(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) footnote(m lineMatch) ([]*Node, bool) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
 	indented, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
 	label := m.Group(1)
@@ -104,7 +60,7 @@ func (s *rstState) footnote(m *pyMatch) ([]*Node, bool) {
 	return []*Node{footnote}, blankFinish
 }
 
-func (s *rstState) citation(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) citation(m lineMatch) ([]*Node, bool) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
 	indented, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
 	label := m.Group(1)
@@ -123,7 +79,7 @@ func (s *rstState) citation(m *pyMatch) ([]*Node, bool) {
 	return []*Node{citation}, blankFinish
 }
 
-func (s *rstState) hyperlinkTarget(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) hyperlinkTarget(m lineMatch) ([]*Node, bool) {
 	lineno := s.sm.absLineNumber()
 	sl, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), true, false, true)
 	blocktext := m.s[:m.End(0)] + sl.join()
@@ -136,10 +92,12 @@ func (s *rstState) hyperlinkTarget(m *pyMatch) ([]*Node, bool) {
 	}
 	escaped := block[0]
 	blockindex := 0
-	var targetmatch *pyMatch
+	var targetEnd int
+	var targetName string
 	for {
-		targetmatch = explicitTargetPat.Match(escaped)
-		if targetmatch != nil {
+		var ok bool
+		targetEnd, targetName, ok = scanExplicitTarget(escaped)
+		if ok {
 			break
 		}
 		blockindex++
@@ -150,9 +108,9 @@ func (s *rstState) hyperlinkTarget(m *pyMatch) ([]*Node, bool) {
 	}
 	block = block[blockindex:]
 	b0 := block[0] + " "
-	idx := targetmatch.End(0) - len(escaped) - 1 // negative index from end
+	idx := targetEnd - len(escaped) - 1 // negative index from end
 	block[0] = pyStrip(pySliceFrom(b0, idx))
-	target := s.makeTarget(block, blocktext, lineno, targetmatch.Named("name"))
+	target := s.makeTarget(block, blocktext, lineno, targetName)
 	return []*Node{target}, blankFinish
 }
 
@@ -207,15 +165,11 @@ func (s *rstState) parseTarget(block []string) (string, string) {
 }
 
 func isReference(reference string) (string, bool) {
-	m := explicitReferencePat.Match(whitespaceNormalizeName(reference))
-	if m == nil {
+	ref, ok := scanExplicitReference(whitespaceNormalizeName(reference))
+	if !ok {
 		return "", false
 	}
-	g := m.Named("simple")
-	if g == "" {
-		g = m.Named("phrase")
-	}
-	return unescape(g, false), true
+	return unescape(ref, false), true
 }
 
 func (s *rstState) addTarget(targetname, refuri string, target *Node, lineno int) {
@@ -237,7 +191,7 @@ func (s *rstState) addTarget(targetname, refuri string, target *Node, lineno int
 	}
 }
 
-func (s *rstState) substitutionDef(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) substitutionDef(m lineMatch) ([]*Node, bool) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
 	block, _, offset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, false, true)
 	blocktext := m.s[:m.End(0)] + block.join()
@@ -247,10 +201,12 @@ func (s *rstState) substitutionDef(m *pyMatch) ([]*Node, bool) {
 	}
 	escaped := escape2null(pyRstrip(block.data[0]))
 	blockindex := 0
-	var subdefmatch *pyMatch
+	var subdefEnd int
+	var subname string
 	for {
-		subdefmatch = explicitSubstitutionPat.Match(escaped)
-		if subdefmatch != nil {
+		var ok bool
+		subdefEnd, subname, ok = scanExplicitSubstitution(escaped)
+		if ok {
 			break
 		}
 		blockindex++
@@ -260,7 +216,7 @@ func (s *rstState) substitutionDef(m *pyMatch) ([]*Node, bool) {
 		escaped = escaped + " " + escape2null(pyStrip(block.data[blockindex]))
 	}
 	block.deleteRange(0, blockindex)
-	start := subdefmatch.End(0) - len(escaped) - 1
+	start := subdefEnd - len(escaped) - 1
 	b0 := pyStrip(block.data[0]) + " "
 	// Python: b0[start:-1]
 	i := start
@@ -282,7 +238,6 @@ func (s *rstState) substitutionDef(m *pyMatch) ([]*Node, bool) {
 	for len(block.data) > 0 && isBlank(block.data[len(block.data)-1]) {
 		block.pop()
 	}
-	subname := subdefmatch.Named("name")
 	substitutionNode := newElem("substitution_definition", blocktext)
 	substitutionNode.setSrcLine(src, hasSrc, srcline, hasLine)
 	if len(block.data) == 0 {
@@ -342,7 +297,7 @@ func disallowedInsideSubstitutionDefinitions(node *Node) string {
 	return ""
 }
 
-func (s *rstState) directive(m *pyMatch, optionPresets map[string]any) ([]*Node, bool) {
+func (s *rstState) directive(m lineMatch, optionPresets map[string]any) ([]*Node, bool) {
 	typeName := m.Group(1)
 	spec, messages := lookupDirective(typeName, s.memo, s.document)
 	s.parent().extend(messages)
@@ -357,7 +312,7 @@ type directiveError struct {
 	msg   string
 }
 
-func (s *rstState) runDirective(spec *directiveSpec, m *pyMatch, typeName string, optionPresets map[string]any) ([]*Node, bool) {
+func (s *rstState) runDirective(spec *directiveSpec, m lineMatch, typeName string, optionPresets map[string]any) ([]*Node, bool) {
 	lineno := s.sm.absLineNumber()
 	initialLineOffset := s.sm.lineOffset
 	indented, _, lineOffset, blankFinish := s.sm.getFirstKnownIndented(m.End(0), false, true, false)
@@ -457,8 +412,6 @@ func (s *rstState) parseDirectiveBlock(indented *stringList, lineOffset int, spe
 	return arguments, options, content, contentOffset
 }
 
-var fieldMarkerRe = pyCompile(patFieldMarker)
-
 func (s *rstState) parseDirectiveOptions(optionPresets map[string]any, optionSpec map[string]optConv, argBlock *stringList) (map[string]any, *stringList) {
 	options := map[string]any{}
 	for k, v := range optionPresets {
@@ -467,7 +420,7 @@ func (s *rstState) parseDirectiveOptions(optionPresets map[string]any, optionSpe
 	var optBlock *stringList
 	if argBlock != nil {
 		for i, line := range argBlock.data {
-			if fieldMarkerRe.Match(line) != nil {
+			if _, ok := scanFieldMarker(line); ok {
 				optBlock = argBlock.from(i)
 				argBlock = argBlock.slice(0, i)
 				break
@@ -579,7 +532,7 @@ func (s *rstState) unknownDirective(typeName string) ([]*Node, bool) {
 	return []*Node{e}, blankFinish
 }
 
-func (s *rstState) comment(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) comment(m lineMatch) ([]*Node, bool) {
 	if s.sm.isNextLineBlank() {
 		first := m.s[m.End(0):]
 		if isBlank(first) {
@@ -600,18 +553,18 @@ func (s *rstState) comment(m *pyMatch) ([]*Node, bool) {
 	return []*Node{newTextElem("comment", text, text)}, blankFinish
 }
 
-func bodyExplicitMarkup(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyExplicitMarkup(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	nodelist, blankFinish := s.explicitConstruct(m)
 	s.parent().extend(nodelist)
 	s.explicitList(blankFinish)
 	return []string{}, nextState
 }
 
-func (s *rstState) explicitConstruct(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) explicitConstruct(m lineMatch) ([]*Node, bool) {
 	var errors []*Node
 	for _, c := range explicitConstructs {
-		expmatch := c.pattern.Match(m.s)
-		if expmatch == nil {
+		expmatch, ok := c.scan(m.s)
+		if !ok {
 			continue
 		}
 		var nodelist []*Node
@@ -650,14 +603,14 @@ func (s *rstState) explicitList(blankFinish bool) {
 	}
 }
 
-func bodyAnonymous(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyAnonymous(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	nodelist, blankFinish := s.anonymousTarget(m)
 	s.parent().extend(nodelist)
 	s.explicitList(blankFinish)
 	return []string{}, nextState
 }
 
-func (s *rstState) anonymousTarget(m *pyMatch) ([]*Node, bool) {
+func (s *rstState) anonymousTarget(m lineMatch) ([]*Node, bool) {
 	lineno := s.sm.absLineNumber()
 	sl, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), true, true, true)
 	blocktext := m.s[:m.End(0)] + sl.join()
@@ -669,7 +622,7 @@ func (s *rstState) anonymousTarget(m *pyMatch) ([]*Node, bool) {
 	return []*Node{target}, blankFinish
 }
 
-func bodyLine(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyLine(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	if s.sm.matchTitles {
 		return []string{m.s}, "Line"
 	} else if pyStrip(m.s) == "::" {
@@ -687,13 +640,13 @@ func bodyLine(s *rstState, m *pyMatch, context []string, nextState string) ([]st
 	return []string{}, nextState
 }
 
-func bodyText(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	return []string{m.s}, "Text"
 }
 
 // ---------------------------------------------------------------- specialized
 
-func bulletListBullet(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bulletListBullet(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	_, w := firstRune(m.s)
 	if m.s[:w] != s.parent().str("bullet") {
 		invalidInput(s, m, context, nextState)
@@ -704,11 +657,11 @@ func bulletListBullet(s *rstState, m *pyMatch, context []string, nextState strin
 	return []string{}, nextState
 }
 
-func definitionListText(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func definitionListText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	return []string{m.s}, "Definition"
 }
 
-func enumeratedListEnumerator(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func enumeratedListEnumerator(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	format, sequence, _, ordinal, okOrd := s.parseEnumerator(m, s.parent().str("enumtype"))
 	if format != s.format ||
 		(sequence != "#" && (sequence != s.parent().str("enumtype") || s.auto || !okOrd || ordinal != s.lastordinal+1)) ||
@@ -725,14 +678,14 @@ func enumeratedListEnumerator(s *rstState, m *pyMatch, context []string, nextSta
 	return []string{}, nextState
 }
 
-func fieldListFieldMarker(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func fieldListFieldMarker(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	field, blankFinish := s.field(m)
 	s.parent().append(field)
 	s.blankFinish = blankFinish
 	return []string{}, nextState
 }
 
-func optionListOptionMarker(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func optionListOptionMarker(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	item, blankFinish, err := s.optionListItem(m)
 	if err != nil {
 		invalidInput(s, m, context, nextState)
@@ -742,7 +695,7 @@ func optionListOptionMarker(s *rstState, m *pyMatch, context []string, nextState
 	return []string{}, nextState
 }
 
-func lineBlockLineBlock(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func lineBlockLineBlock(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	lineno := s.sm.absLineNumber()
 	line, messages, blankFinish := s.lineBlockLine(m, lineno)
 	s.parent().append(line)
@@ -751,21 +704,21 @@ func lineBlockLineBlock(s *rstState, m *pyMatch, context []string, nextState str
 	return []string{}, nextState
 }
 
-func explicitExplicitMarkup(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func explicitExplicitMarkup(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	nodelist, blankFinish := s.explicitConstruct(m)
 	s.parent().extend(nodelist)
 	s.blankFinish = blankFinish
 	return []string{}, nextState
 }
 
-func explicitAnonymous(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func explicitAnonymous(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	nodelist, blankFinish := s.anonymousTarget(m)
 	s.parent().extend(nodelist)
 	s.blankFinish = blankFinish
 	return []string{}, nextState
 }
 
-func substEmbeddedDirective(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func substEmbeddedDirective(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	nodelist, blankFinish := s.directive(m, map[string]any{"alt": s.parent().list("names")[0]})
 	s.parent().extend(nodelist)
 	if !s.sm.atEOF() {
@@ -774,7 +727,7 @@ func substEmbeddedDirective(s *rstState, m *pyMatch, context []string, nextState
 	panic(smEOF{})
 }
 
-func substText(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func substText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	if !s.sm.atEOF() {
 		s.blankFinish = s.sm.isNextLineBlank()
 	}
@@ -783,7 +736,7 @@ func substText(s *rstState, m *pyMatch, context []string, nextState string) ([]s
 
 // ---------------------------------------------------------------- Text
 
-func textBlank(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func textBlank(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	paragraph, literalnext := s.paragraph(context, s.sm.absLineNumber()-1)
 	s.parent().extend(paragraph)
 	if literalnext {
@@ -792,7 +745,7 @@ func textBlank(s *rstState, m *pyMatch, context []string, nextState string) ([]s
 	return []string{}, "Body"
 }
 
-func textIndent(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func textIndent(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	dl := newElem("definition_list", "")
 	lineno := s.sm.absLineNumber() - 1
 	dl.setSrcLine(s.sm.getSourceAndLine(lineno, true))
@@ -810,7 +763,7 @@ func textIndent(s *rstState, m *pyMatch, context []string, nextState string) ([]
 	return []string{}, "Body"
 }
 
-func textUnderline(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func textUnderline(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	lineno := s.sm.absLineNumber()
 	title := pyRstrip(context[0])
 	underline := pyRstrip(m.s)
@@ -845,7 +798,7 @@ func textUnderline(s *rstState, m *pyMatch, context []string, nextState string) 
 	return []string{}, nextState
 }
 
-func textText(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func textText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	startline := s.sm.absLineNumber() - 1
 	var msg *Node
 	block, uerr := s.sm.getTextBlock(true)
@@ -910,8 +863,6 @@ func (s *rstState) definitionListItem(termline []string) (*Node, bool) {
 	return dlItem, blankFinish
 }
 
-var classifierDelimiter = pyCompile(` +: +`)
-
 func (s *rstState) term(lines []string, lineno int) ([]*Node, []*Node) {
 	textNodes, messages := s.inlineText(lines[0], lineno)
 	dt := newElem("term", lines[0])
@@ -920,7 +871,7 @@ func (s *rstState) term(lines []string, lineno int) ([]*Node, []*Node) {
 	for _, node := range textNodes {
 		last := nodeList[len(nodeList)-1]
 		if node.IsText() {
-			parts := classifierDelimiter.Split(node.Text)
+			parts := splitClassifiers(node.Text)
 			if len(parts) == 1 {
 				last.append(node)
 			} else {
@@ -937,7 +888,7 @@ func (s *rstState) term(lines []string, lineno int) ([]*Node, []*Node) {
 	return nodeList, messages
 }
 
-func definitionIndent(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func definitionIndent(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	dlItem, blankFinish := s.definitionListItem(context)
 	s.parent().append(dlItem)
 	s.blankFinish = blankFinish
@@ -957,7 +908,7 @@ func lineEOF(s *rstState, context []string) {
 	s.parent().append(transition)
 }
 
-func lineBlank(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func lineBlank(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
 	marker := pyStrip(context[0])
 	if len(marker) < 4 {
@@ -969,7 +920,7 @@ func lineBlank(s *rstState, m *pyMatch, context []string, nextState string) ([]s
 	return []string{}, "Body"
 }
 
-func lineText(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func lineText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	lineno := s.sm.absLineNumber() - 1
 	overline := context[0]
 	title := m.s
@@ -988,7 +939,7 @@ func lineText(s *rstState, m *pyMatch, context []string, nextState string) ([]st
 	source := overline + "\n" + title + "\n" + underline
 	overline = pyRstrip(overline)
 	underline = pyRstrip(underline)
-	if bodyPatterns["underline"].Match(underline) == nil {
+	if _, ok := scanLine(underline); !ok {
 		if len(pyRstrip(overline)) < 4 {
 			s.shortOverline(lineno, 2)
 		} else {
@@ -1023,7 +974,7 @@ func lineText(s *rstState, m *pyMatch, context []string, nextState string) ([]st
 	return []string{}, "Body"
 }
 
-func lineUnderline(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func lineUnderline(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	overline := context[0]
 	blocktext := overline + "\n" + s.sm.line
 	lineno := s.sm.absLineNumber() - 1
@@ -1050,7 +1001,7 @@ func (s *rstState) stateCorrection(lines int) {
 
 // ---------------------------------------------------------------- QuotedLiteralBlock
 
-func quotedBlank(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func quotedBlank(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	if len(context) > 0 {
 		panic(smEOF{})
 	}
@@ -1072,26 +1023,31 @@ func quotedEOF(s *rstState, context []string) {
 	s.parent().extend(s.messages)
 }
 
-func quotedIndent(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func quotedIndent(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	s.messages = append(s.messages, s.reporter.error("Unexpected indentation.", nil,
 		atLine(s.sm.absLineNumber())))
 	s.sm.previousLine(1)
 	panic(smEOF{})
 }
 
-func quotedInitialQuoted(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func quotedInitialQuoted(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	s.removeTransition("initial_quoted")
 	quote := m.s[:1]
-	s.addTransition(&transition{"quoted", pyCompile(`\` + quote), quotedQuoted, s.kind})
+	s.addTransition(&transition{"quoted", func(line string) (lineMatch, bool) {
+		if !strings.HasPrefix(line, quote) {
+			return lineMatch{}, false
+		}
+		return lm(line, 1), true
+	}, quotedQuoted, s.kind})
 	s.initialLineno = s.sm.absLineNumber()
 	return []string{m.s}, nextState
 }
 
-func quotedQuoted(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func quotedQuoted(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	return append(context, m.s), nextState
 }
 
-func quotedText(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func quotedText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	if len(context) > 0 {
 		s.messages = append(s.messages, s.reporter.error("Inconsistent literal block quoting.", nil,
 			atLine(s.sm.absLineNumber())))

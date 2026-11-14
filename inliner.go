@@ -4,147 +4,15 @@ package rstgo
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"unicode/utf8"
 )
 
-const (
-	nonWhitespaceBefore                = `(?<!\s)`
-	nonWhitespaceEscapeBefore          = `(?<![\s\x00])`
-	nonUnescapedWhitespaceEscapeBefore = `(?<!(?<!\x00)[\s\x00])`
-	nonWhitespaceAfter                 = `(?!\s)`
-	uric                               = `[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9\x00]`
-	uriEndDelim                        = `[>]`
-	urilast                            = `[_~*/=+a-zA-Z0-9]`
-	uriEnd                             = `(?:` + urilast + `|` + uric + `(?=` + uriEndDelim + `))`
-	emailc                             = "[-_!~*'{|}/#?^`&=+$%a-zA-Z0-9\\x00]"
-	emailPattern                       = `
-          ` + emailc + `+(?:\.` + emailc + `+)*   # name
-          (?<!\x00)@                      # at
-          ` + emailc + `+(?:\.` + emailc + `*)*   # host
-          ` + uriEnd + `                     # final URI char
-          `
-)
-
-type inlinePatterns struct {
-	initial, emphasis, strong, interpretedOrPhraseRef, embeddedLink,
-	literal, target, substitutionRef, email, uri, pep, rfc *pyRegexp
-}
-
-var (
-	wordLevelPatterns *inlinePatterns
-	charLevelPatterns *inlinePatterns
-)
-
-func buildInlinePatterns(charLevel bool) *inlinePatterns {
-	var startStringPrefix, endStringSuffix string
-	if charLevel {
-		startStringPrefix = `(^|(?<!\x00))`
-		endStringSuffix = ``
-	} else {
-		startStringPrefix = `(^|(?<=\s|[` + punct_openers + punct_delimiters + `]))`
-		endStringSuffix = `($|(?=\s|[\x00` + punct_closing_delimiters + punct_delimiters + punct_closers + `]))`
-	}
-	initial := startStringPrefix + `(?P<initial_inline>` +
-		`(?P<start>\*\*|\*(?!\*)|` + "``" + `|_` + "`" + `|\|(?!\|))` + nonWhitespaceAfter +
-		`|` +
-		`(?P<whole>(?P<refname>` + simplename + `)(?P<refend>__?)` +
-		`|\[(?P<footnotelabel>[0-9]+|\#(` + simplename + `)?|\*|(?P<citationlabel>` + simplename + `))(?P<fnend>\]_))` + endStringSuffix +
-		`|` +
-		`(?P<role>(:` + simplename + `:)?)(?P<backquote>` + "`(?!`)" + `)` + nonWhitespaceAfter +
-		`)`
-	p := &inlinePatterns{}
-	p.initial = pyCompile(initial)
-	p.emphasis = pyCompile(nonWhitespaceEscapeBefore + `(\*)` + endStringSuffix)
-	p.strong = pyCompile(nonWhitespaceEscapeBefore + `(\*\*)` + endStringSuffix)
-	p.interpretedOrPhraseRef = pyCompile(`
-              `+nonUnescapedWhitespaceEscapeBefore+`
-              (
-                `+"`"+`
-                (?P<suffix>
-                  (?P<role>:`+simplename+`:)?
-                  (?P<refend>__?)?
-                )
-              )
-              `+endStringSuffix+`
-              `, reVerbose)
-	p.embeddedLink = pyCompile(`
-              (
-                (?:[ \n]+|^)            # spaces or beginning of line/string
-                <                       # open bracket
-                `+nonWhitespaceAfter+`
-                (([^<>]|\x00[<>])+)     # anything but unescaped angle brackets
-                `+nonWhitespaceEscapeBefore+`
-                >                       # close bracket
-              )
-              $                         # end of string
-              `, reVerbose)
-	p.literal = pyCompile(nonWhitespaceBefore + "(``)" + endStringSuffix)
-	p.target = pyCompile(nonWhitespaceEscapeBefore + "(`)" + endStringSuffix)
-	p.substitutionRef = pyCompile(nonWhitespaceEscapeBefore + `(\|_{0,2})` + endStringSuffix)
-	p.email = pyCompile(emailPattern+`$`, reVerbose)
-	p.uri = pyCompile(`
-                `+startStringPrefix+`
-                (?P<whole>
-                  (?P<absolute>           # absolute URI
-                    (?P<scheme>             # scheme (http, ftp, mailto)
-                      [a-zA-Z][a-zA-Z0-9.+-]*
-                    )
-                    :
-                    (
-                      (                       # either:
-                        (//?)?                  # hierarchical URI
-                        `+uric+`*               # URI characters
-                        `+uriEnd+`             # final URI char
-                      )
-                      (                       # optional query
-                        \?`+uric+`*
-                        `+uriEnd+`
-                      )?
-                      (                       # optional fragment
-                        \#`+uric+`*
-                        `+uriEnd+`
-                      )?
-                    )
-                  )
-                |                       # *OR*
-                  (?P<email>              # email address
-                    `+emailPattern+`
-                  )
-                )
-                `+endStringSuffix+`
-                `, reVerbose)
-	p.pep = pyCompile(`
-                `+startStringPrefix+`
-                (
-                  (pep-(?P<pepnum1>\d+)(.txt)?) # reference to source file
-                |
-                  (PEP\s+(?P<pepnum2>\d+))      # reference by name
-                )
-                `+endStringSuffix, reVerbose)
-	if !charLevel {
-		p.initial.prefilter = initialPrefilter
-		p.uri.quick = func(s string) bool { return strings.ContainsAny(s, ":@") }
-		p.uri.prefilter = uriPrefilter
-	}
-	p.rfc = pyCompile(`
-                `+startStringPrefix+`
-                (RFC(-|\s+)?(?P<rfcnum>\d+))
-                `+endStringSuffix, reVerbose)
-	return p
-}
-
-type implicitFn func(inl *inliner, m *pyMatch, lineno int) ([]*Node, bool)
-
-type implicitEntry struct {
-	pattern *pyRegexp
-	method  implicitFn
-}
+type implicitFn func(inl *inliner, text string, lineno int) (before string, nodes []*Node, after string, found, ok bool)
 
 type inliner struct {
-	patterns         *inlinePatterns
-	implicitDispatch []implicitEntry
+	scan             inlineScanner
+	implicitDispatch []implicitFn
 	document         *Document
 	reporter         *reporter
 	parent           *Node
@@ -152,24 +20,13 @@ type inliner struct {
 }
 
 func newInliner(st *settings) *inliner {
-	inl := &inliner{}
-	if st.characterLevelInlineMarkup {
-		if charLevelPatterns == nil {
-			charLevelPatterns = buildInlinePatterns(true)
-		}
-		inl.patterns = charLevelPatterns
-	} else {
-		if wordLevelPatterns == nil {
-			wordLevelPatterns = buildInlinePatterns(false)
-		}
-		inl.patterns = wordLevelPatterns
-	}
-	inl.implicitDispatch = append(inl.implicitDispatch, implicitEntry{inl.patterns.uri, (*inliner).standaloneURI})
+	inl := &inliner{scan: inlineScanner{charLevel: st.characterLevelInlineMarkup}}
+	inl.implicitDispatch = append(inl.implicitDispatch, (*inliner).standaloneURI)
 	if st.pepReferences {
-		inl.implicitDispatch = append(inl.implicitDispatch, implicitEntry{inl.patterns.pep, (*inliner).pepReference})
+		inl.implicitDispatch = append(inl.implicitDispatch, (*inliner).pepReference)
 	}
 	if st.rfcReferences {
-		inl.implicitDispatch = append(inl.implicitDispatch, implicitEntry{inl.patterns.rfc, (*inliner).rfcReference})
+		inl.implicitDispatch = append(inl.implicitDispatch, (*inliner).rfcReference)
 	}
 	return inl
 }
@@ -181,57 +38,48 @@ func (inl *inliner) parse(text string, lineno int, m *memo, parent *Node) ([]*No
 	inl.memo = m
 	remaining := escape2null(text)
 	var processed, messages []*Node
-	var unprocessed []string
+	// unprocessed text is always a contiguous piece of the input, so it is
+	// tracked as a slice instead of a list of strings
+	unprocessed := ""
 	for remaining != "" {
-		match := inl.patterns.initial.Search(remaining)
-		if match == nil {
+		match, ok := inl.scan.searchInitial(remaining, 0)
+		if !ok {
 			break
-		}
-		key := match.Named("start")
-		if key == "" {
-			key = match.Named("backquote")
-		}
-		if key == "" {
-			key = match.Named("refend")
-		}
-		if key == "" {
-			key = match.Named("fnend")
 		}
 		var before string
 		var inlines, sysmessages []*Node
-		switch key {
+		s := remaining
+		switch match.key {
 		case "*":
-			before, inlines, remaining, sysmessages, _ = inl.inlineObj(match, lineno, inl.patterns.emphasis, "emphasis", false)
+			before, inlines, remaining, sysmessages, _ = inl.inlineObj(s, match, lineno, "emphasis")
 		case "**":
-			before, inlines, remaining, sysmessages, _ = inl.inlineObj(match, lineno, inl.patterns.strong, "strong", false)
+			before, inlines, remaining, sysmessages, _ = inl.inlineObj(s, match, lineno, "strong")
 		case "`":
-			before, inlines, remaining, sysmessages = inl.interpretedOrPhraseRef(match, lineno)
+			before, inlines, remaining, sysmessages = inl.interpretedOrPhraseRef(s, match, lineno)
 		case "``":
-			before, inlines, remaining, sysmessages, _ = inl.inlineObj(match, lineno, inl.patterns.literal, "literal", true)
+			before, inlines, remaining, sysmessages, _ = inl.inlineObj(s, match, lineno, "literal")
 		case "_`":
-			before, inlines, remaining, sysmessages = inl.inlineInternalTarget(match, lineno)
+			before, inlines, remaining, sysmessages = inl.inlineInternalTarget(s, match, lineno)
 		case "]_":
-			before, inlines, remaining, sysmessages = inl.footnoteReference(match, lineno)
+			before, inlines, remaining, sysmessages = inl.footnoteReference(s, match, lineno)
 		case "|":
-			before, inlines, remaining, sysmessages = inl.substitutionReference(match, lineno)
+			before, inlines, remaining, sysmessages = inl.substitutionReference(s, match, lineno)
 		case "_":
-			before, inlines, remaining, sysmessages = inl.reference(match, lineno, false)
+			before, inlines, remaining, sysmessages = inl.reference(s, match, lineno, false)
 		case "__":
-			before, inlines, remaining, sysmessages = inl.reference(match, lineno, true)
-		default:
-			panic("inliner: bad dispatch key " + strconv.Quote(key))
+			before, inlines, remaining, sysmessages = inl.reference(s, match, lineno, true)
 		}
-		unprocessed = append(unprocessed, before)
+		unprocessed += before
 		messages = append(messages, sysmessages...)
 		if len(inlines) > 0 {
-			processed = append(processed, inl.implicitInline(strings.Join(unprocessed, ""), lineno)...)
+			processed = inl.implicitInline(processed, unprocessed, lineno)
 			processed = append(processed, inlines...)
-			unprocessed = nil
+			unprocessed = ""
 		}
 	}
-	remaining = strings.Join(unprocessed, "") + remaining
+	remaining = unprocessed + remaining
 	if remaining != "" {
-		processed = append(processed, inl.implicitInline(remaining, lineno)...)
+		processed = inl.implicitInline(processed, remaining, lineno)
 	}
 	return processed, messages
 }
@@ -259,43 +107,51 @@ func matchChars(c1, c2 rune) bool {
 	return strings.ContainsRune(quotePairs[c1], c2)
 }
 
-func (inl *inliner) quotedStart(match *pyMatch) bool {
-	s := match.s
-	start := match.Start(0)
-	if start == 0 {
+func (inl *inliner) quotedStart(s string, match initialMatch) bool {
+	if match.start == 0 {
 		return false
 	}
-	prestart, _ := utf8.DecodeLastRuneInString(s[:start])
-	if match.End(0) >= len(s) {
+	prestart, _ := utf8.DecodeLastRuneInString(s[:match.start])
+	if match.end >= len(s) {
 		return true
 	}
-	poststart, _ := utf8.DecodeRuneInString(s[match.End(0):])
+	poststart, _ := utf8.DecodeRuneInString(s[match.end:])
 	return matchChars(prestart, poststart)
 }
 
-func (inl *inliner) inlineObj(match *pyMatch, lineno int, endPattern *pyRegexp, tag string, restoreBackslashes bool) (string, []*Node, string, []*Node, string) {
-	s := match.s
-	matchstart := match.StartNamed("start")
-	matchend := match.EndNamed("start")
-	if inl.quotedStart(match) {
+// inlineObj mirrors Inliner.inline_obj; tag selects the end pattern.
+func (inl *inliner) inlineObj(s string, match initialMatch, lineno int, tag string) (string, []*Node, string, []*Node, string) {
+	matchstart, matchend := match.markS, match.markE
+	if inl.quotedStart(s, match) {
 		return s[:matchend], nil, s[matchend:], nil, ""
 	}
-	endmatch := endPattern.Search(s[matchend:])
-	if endmatch != nil && endmatch.Start(1) > 0 {
-		text := endmatch.s[:endmatch.Start(1)]
-		if restoreBackslashes {
+	endS, endE := -1, -1
+	switch tag {
+	case "emphasis":
+		endS = inl.scan.searchEnd(s, matchend, "*", false)
+		endE = endS + 1
+	case "strong":
+		endS = inl.scan.searchEnd(s, matchend, "**", false)
+		endE = endS + 2
+	case "literal":
+		endS = inl.scan.searchEnd(s, matchend, "``", true)
+		endE = endS + 2
+	case "target":
+		endS = inl.scan.searchEnd(s, matchend, "`", false)
+		endE = endS + 1
+	case "substitution_reference":
+		endS, endE = inl.scan.searchSubstitutionEnd(s, matchend)
+	}
+	if endS >= 0 {
+		text := s[matchend:endS]
+		if tag == "literal" {
 			text = unescape(text, true)
 		}
-		textend := matchend + endmatch.End(1)
-		rawsource := unescape(s[matchstart:textend], true)
+		rawsource := unescape(s[matchstart:endE], true)
 		node := newTextElem(tag, rawsource, text)
-		return s[:matchstart], []*Node{node}, s[textend:], nil, endmatch.Group(1)
+		return s[:matchstart], []*Node{node}, s[endE:], nil, s[endS:endE]
 	}
-	name := tag
-	if tag == "substitution_reference" || tag == "target" {
-		name = tag
-	}
-	msg := inl.reporter.warning(fmt.Sprintf("Inline %s start-string without end-string.", name), nil, atLine(lineno))
+	msg := inl.reporter.warning("Inline "+tag+" start-string without end-string.", nil, atLine(lineno))
 	text := unescape(s[matchstart:matchend], true)
 	prb := inl.problematic(text, text, msg)
 	return s[:matchstart], []*Node{prb}, s[matchend:], []*Node{msg}, ""
@@ -310,24 +166,21 @@ func (inl *inliner) problematic(text, rawsource string, message *Node) *Node {
 	return problematic
 }
 
-func (inl *inliner) interpretedOrPhraseRef(match *pyMatch, lineno int) (string, []*Node, string, []*Node) {
-	endPattern := inl.patterns.interpretedOrPhraseRef
-	s := match.s
-	matchstart := match.StartNamed("backquote")
-	matchend := match.EndNamed("backquote")
-	rolestart := match.StartNamed("role")
-	role := match.Named("role")
+func (inl *inliner) interpretedOrPhraseRef(s string, match initialMatch, lineno int) (string, []*Node, string, []*Node) {
+	matchstart, matchend := match.markS, match.markE
+	rolestart := match.roleS
+	role := s[match.roleS:match.roleE]
 	position := ""
 	if role != "" {
 		role = role[1 : len(role)-1]
 		position = "prefix"
-	} else if inl.quotedStart(match) {
+	} else if inl.quotedStart(s, match) {
 		return s[:matchend], nil, s[matchend:], nil
 	}
-	endmatch := endPattern.Search(s[matchend:])
-	if endmatch != nil && endmatch.Start(1) > 0 {
-		textend := matchend + endmatch.End(0)
-		if endmatch.Named("role") != "" {
+	endmatch, ok := inl.scan.searchInterpretedEnd(s, matchend)
+	if ok {
+		textend := endmatch.end
+		if endmatch.roleE > endmatch.roleS {
 			if role != "" {
 				msg := inl.reporter.warning("Multiple roles in interpreted text (both "+
 					"prefix and suffix present; only one allowed).", nil, atLine(lineno))
@@ -335,11 +188,14 @@ func (inl *inliner) interpretedOrPhraseRef(match *pyMatch, lineno int) (string, 
 				prb := inl.problematic(text, text, msg)
 				return s[:rolestart], []*Node{prb}, s[textend:], []*Node{msg}
 			}
-			sfx := endmatch.Named("suffix")
+			// Docutils takes the role name from the "suffix" group
+			// (role plus reference suffix) without its first and last
+			// character
+			sfx := s[endmatch.roleS:textend]
 			role = sfx[1 : len(sfx)-1]
 			position = "suffix"
 		}
-		escaped := endmatch.s[:endmatch.Start(1)]
+		escaped := s[matchend:endmatch.start]
 		rawsource := unescape(s[matchstart:textend], true)
 		if strings.HasSuffix(rawsource, "_") {
 			if role != "" {
@@ -363,26 +219,26 @@ func (inl *inliner) interpretedOrPhraseRef(match *pyMatch, lineno int) (string, 
 }
 
 func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string, []*Node, string, []*Node) {
-	match := inl.patterns.embeddedLink.Search(escaped)
 	var text, unescaped, rawtext, alias, aliastype string
 	var target *Node
-	if match != nil {
-		text = escaped[:match.Start(0)]
+	if mstart, g2s, g2e, ok := searchEmbeddedLink(escaped); ok {
+		group1 := escaped[mstart : g2e+1]
+		text = escaped[:mstart]
 		unescaped = unescape(text, false)
 		rawtext = unescape(text, true)
-		aliastext := match.Group(2)
+		aliastext := escaped[g2s:g2e]
 		rawaliastext := unescape(aliastext, true)
 		underscoreEscaped := strings.HasSuffix(rawaliastext, `\_`)
-		if strings.HasSuffix(aliastext, "_") && !(underscoreEscaped || inl.patterns.uri.Match(aliastext) != nil) {
+		if strings.HasSuffix(aliastext, "_") && !(underscoreEscaped || inl.scan.matchURI(aliastext)) {
 			aliastype = "name"
 			alias = fullyNormalizeName(unescape(aliastext[:len(aliastext)-1], false))
-			target = newTextElem("target", match.Group(1), "")
+			target = newTextElem("target", group1, "")
 			target.setAttr("refname", alias)
 			target.indirectRefName = whitespaceNormalizeName(unescape(aliastext[:len(aliastext)-1], false))
 			target.hasIndirectName = true
 		} else {
 			aliastype = "uri"
-			aliasParts := splitEscapedWhitespace(match.Group(2))
+			aliasParts := splitEscapedWhitespace(aliastext)
 			for i, part := range aliasParts {
 				aliasParts[i] = strings.Join(pySplit(part), "")
 			}
@@ -391,7 +247,7 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 			if strings.HasSuffix(alias, `\_`) {
 				alias = alias[:len(alias)-2] + "_"
 			}
-			target = newTextElem("target", match.Group(1), "")
+			target = newTextElem("target", group1, "")
 			target.setAttr("refuri", alias)
 			target.referenced = true
 		}
@@ -442,7 +298,7 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 }
 
 func (inl *inliner) adjustURI(uri string) string {
-	if inl.patterns.email.Match(uri) != nil {
+	if isEmail(uri) {
 		return "mailto:" + uri
 	}
 	return uri
@@ -458,8 +314,8 @@ func (inl *inliner) interpreted(rawsource, text, role string, lineno int) ([]*No
 	return []*Node{inl.problematic(rawsource, rawsource, msg)}, append(messages, msg)
 }
 
-func (inl *inliner) inlineInternalTarget(match *pyMatch, lineno int) (string, []*Node, string, []*Node) {
-	before, inlines, remaining, sysmessages, _ := inl.inlineObj(match, lineno, inl.patterns.target, "target", false)
+func (inl *inliner) inlineInternalTarget(s string, match initialMatch, lineno int) (string, []*Node, string, []*Node) {
+	before, inlines, remaining, sysmessages, _ := inl.inlineObj(s, match, lineno, "target")
 	if len(inlines) > 0 && inlines[0].Tag == "target" {
 		target := inlines[0]
 		name := fullyNormalizeName(target.astext())
@@ -469,9 +325,8 @@ func (inl *inliner) inlineInternalTarget(match *pyMatch, lineno int) (string, []
 	return before, inlines, remaining, sysmessages
 }
 
-func (inl *inliner) substitutionReference(match *pyMatch, lineno int) (string, []*Node, string, []*Node) {
-	before, inlines, remaining, sysmessages, endstring := inl.inlineObj(match, lineno,
-		inl.patterns.substitutionRef, "substitution_reference", false)
+func (inl *inliner) substitutionReference(s string, match initialMatch, lineno int) (string, []*Node, string, []*Node) {
+	before, inlines, remaining, sysmessages, endstring := inl.inlineObj(s, match, lineno, "substitution_reference")
 	if len(inlines) == 1 {
 		subrefNode := inlines[0]
 		if subrefNode.Tag == "substitution_reference" {
@@ -493,14 +348,13 @@ func (inl *inliner) substitutionReference(match *pyMatch, lineno int) (string, [
 	return before, inlines, remaining, sysmessages
 }
 
-func (inl *inliner) footnoteReference(match *pyMatch, lineno int) (string, []*Node, string, []*Node) {
-	label := match.Named("footnotelabel")
+func (inl *inliner) footnoteReference(s string, match initialMatch, lineno int) (string, []*Node, string, []*Node) {
+	label := s[match.nameS:match.nameE]
 	refname := fullyNormalizeName(label)
-	s := match.s
-	before := s[:match.StartNamed("whole")]
-	remaining := s[match.EndNamed("whole"):]
+	before := s[:match.start]
+	remaining := s[match.end:]
 	var refnode *Node
-	if match.Named("citationlabel") != "" {
+	if match.citation {
 		refnode = newTextElem("citation_reference", "["+label+"]_", "")
 		refnode.setAttr("refname", refname)
 		refnode.append(newText(label))
@@ -529,10 +383,10 @@ func (inl *inliner) footnoteReference(match *pyMatch, lineno int) (string, []*No
 	return before, []*Node{refnode}, remaining, nil
 }
 
-func (inl *inliner) reference(match *pyMatch, lineno int, anonymous bool) (string, []*Node, string, []*Node) {
-	referencename := match.Named("refname")
+func (inl *inliner) reference(s string, match initialMatch, lineno int, anonymous bool) (string, []*Node, string, []*Node) {
+	referencename := s[match.nameS:match.nameE]
 	refname := fullyNormalizeName(referencename)
-	referencenode := newTextElem("reference", referencename+match.Named("refend"), referencename)
+	referencenode := newTextElem("reference", s[match.nameS:match.end], referencename)
 	referencenode.setAttr("name", whitespaceNormalizeName(referencename))
 	referencenode.Children[0].Rawsource = referencename
 	if anonymous {
@@ -541,132 +395,70 @@ func (inl *inliner) reference(match *pyMatch, lineno int, anonymous bool) (strin
 		referencenode.setAttr("refname", refname)
 		inl.document.noteRefname(referencenode)
 	}
-	s := match.s
-	return s[:match.StartNamed("whole")], []*Node{referencenode}, s[match.EndNamed("whole"):], nil
+	return s[:match.start], []*Node{referencenode}, s[match.end:], nil
 }
 
-func (inl *inliner) standaloneURI(match *pyMatch, lineno int) ([]*Node, bool) {
-	scheme := match.Named("scheme")
-	if scheme == "" || uriSchemes[strings.ToLower(scheme)] {
-		addscheme := ""
-		if match.Named("email") != "" {
-			addscheme = "mailto:"
-		}
-		text := match.Named("whole")
-		refuri := addscheme + unescape(text, false)
-		reference := newTextElem("reference", unescape(text, true), text)
-		reference.setAttr("refuri", refuri)
-		return []*Node{reference}, true
+// The implicit-markup functions search text for one pattern.  found is
+// false if the pattern does not occur; ok is false for a match that is
+// rejected (Docutils: MarkupMismatch).
+
+func (inl *inliner) standaloneURI(text string, lineno int) (string, []*Node, string, bool, bool) {
+	m, found := inl.scan.searchURI(text)
+	if !found {
+		return "", nil, "", false, false
 	}
-	return nil, false
+	scheme := text[m.start:m.schemeEnd]
+	if scheme != "" && !uriSchemes[strings.ToLower(scheme)] {
+		return "", nil, "", true, false
+	}
+	addscheme := ""
+	if m.email {
+		addscheme = "mailto:"
+	}
+	whole := text[m.start:m.end]
+	reference := newTextElem("reference", unescape(whole, true), whole)
+	reference.setAttr("refuri", addscheme+unescape(whole, false))
+	return text[:m.start], []*Node{reference}, text[m.end:], true, true
 }
 
-func (inl *inliner) pepReference(match *pyMatch, lineno int) ([]*Node, bool) {
-	text := match.Group(0)
-	var pepnum int
-	if strings.HasPrefix(text, "pep-") {
-		pepnum = atoi(unescape(match.Named("pepnum1"), false))
-	} else if strings.HasPrefix(text, "PEP") {
-		pepnum = atoi(unescape(match.Named("pepnum2"), false))
-	} else {
-		return nil, false
+func (inl *inliner) pepReference(text string, lineno int) (string, []*Node, string, bool, bool) {
+	start, end, num, found := inl.scan.searchPEP(text)
+	if !found {
+		return "", nil, "", false, false
 	}
+	whole := text[start:end]
+	pepnum := atoi(unescape(num, false))
 	st := inl.document.settings
-	ref := st.pepBaseURL + fmt.Sprintf(pyFmtToGo(st.pepFileURLTemplate), pepnum)
-	n := newTextElem("reference", unescape(text, true), text)
-	n.setAttr("refuri", ref)
-	return []*Node{n}, true
+	n := newTextElem("reference", unescape(whole, true), whole)
+	n.setAttr("refuri", st.pepBaseURL+fmt.Sprintf(st.pepFileURLTemplate, pepnum))
+	return text[:start], []*Node{n}, text[end:], true, true
 }
 
-func pyFmtToGo(f string) string { return f }
-
-func (inl *inliner) rfcReference(match *pyMatch, lineno int) ([]*Node, bool) {
-	text := match.Group(0)
-	if !strings.HasPrefix(text, "RFC") {
-		return nil, false
+func (inl *inliner) rfcReference(text string, lineno int) (string, []*Node, string, bool, bool) {
+	start, end, num, found := inl.scan.searchRFC(text)
+	if !found {
+		return "", nil, "", false, false
 	}
-	rfcnum := atoi(unescape(match.Named("rfcnum"), false))
-	ref := inl.document.settings.rfcBaseURL + fmt.Sprintf("rfc%d.html", rfcnum)
-	n := newTextElem("reference", unescape(text, true), text)
-	n.setAttr("refuri", ref)
-	return []*Node{n}, true
+	whole := text[start:end]
+	rfcnum := atoi(unescape(num, false))
+	n := newTextElem("reference", unescape(whole, true), whole)
+	n.setAttr("refuri", inl.document.settings.rfcBaseURL+fmt.Sprintf("rfc%d.html", rfcnum))
+	return text[:start], []*Node{n}, text[end:], true, true
 }
 
-func (inl *inliner) implicitInline(text string, lineno int) []*Node {
+// implicitInline mirrors Inliner.implicit_inline, appending to out.
+func (inl *inliner) implicitInline(out []*Node, text string, lineno int) []*Node {
 	if text == "" {
-		return nil
+		return out
 	}
-	for _, e := range inl.implicitDispatch {
-		match := e.pattern.Search(text)
-		if match != nil {
-			before := inl.implicitInline(text[:match.Start(0)], lineno)
-			nodes, ok := e.method(inl, match, lineno)
-			if !ok {
-				continue
-			}
-			out := append(before, nodes...)
-			return append(out, inl.implicitInline(text[match.End(0):], lineno)...)
+	for _, f := range inl.implicitDispatch {
+		before, nodes, after, found, ok := f(inl, text, lineno)
+		if !found || !ok {
+			continue
 		}
+		out = inl.implicitInline(out, before, lineno)
+		out = append(out, nodes...)
+		return inl.implicitInline(out, after, lineno)
 	}
-	return []*Node{newText(text)}
-}
-
-// initialPrefilter cheaply rejects positions where the "initial" inline
-// pattern (word-level markup) cannot match: it must start with a markup
-// character, or with a word that is not preceded by a word character and
-// that is followed by "_" before the next whitespace (a reference name).
-func initialPrefilter(s string, pos int) bool {
-	if pos >= len(s) {
-		return false
-	}
-	c := s[pos]
-	switch c {
-	case '*', '`', '_', '|', '[', ':':
-		return true
-	}
-	if c < 0x80 && !(c >= '0' && c <= '9' || c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
-		return false
-	}
-	if pos > 0 {
-		r, _ := utf8.DecodeLastRuneInString(s[:pos])
-		if isPyWord(r) {
-			return false
-		}
-	}
-	for i := pos; i < len(s); i++ {
-		switch s[i] {
-		case '_':
-			return true
-		case ' ', '\n', '\t':
-			return false
-		}
-	}
-	return false
-}
-
-// uriPrefilter rejects positions where neither a URI scheme nor an e-mail
-// address can start.
-func uriPrefilter(s string, pos int) bool {
-	if pos >= len(s) {
-		return false
-	}
-	c := s[pos]
-	if c >= 0x80 || c == ' ' || c == '\n' {
-		return false
-	}
-	if pos > 0 {
-		p := s[pos-1]
-		if p >= '0' && p <= '9' || p >= 'a' && p <= 'z' || p >= 'A' && p <= 'Z' {
-			return false
-		}
-	}
-	for i := pos; i < len(s); i++ {
-		switch s[i] {
-		case ':', '@':
-			return true
-		case ' ', '\n':
-			return false
-		}
-	}
-	return false
+	return append(out, newText(text))
 }

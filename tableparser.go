@@ -24,19 +24,13 @@ type tableData struct {
 	bodyrows  [][]*tableCell
 }
 
-var (
-	gridHeadBodySepPat   = pyCompile(`\+=[=+]+=\+ *$`)
-	simpleHeadBodySepPat = pyCompile(`=[ =]*$`)
-	simpleSpanPat        = pyCompile(`-[ -]*$`)
-)
-
 // findHeadBodySep mirrors TableParser.find_head_body_sep; returns -1 if none.
-func findHeadBodySep(block *stringList, pat *pyRegexp) (int, *tableMarkupError) {
+func findHeadBodySep(block *stringList, isSep func(string) bool) (int, *tableMarkupError) {
 	sep := -1
 	i := 0
 	for i = 0; i < len(block.data); i++ {
 		line := block.data[i]
-		if pat.Match(line) != nil {
+		if isSep(line) {
 			if sep > 0 {
 				return 0, &tableMarkupError{fmt.Sprintf("Multiple head/body row separators "+
 					"(table lines %d and %d); only one allowed.", sep+1, i+1), i}
@@ -81,7 +75,7 @@ func parseGridTable(blk *stringList) (*tableData, *tableMarkupError) {
 	}
 	p.rowseps = map[int]bool{0: true}
 	p.colseps = map[int]bool{0: true}
-	sep, err := findHeadBodySep(p.block, gridHeadBodySepPat)
+	sep, err := findHeadBodySep(p.block, func(l string) bool { _, ok := scanGridHeadBodySep(l); return ok })
 	if err != nil {
 		return nil, err
 	}
@@ -321,7 +315,7 @@ func parseSimpleTable(blk *stringList) (*tableData, *tableMarkupError) {
 	n := len(p.block.data)
 	p.block.data[0] = strings.ReplaceAll(p.block.data[0], "=", "-")
 	p.block.data[n-1] = strings.ReplaceAll(p.block.data[n-1], "=", "-")
-	sep, err := findHeadBodySep(p.block, simpleHeadBodySepPat)
+	sep, err := findHeadBodySep(p.block, isSimpleTableBorder)
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +354,7 @@ func (p *simpleParser) parseTable() *tableMarkupError {
 	textFound := false
 	for offset < len(p.block.data) {
 		line := p.block.data[offset]
-		if simpleSpanPat.Match(line) != nil {
+		if isSimpleSpanLine(line) {
 			if err := p.parseRow(p.block.slice(start, offset), start, pyRstrip(line), offset, true); err != nil {
 				return err
 			}

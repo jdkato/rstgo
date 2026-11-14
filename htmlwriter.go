@@ -568,29 +568,6 @@ func (t *htmlTranslator) departDocinfoItem() {
 	}
 }
 
-var (
-	wordsAndSpaces  = pyCompile(`[^ \n]+| +|\n`)
-	inWordWrapPoint = pyCompile(`.+\W\W.+|[-?].+`)
-)
-
-func findAll(re *pyRegexp, s string) []string {
-	var out []string
-	pos := 0
-	for pos <= len(s) {
-		m := re.SearchFrom(s, pos)
-		if m == nil {
-			break
-		}
-		out = append(out, m.Group(0))
-		if m.End(0) == m.Start(0) {
-			pos = m.End(0) + 1
-		} else {
-			pos = m.End(0)
-		}
-	}
-	return out
-}
-
 func (t *htmlTranslator) sectionTitleTags(node *Node) (string, string) {
 	hLevel := t.sectionLevel + t.initialHeader - 1
 	lvl := hLevel

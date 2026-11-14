@@ -10,8 +10,6 @@ var attributionFormats = map[string][2]string{
 	"dash": {"—", ""}, "parentheses": {"(", ")"}, "parens": {"(", ")"}, "none": {"", ""},
 }
 
-var commentDashRe = pyCompile(`-(?=-)`)
-
 var html5InlineTags = []string{"code", "kbd", "dfn", "samp", "var", "bdi", "del",
 	"ins", "mark", "small", "b", "i", "q", "s", "u"}
 
@@ -129,7 +127,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		t.colspecs = append(t.colspecs, node)
 		t.stubs[node.Parent] = append(t.stubs[node.Parent], node.truthy("stub"))
 	case "comment":
-		t.out("<!-- " + commentDashRe.ReplaceAll(node.astext(), "- ") + " -->\n")
+		t.out("<!-- " + spaceDashes(node.astext()) + " -->\n")
 		return actSkipNode
 	case "compound":
 		t.out(t.starttag(node, "div", "\n", A{"class": "compound"}))
@@ -1304,9 +1302,9 @@ func (t *htmlTranslator) visitLiteral(node *Node) visitAction {
 		}
 		t.out(t.starttag(node, "tt", "", A{"class": "docutils literal"}))
 		text := node.astext()
-		for _, token := range findAll(wordsAndSpaces, text) {
+		for _, token := range wordsAndSpacesTokens(text) {
 			if pyStrip(token) != "" {
-				if inWordWrapPoint.Search(token) != nil {
+				if hasWordWrapPoint(token) {
 					t.out(`<span class="pre">` + t.encode(token) + `</span>`)
 				} else {
 					t.out(t.encode(token))
@@ -1338,8 +1336,8 @@ func (t *htmlTranslator) visitLiteral(node *Node) visitAction {
 	if node.Parent.Tag != "literal_block" {
 		text = strings.ReplaceAll(text, "\n", " ")
 	}
-	for _, token := range findAll(wordsAndSpaces, text) {
-		if pyStrip(token) != "" && inWordWrapPoint.Search(token) != nil {
+	for _, token := range wordsAndSpacesTokens(text) {
+		if pyStrip(token) != "" && hasWordWrapPoint(token) {
 			t.out(`<span class="pre">` + t.encode(token) + `</span>`)
 		} else {
 			t.out(t.encode(token))
@@ -1546,11 +1544,6 @@ func (t *htmlTranslator) blockImageSuffix(node *Node) string {
 	return ""
 }
 
-var (
-	numUnitRe = pyCompile(`([0-9.]+)(\S*)$`)
-	numOnlyRe = pyCompile(`^[0-9.]+$`)
-)
-
 var objectImageTypes = map[string]string{".svg": "image/svg+xml",
 	".swf": "application/x-shockwave-flash", ".mp4": "video/mp4",
 	".webm": "video/webm", ".ogg": "video/ogg"}
@@ -1595,9 +1588,9 @@ func (t *htmlTranslator) visitImage4(node *Node) {
 		}
 		for _, name := range []string{"width", "height"} {
 			if v, ok := atts[name].(string); ok {
-				if m := numUnitRe.Match(v); m != nil {
-					f, _ := parseFloat(m.Group(1))
-					atts[name] = pyFloatStr(f*(float64(scale)/100)) + m.Group(2)
+				if num, unit, ok := scanNumUnit(v); ok {
+					f, _ := parseFloat(num)
+					atts[name] = pyFloatStr(f*(float64(scale)/100)) + unit
 				}
 			}
 		}
@@ -1605,7 +1598,7 @@ func (t *htmlTranslator) visitImage4(node *Node) {
 	var style []string
 	for _, name := range []string{"width", "height"} {
 		if v, ok := atts[name].(string); ok {
-			if numOnlyRe.Match(v) != nil {
+			if isNumOnly(v) {
 				v += "px"
 			}
 			style = append(style, name+": "+v+";")

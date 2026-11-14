@@ -12,11 +12,11 @@ type stateCorrection struct {
 }
 type markupError struct{ msg string }
 
-type transFn func(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string)
+type transFn func(s *rstState, m lineMatch, context []string, nextState string) ([]string, string)
 
 type transition struct {
 	name      string
-	pattern   *pyRegexp
+	scan      lineScanner
 	method    transFn
 	nextState string
 }
@@ -230,7 +230,7 @@ func (sm *stateMachine) checkLine(context []string, st *rstState, transitions []
 		if t == nil {
 			continue
 		}
-		if m := t.pattern.Match(sm.line); m != nil {
+		if m, ok := t.scan(sm.line); ok {
 			return t.method(st, m, context, t.nextState)
 		}
 	}

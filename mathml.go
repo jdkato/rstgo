@@ -340,17 +340,9 @@ var mmlDelimiterSizes = []string{"", "1.2em", "1.623em", "2.047em", "2.470em"}
 var mmlBigDelimiters = map[string]int{"left": 0, "right": 0, "bigl": 1, "bigr": 1,
 	"Bigl": 2, "Bigr": 2, "biggl": 3, "biggr": 3, "Biggl": 4, "Biggr": 4}
 
-var (
-	texCmdnameRe  = pyCompile(`([a-zA-Z]+)[ \n]*(.*)`, reDotAll)
-	texNumberRe   = pyCompile(`([0-9.,]*[0-9]+)(.*)`, reDotAll)
-	texCmdTokenRe = pyCompile(`(\\[a-zA-Z]+)\s*`, reDotAll)
-	texOptargRe   = pyCompile(`\s*\[((\\]|[^\[\]]|\\])*)\](.*$)`, reDotAll)
-	texTextEdgeRe = pyCompile(`(^[ \n]|[ \n]$)`)
-)
-
 func texCmdname(s string) (string, string) {
-	if m := texCmdnameRe.Match(s); m != nil {
-		return m.Group(1), m.Group(2)
+	if name, rest, ok := texCmdnameSplit(s); ok {
+		return name, rest
 	}
 	if s == "" {
 		return "", ""
@@ -360,15 +352,15 @@ func texCmdname(s string) (string, string) {
 }
 
 func texNumber(s string) (string, string) {
-	if m := texNumberRe.Match(s); m != nil {
-		return m.Group(1), m.Group(2)
+	if num, rest, ok := texNumberSplit(s); ok {
+		return num, rest
 	}
 	return "", s
 }
 
 func texToken(s string) (string, string) {
-	if m := texCmdTokenRe.Match(s); m != nil {
-		return m.Group(1), s[m.End(0):]
+	if cmdEnd, end, ok := texCmdTokenEnd(s); ok {
+		return s[:cmdEnd], s[end:]
 	}
 	if strings.HasPrefix(s, `\`) && len(s) > 1 {
 		_, w := utf8.DecodeRuneInString(s[1:])
@@ -418,14 +410,14 @@ func texTokenOrGroup(s string) (string, string) {
 }
 
 func texOptarg(s string) (string, string) {
-	m := texOptargRe.Match(s)
-	if m == nil {
+	optarg, rest, ok := texOptargSplit(s)
+	if !ok {
 		if !strings.HasPrefix(s, "[") {
 			return "", s
 		}
 		panic(&mathError{fmt.Sprintf(`Could not extract optional argument from "%s"!`, s)})
 	}
-	return m.Group(1), m.Group(3)
+	return optarg, rest
 }
 
 func isAlphaStr(s string) bool {
@@ -660,7 +652,7 @@ func mmlHandleCmd(name string, node *mmlElem, s string) (*mmlElem, string) {
 		arg, s = texTokenOrGroup(s)
 		for i, part := range strings.Split(arg, "$") {
 			if i%2 == 0 {
-				part = texTextEdgeRe.ReplaceAll(part, " ")
+				part = texTextEdges(part)
 				node = node.append(mmlToken("mtext", part))
 			} else {
 				parseLatexMath(node, part)

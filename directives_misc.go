@@ -404,8 +404,6 @@ func runReplace(d *directive) []*Node {
 	return messages
 }
 
-var unicodeCommentPattern = pyCompile(`( |\n|^)\.\. `)
-
 func runUnicode(d *directive) []*Node {
 	if d.state.kind != "SubstitutionDef" {
 		d.fail(3, fmt.Sprintf(`Invalid context: the "%s" directive can only be used within a substitution definition.`, d.name))
@@ -421,7 +419,7 @@ func runUnicode(d *directive) []*Node {
 	if d.hasOpt("rtrim") {
 		subdef.Attrs["rtrim"] = 1
 	}
-	codes := pySplit(unicodeCommentPattern.Split(d.arguments[0])[0])
+	codes := pySplit(beforeUnicodeComment(d.arguments[0]))
 	var out []*Node
 	for _, code := range codes {
 		decoded, err := unicodeCode(code)
@@ -456,19 +454,15 @@ func runClass(d *directive) []*Node {
 	return nodeList
 }
 
-var roleArgumentPattern = pyCompile(`(` + simplename + `)\s*(\(\s*(` + simplename + `)\s*\)\s*)?$`)
-
 func runRole(d *directive) []*Node {
 	if d.contentOffset > d.lineno || len(d.content.data) == 0 {
 		d.fail(3, fmt.Sprintf(`"%s" directive requires arguments on the first line.`, d.name))
 	}
 	args := d.content.data[0]
-	match := roleArgumentPattern.Match(args)
-	if match == nil {
+	newRoleName, baseRoleName, ok := scanRoleArguments(args)
+	if !ok {
 		d.fail(3, fmt.Sprintf(`"%s" directive arguments not valid role names: "%s".`, d.name, args))
 	}
-	newRoleName := match.Group(1)
-	baseRoleName := match.Group(3)
 	var messages []*Node
 	var baseRole *role
 	if baseRoleName != "" {
@@ -537,13 +531,13 @@ func runDefaultRole(d *directive) []*Node {
 
 // ---- meta
 
-func metaFieldMarker(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func metaFieldMarker(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	node := s.parsemeta(m)
 	s.parent().append(node)
 	return []string{}, nextState
 }
 
-func (s *rstState) parsemeta(m *pyMatch) *Node {
+func (s *rstState) parsemeta(m lineMatch) *Node {
 	name := parseFieldMarker(m)
 	name = unescape(escape2null(name), false)
 	indented, _, _, _ := s.sm.getFirstKnownIndented(m.End(0), false, true, true)

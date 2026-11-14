@@ -204,15 +204,13 @@ func (s *rstState) newSubsection(title string, lineno int, messages []*Node) {
 	s.setParent(sectionNode)
 }
 
-var paragraphLiteralRe = pyCompile(`(?<!\\)(\\\\)*::$`)
-
 func (s *rstState) paragraph(lines []string, lineno int) ([]*Node, bool) {
 	data := pyRstrip(strings.Join(lines, "\n"))
 	var text string
 	literalnext := false
 	// data has no trailing whitespace, so the pattern can only match a
 	// final "::"; checking that first avoids scanning every paragraph
-	if strings.HasSuffix(data, "::") && paragraphLiteralRe.Search(data) != nil {
+	if strings.HasSuffix(data, "::") && endsWithLiteralMarker(data) {
 		if len(data) == 2 {
 			return nil, true
 		} else if c := data[len(data)-3]; c == ' ' || c == '\n' {
@@ -244,7 +242,7 @@ func (s *rstState) eof(context []string) {
 	switch s.kind {
 	case "Text":
 		if len(context) > 0 {
-			textBlank(s, nil, context, "")
+			textBlank(s, lineMatch{}, context, "")
 		}
 	case "Definition":
 		s.sm.previousLine(2)
@@ -256,10 +254,6 @@ func (s *rstState) eof(context []string) {
 }
 
 // ---------------------------------------------------------------- patterns
-
-const simplename = `(?:(?!_)\w)+(?:[-._+:](?:(?!_)\w)+)*`
-
-var enumFormats = []string{"parens", "rparen", "period"}
 
 type enumFormatInfo struct {
 	prefix, suffix string
@@ -274,82 +268,42 @@ var enumFormatinfo = map[string]enumFormatInfo{
 
 var enumSequences = []string{"arabic", "loweralpha", "upperalpha", "lowerroman", "upperroman"}
 
-var enumSequencepats = map[string]string{
-	"arabic":     "[0-9]+",
-	"loweralpha": "[a-z]",
-	"upperalpha": "[A-Z]",
-	"lowerroman": "[ivxlcdm]+",
-	"upperroman": "[IVXLCDM]+",
-}
-
-var enumSequenceRegexps = func() map[string]*pyRegexp {
-	m := map[string]*pyRegexp{}
-	for k, v := range enumSequencepats {
-		m[k] = pyCompile(v + "$")
-	}
-	return m
-}()
-
-var (
-	gridTableTopPat      = pyCompile(`\+-[-+]+-\+ *$`)
-	simpleTableTopPat    = pyCompile(`=+( +=+)+ *$`)
-	simpleTableBorderPat = pyCompile(`=+[ =]*$`)
-)
-
-const (
-	patNonalphanum7bit = "[!-/:-@[-`{-~]"
-	patAlpha           = `[a-zA-Z]`
-	patAlphanum        = `[a-zA-Z0-9]`
-	patAlphanumplus    = `[a-zA-Z0-9_-]`
-	patEnum            = `([0-9]+|[a-z]|[A-Z]|[ivxlcdm]+|[IVXLCDM]+|#)`
-	patOptname         = patAlphanum + patAlphanumplus + `*`
-	patOptarg          = `(` + patAlpha + patAlphanumplus + `*|<[^<>]+>)`
-	patShortopt        = `(-|\+)` + patAlphanum + `( ?` + patOptarg + `)?`
-	patLongopt         = `(--|/)` + patOptname + `([ =]` + patOptarg + `)?`
-	patOption          = `(` + patShortopt + `|` + patLongopt + `)`
-	patParens          = `(?P<parens>\(` + patEnum + `\))`
-	patRparen          = `(?P<rparen>` + patEnum + `\))`
-	patPeriod          = `(?P<period>` + patEnum + `\.)`
-	patFieldMarker     = ":(?![: ])([^:\\\\]|\\\\.|:(?!([ `]|$)))*(?<! ):( +|$)"
-	patLine            = `(` + patNonalphanum7bit + `)\1* *$`
-)
-
-var bodyPatterns = map[string]*pyRegexp{
-	"blank":            pyCompile(` *$`),
-	"indent":           pyCompile(` +`),
-	"bullet":           pyCompile("[-+*•‣⁃]( +|$)"),
-	"enumerator":       pyCompile(`(` + patParens + `|` + patRparen + `|` + patPeriod + `)( +|$)`),
-	"field_marker":     pyCompile(patFieldMarker),
-	"option_marker":    pyCompile(patOption + `(, ` + patOption + `)*(  +| ?$)`),
-	"doctest":          pyCompile(`>>>( +|$)`),
-	"line_block":       pyCompile(`\|( +|$)`),
-	"grid_table_top":   gridTableTopPat,
-	"simple_table_top": simpleTableTopPat,
-	"explicit_markup":  pyCompile(`\.\.( +|$)`),
-	"anonymous":        pyCompile(`__( +|$)`),
-	"line":             pyCompile(patLine),
-	"text":             pyCompile(``),
-	"underline":        pyCompile(patLine),
+var bodyScanners = map[string]lineScanner{
+	"blank":            scanBlank,
+	"indent":           scanIndent,
+	"bullet":           scanBullet,
+	"enumerator":       scanEnumerator,
+	"field_marker":     scanFieldMarker,
+	"option_marker":    scanOptionMarker,
+	"doctest":          scanDoctest,
+	"line_block":       scanLineBlock,
+	"grid_table_top":   scanGridTableTop,
+	"simple_table_top": scanSimpleTableTop,
+	"explicit_markup":  scanExplicitMarkup,
+	"anonymous":        scanAnonymous,
+	"line":             scanLine,
+	"text":             scanText,
+	"underline":        scanLine,
 	// SubstitutionDef
-	"embedded_directive": pyCompile(`(` + simplename + `)::( +|$)`),
+	"embedded_directive": scanEmbeddedDirective,
 	// QuotedLiteralBlock
-	"initial_quoted": pyCompile(`(` + patNonalphanum7bit + `)`),
+	"initial_quoted": scanInitialQuoted,
 }
 
 var bodyTransitionNames = []string{"bullet", "enumerator", "field_marker",
 	"option_marker", "doctest", "line_block", "grid_table_top",
 	"simple_table_top", "explicit_markup", "anonymous", "line", "text"}
 
-func invalidInput(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func invalidInput(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	s.sm.previousLine(1)
 	panic(smEOF{})
 }
 
-func specializedTextInvalid(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func specializedTextInvalid(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	panic(smEOF{})
 }
 
-func nop(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func nop(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	return context, nextState
 }
 
@@ -373,7 +327,7 @@ func newRSTState(kind string, sm *stateMachine) *rstState {
 			next = kind
 		}
 		s.order = append(s.order, name)
-		s.trans[name] = &transition{name, bodyPatterns[name], method, next}
+		s.trans[name] = &transition{name, bodyScanners[name], method, next}
 	}
 	specialized := func(overrides map[string]transFn) {
 		add("blank", nop, "")
@@ -442,7 +396,7 @@ func newRSTState(kind string, sm *stateMachine) *rstState {
 
 // ---------------------------------------------------------------- Body
 
-func bodyIndent(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyIndent(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	indented, _, lineOffset, blankFinish := s.sm.getIndented(false, true)
 	elements := s.blockQuote(indented, lineOffset)
 	s.parent().extend(elements)
@@ -475,8 +429,6 @@ func (s *rstState) blockQuote(indented *stringList, lineOffset int) []*Node {
 	return elements
 }
 
-var attributionPattern = pyCompile("(---?(?!-)|—) *(?=[^ \\n])")
-
 func (s *rstState) splitAttribution(indented *stringList, lineOffset int) (*stringList, *stringList, int, *stringList, int) {
 	blank := -1
 	nonblankSeen := false
@@ -484,11 +436,11 @@ func (s *rstState) splitAttribution(indented *stringList, lineOffset int) (*stri
 		line := pyRstrip(indented.data[i])
 		if line != "" {
 			if nonblankSeen && blank == i-1 {
-				if match := attributionPattern.Match(line); match != nil {
+				if matchEnd := scanAttribution(line); matchEnd >= 0 {
 					attributionEnd, indent := s.checkAttribution(indented, i)
 					if attributionEnd > 0 {
 						aLines := indented.slice(i, attributionEnd)
-						aLines.trimLeft(match.End(0), 0, 1)
+						aLines.trimLeft(matchEnd, 0, 1)
 						aLines.trimLeft(indent, 1, len(aLines.data))
 						return indented.slice(0, i), aLines, i, indented.from(attributionEnd), lineOffset + attributionEnd
 					}
@@ -542,7 +494,7 @@ func (s *rstState) parseAttribution(indented *stringList, lineOffset int) (*Node
 	return node, messages
 }
 
-func bodyBullet(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyBullet(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	ul := newElem("bullet_list", "")
 	ul.setSrcLine(s.sm.curSrcLine())
 	s.parent().append(ul)
@@ -578,7 +530,7 @@ func (s *rstState) listItem(indent int) (*Node, bool) {
 	return listitem, blankFinish
 }
 
-func bodyEnumerator(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyEnumerator(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	format, sequence, text, ordinal, okOrd := s.parseEnumerator(m, "")
 	if !s.isEnumeratedListItem(ordinal, okOrd, sequence, format) {
 		panic(&transitionCorrection{"text"})
@@ -612,20 +564,15 @@ func bodyEnumerator(s *rstState, m *pyMatch, context []string, nextState string)
 	return []string{}, nextState
 }
 
-func (s *rstState) parseEnumerator(m *pyMatch, expectedSequence string) (format, sequence, text string, ordinal int, ok bool) {
-	for _, f := range enumFormats {
-		if m.Named(f) != "" {
-			format = f
-			break
-		}
-	}
-	g := m.Named(format)
+func (s *rstState) parseEnumerator(m lineMatch, expectedSequence string) (format, sequence, text string, ordinal int, ok bool) {
+	format = m.format
+	g := m.Group(1)
 	fi := enumFormatinfo[format]
 	text = g[fi.start : len(g)+fi.end]
 	if text == "#" {
 		sequence = "#"
 	} else if expectedSequence != "" {
-		if re, found := enumSequenceRegexps[expectedSequence]; found && re.Match(text) != nil {
+		if enumSequenceMatches(expectedSequence, text) {
 			sequence = expectedSequence
 		}
 	} else if text == "i" {
@@ -635,7 +582,7 @@ func (s *rstState) parseEnumerator(m *pyMatch, expectedSequence string) (format,
 	}
 	if sequence == "" {
 		for _, seq := range enumSequences {
-			if enumSequenceRegexps[seq].Match(text) != nil {
+			if enumSequenceMatches(seq, text) {
 				sequence = seq
 				break
 			}
@@ -719,7 +666,7 @@ func makeEnumerator(ordinal int, sequence, format string) (string, string, bool)
 	return fi.prefix + enumerator + fi.suffix + " ", fi.prefix + "#" + fi.suffix + " ", true
 }
 
-func bodyFieldMarker(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyFieldMarker(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	fieldList := newElem("field_list", "")
 	s.parent().append(fieldList)
 	field, blankFinish := s.field(m)
@@ -734,7 +681,7 @@ func bodyFieldMarker(s *rstState, m *pyMatch, context []string, nextState string
 	return []string{}, nextState
 }
 
-func (s *rstState) field(m *pyMatch) (*Node, bool) {
+func (s *rstState) field(m lineMatch) (*Node, bool) {
 	name := parseFieldMarker(m)
 	src, hasSrc, srcline, hasLine := s.sm.curSrcLine()
 	lineno := s.sm.absLineNumber()
@@ -751,7 +698,7 @@ func (s *rstState) field(m *pyMatch) (*Node, bool) {
 	return fieldNode, blankFinish
 }
 
-func parseFieldMarker(m *pyMatch) string {
+func parseFieldMarker(m lineMatch) string {
 	field := m.Group(0)[1:]
 	return field[:strings.LastIndex(field, ":")]
 }
@@ -773,7 +720,7 @@ func (s *rstState) parseFieldBody(indented *stringList, offset int, node *Node) 
 	s.nestedParse(indented, offset, node, false)
 }
 
-func bodyOptionMarker(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyOptionMarker(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	optionlist := newElem("option_list", "")
 	optionlist.setSrcLine(s.sm.curSrcLine())
 	listitem, blankFinish, err := s.optionListItem(m)
@@ -800,7 +747,7 @@ func bodyOptionMarker(s *rstState, m *pyMatch, context []string, nextState strin
 	return []string{}, nextState
 }
 
-func (s *rstState) optionListItem(m *pyMatch) (*Node, bool, *markupError) {
+func (s *rstState) optionListItem(m lineMatch) (*Node, bool, *markupError) {
 	offset := s.sm.absLineOffset()
 	options, err := s.parseOptionMarker(m)
 	if err != nil {
@@ -820,11 +767,9 @@ func (s *rstState) optionListItem(m *pyMatch) (*Node, bool, *markupError) {
 	return item, blankFinish, nil
 }
 
-var optionSplitRe = pyCompile(`, (?![^<]*>)`)
-
-func (s *rstState) parseOptionMarker(m *pyMatch) ([]*Node, *markupError) {
+func (s *rstState) parseOptionMarker(m lineMatch) ([]*Node, *markupError) {
 	var optlist []*Node
-	optionstrings := optionSplitRe.Split(pyRstrip(m.Group(0)))
+	optionstrings := splitOptions(pyRstrip(m.Group(0)))
 	for _, optionstring := range optionstrings {
 		tokens := pySplit(optionstring)
 		delimiter := " "
@@ -858,7 +803,7 @@ func (s *rstState) parseOptionMarker(m *pyMatch) ([]*Node, *markupError) {
 	return optlist, nil
 }
 
-func bodyDoctest(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyDoctest(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	line, hasLine := s.document.currentLine, s.document.hasCurrentLine
 	block, _ := s.sm.getTextBlock(false)
 	data := block.join()
@@ -868,7 +813,7 @@ func bodyDoctest(s *rstState, m *pyMatch, context []string, nextState string) ([
 	return []string{}, nextState
 }
 
-func bodyLineBlock(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyLineBlock(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	block := newElem("line_block", "")
 	s.parent().append(block)
 	lineno := s.sm.absLineNumber()
@@ -895,7 +840,7 @@ func bodyLineBlock(s *rstState, m *pyMatch, context []string, nextState string) 
 	return []string{}, nextState
 }
 
-func (s *rstState) lineBlockLine(m *pyMatch, lineno int) (*Node, []*Node, bool) {
+func (s *rstState) lineBlockLine(m lineMatch, lineno int) (*Node, []*Node, bool) {
 	indented, _, _, blankFinish := s.sm.getFirstKnownIndented(m.End(0), true, true, true)
 	text := indented.join()
 	textNodes, messages := s.inlineText(text, lineno)
@@ -947,11 +892,11 @@ func nestLineBlockSegment(block *Node) {
 	}
 }
 
-func bodyGridTableTop(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodyGridTableTop(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	return s.tableTop(nextState, true)
 }
 
-func bodySimpleTableTop(s *rstState, m *pyMatch, context []string, nextState string) ([]string, string) {
+func bodySimpleTableTop(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	return s.tableTop(nextState, false)
 }
 
@@ -1031,11 +976,11 @@ func (s *rstState) isolateGridTable() (*stringList, []*Node, bool) {
 	if len(block.data) == 0 {
 		return nil, messages, blankFinish
 	}
-	if gridTableTopPat.Match(block.data[len(block.data)-1]) == nil {
+	if !isGridTableTop(block.data[len(block.data)-1]) {
 		found := false
 		for j := len(block.data) - 2; j > 1; j-- {
 			i = j
-			if gridTableTopPat.Match(block.data[j]) != nil {
+			if isGridTableTop(block.data[j]) {
 				s.sm.previousLine(len(block.data) - j + 1)
 				block.deleteRange(j+1, len(block.data))
 				blankFinish = false
@@ -1069,7 +1014,7 @@ func (s *rstState) isolateSimpleTable() (*stringList, []*Node, bool) {
 	end := -1
 	for i <= limit {
 		line := lines.data[i]
-		if simpleTableBorderPat.Match(line) != nil {
+		if isSimpleTableBorder(line) {
 			if len(pyStrip(line)) != toplen {
 				s.sm.nextLine(i - start)
 				messages := s.malformedTable(lines.slice(start, i+1),

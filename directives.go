@@ -220,26 +220,23 @@ func optPercentage(arg string, isNone bool) (any, error) {
 var css3LengthUnits = []string{"em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax",
 	"cm", "mm", "Q", "in", "pt", "pc", "px"}
 
-var measureRe = pyCompile(`(-?[0-9.]+) *([a-zA-Zµ]*|%?)`)
-
 const noneReErr = "expected string or bytes-like object, got 'NoneType'"
 
 // parseMeasure mirrors nodes.parse_measure; value is returned formatted the
 // way Python formats int/float.
 func parseMeasure(measure string) (valueStr string, value float64, unit string, err error) {
-	m := measureRe.FullMatch(measure)
-	if m == nil {
+	num, unit, ok := scanMeasure(measure)
+	if !ok {
 		return "", 0, "", fmt.Errorf(`"%s" is no valid measure.`, measure)
 	}
-	num := m.Group(1)
 	if n, ok := pyInt(num); ok && !strings.Contains(num, ".") {
-		return strconv.Itoa(n), float64(n), m.Group(2), nil
+		return strconv.Itoa(n), float64(n), unit, nil
 	}
 	f, perr := strconv.ParseFloat(num, 64)
 	if perr != nil || strings.Count(num, ".") > 1 || num == "." || num == "-." {
 		return "", 0, "", fmt.Errorf(`"%s" is no valid measure.`, measure)
 	}
-	return pyFloatStr(f), f, m.Group(2), nil
+	return pyFloatStr(f), f, unit, nil
 }
 
 func getMeasure(arg string, isNone bool, units []string) (string, error) {
@@ -315,8 +312,6 @@ func optClass(arg string, isNone bool) (any, error) {
 	return l, nil
 }
 
-var unicodePattern = pyCompile(`(?:0x|x|\\x|U\+?|\\u)([0-9a-f]+)$|&#x([0-9a-f]+);$`, reIgnoreCase)
-
 func unicodeCode(code string) (string, error) {
 	isDigit := code != ""
 	for _, r := range code {
@@ -330,13 +325,9 @@ func unicodeCode(code string) (string, error) {
 	if isDigit {
 		v, perr = strconv.ParseInt(code, 10, 64)
 	} else {
-		m := unicodePattern.Match(code)
-		if m == nil {
+		value, ok := scanUnicodeCode(code)
+		if !ok {
 			return code, nil
-		}
-		value := m.Group(1)
-		if value == "" {
-			value = m.Group(2)
 		}
 		v, perr = strconv.ParseInt(value, 16, 64)
 	}
