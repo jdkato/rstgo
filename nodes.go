@@ -50,9 +50,9 @@ const textTag = "#text"
 func newText(s string) *Node { return &Node{Tag: textTag, Text: s} }
 
 func newElem(tag string, rawsource string, children ...*Node) *Node {
-	n := &Node{Tag: tag, Rawsource: rawsource, Attrs: map[string]any{}}
+	n := &Node{Tag: tag, Rawsource: rawsource}
 	if fixedTextElements[tag] {
-		n.Attrs["xml:space"] = "preserve"
+		n.Attrs = map[string]any{"xml:space": "preserve"}
 	}
 	for _, c := range children {
 		n.append(c)
@@ -286,6 +286,9 @@ func (n *Node) list(key string) []string {
 }
 
 func (n *Node) appendTo(key string, vals ...string) {
+	if n.Attrs == nil {
+		n.Attrs = make(map[string]any, 2)
+	}
 	n.Attrs[key] = append(n.list(key), vals...)
 }
 
@@ -293,7 +296,7 @@ func (n *Node) removeFrom(key, val string) {
 	l := n.list(key)
 	for i, x := range l {
 		if x == val {
-			n.Attrs[key] = append(l[:i:i], l[i+1:]...)
+			n.setAttr(key, append(l[:i:i], l[i+1:]...))
 			return
 		}
 	}
@@ -309,13 +312,10 @@ func isListAttr(key string) bool {
 
 // has reports whether the attribute is present (list attributes: always).
 func (n *Node) has(key string) bool {
-	if n.Attrs == nil {
-		return false
-	}
 	if _, ok := n.Attrs[key]; ok {
 		return true
 	}
-	return key == "ids" || key == "classes" || key == "names" || key == "dupnames"
+	return n.Tag != textTag && (key == "ids" || key == "classes" || key == "names" || key == "dupnames")
 }
 
 func (n *Node) get(key string) any {
@@ -359,8 +359,13 @@ func (n *Node) truthy(key string) bool {
 	return true
 }
 
-func (n *Node) setAttr(key string, v any) { n.Attrs[key] = v }
-func (n *Node) delAttr(key string)        { delete(n.Attrs, key) }
+func (n *Node) setAttr(key string, v any) {
+	if n.Attrs == nil {
+		n.Attrs = make(map[string]any, 2)
+	}
+	n.Attrs[key] = v
+}
+func (n *Node) delAttr(key string) { delete(n.Attrs, key) }
 
 func attrString(v any) string {
 	switch x := v.(type) {
@@ -480,7 +485,10 @@ func (n *Node) copyNode() *Node {
 	if n.IsText() {
 		return newText(n.Text)
 	}
-	c := &Node{Tag: n.Tag, Rawsource: n.Rawsource, Attrs: map[string]any{}}
+	c := &Node{Tag: n.Tag, Rawsource: n.Rawsource}
+	if len(n.Attrs) > 0 {
+		c.Attrs = make(map[string]any, len(n.Attrs))
+	}
 	for k, v := range n.Attrs {
 		if l, ok := v.([]string); ok {
 			c.Attrs[k] = append([]string{}, l...)

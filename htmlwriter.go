@@ -11,7 +11,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -49,17 +48,18 @@ type htmlTranslator struct {
 	mathOutput       string
 	mathOptions      string
 
-	body           []string
+	body           []byte // output so far
+	last           int    // start of the most recently written piece
 	bodyPrefix     []string
 	bodyPreDocinfo []string
 	bodySuffix     []string
 	docinfo        []string
 	footer         []string
-	fragment       []string
+	fragment       []byte
 	head           []string
 	headPrefix     []string
 	header         []string
-	htmlBody       []string
+	htmlBody       []byte
 	htmlHead       []string
 	htmlProlog     []string
 	htmlSubtitle   []string
@@ -251,7 +251,25 @@ func (t *htmlTranslator) attval(text string) string {
 	return encoded
 }
 
-func (t *htmlTranslator) out(s ...string) { t.body = append(t.body, s...) }
+// out appends pieces to the body.  (Docutils keeps a list of strings; the
+// few places that depend on piece boundaries use t.last.)
+func (t *htmlTranslator) out(s ...string) {
+	for _, x := range s {
+		t.last = len(t.body)
+		t.body = append(t.body, x...)
+	}
+}
+
+// outTag writes a start tag directly to the body.
+func (t *htmlTranslator) outTag(node *Node, tagname, suffix string, atts A) {
+	t.last = len(t.body)
+	t.body = t.appendTag(t.body, node, tagname, suffix, false, atts)
+}
+
+func (t *htmlTranslator) outEmptyTag(node *Node, tagname, suffix string, atts A) {
+	t.last = len(t.body)
+	t.body = t.appendTag(t.body, node, tagname, suffix, true, atts)
+}
 
 func (t *htmlTranslator) push(v any) { t.context = append(t.context, v) }
 func (t *htmlTranslator) pop() any {
@@ -275,48 +293,110 @@ func (t *htmlTranslator) emptytag(node *Node, tagname, suffix string, atts A) st
 }
 
 func (t *htmlTranslator) tag(node *Node, tagname, suffix string, empty bool, attributes A) string {
+	return string(t.appendTag(nil, node, tagname, suffix, empty, attributes))
+}
+
+type tagAttr struct{ name, value string }
+
+// appendTag appends the tag to dst.  It must not retain attributes.
+func (t *htmlTranslator) appendTag(dst []byte, node *Node, tagname, suffix string, empty bool, attributes A) []byte {
 	tagname = strings.ToLower(tagname)
-	atts := map[string]any{}
+	var cbuf [8]string
+	classes := cbuf[:0]
+	var classStr string
+	var classesOf *Node
+	var classesPtr *[]string
+	var extraIDs []string
+	var abuf [8]tagAttr
+	atts := abuf[:0]
 	for k, v := range attributes {
-		atts[strings.ToLower(k)] = v
-	}
-	var classes []string
-	if c, ok := atts["classes"].([]string); ok {
-		classes = append(classes, c...)
-	}
-	delete(atts, "classes")
-	// Docutils passes some class lists by reference and extends them in
-	// place (the list of a parent node, or the writer's shared math class
-	// lists); reproduce that aliasing.
-	classesOf, _ := atts["classes_of"].(*Node)
-	delete(atts, "classes_of")
-	classesPtr, _ := atts["classes_ptr"].(*[]string)
-	delete(atts, "classes_ptr")
-	if classesOf != nil {
-		classes = classesOf.list("classes")
-	} else if classesPtr != nil {
-		classes = *classesPtr
-	}
-	classStr, _ := atts["class"].(string)
-	delete(atts, "class")
-	var languages []string
-	for _, cls := range append(append([]string{}, node.list("classes")...), pySplit(classStr)...) {
-		if strings.HasPrefix(cls, "language-") {
-			languages = append(languages, strings.TrimPrefix(cls, "language-"))
-		} else if pyStrip(cls) != "" && !containsStr(classes, cls) {
-			classes = append(classes, cls)
+		switch k {
+		case "classes":
+			if c, ok := v.([]string); ok {
+				classes = append(classes, c...)
+			}
+		case "class":
+			classStr, _ = v.(string)
+		// Docutils passes some class lists by reference and extends them
+		// in place (the list of a parent node, or the writer's shared math
+		// class lists); reproduce that aliasing.
+		case "classes_of":
+			classesOf, _ = v.(*Node)
+		case "classes_ptr":
+			classesPtr, _ = v.(*[]string)
+		case "ids":
+			extraIDs, _ = v.([]string)
+		default:
+			var val string
+			switch x := v.(type) {
+			case []string:
+				val = strings.Join(x, " ")
+			case string:
+				val = x
+			case int:
+				val = strconv.Itoa(x)
+			case bool:
+				if x {
+					val = "True"
+				} else {
+					val = "False"
+				}
+			case float64:
+				val = pyFloatStr(x)
+			default:
+				val = fmt.Sprint(v)
+			}
+			atts = append(atts, tagAttr{strings.ToLower(k), val})
 		}
 	}
 	if classesOf != nil {
-		classesOf.Attrs["classes"] = classes
+		classes = append(classes[:0], classesOf.list("classes")...)
 	} else if classesPtr != nil {
-		*classesPtr = classes
+		classes = append(classes[:0], *classesPtr...)
 	}
-	if len(languages) > 0 {
-		atts["lang"] = languages[0]
+	lang := ""
+	addClass := func(cls string) {
+		if strings.HasPrefix(cls, "language-") {
+			if lang == "" {
+				lang = strings.TrimPrefix(cls, "language-")
+			}
+		} else if cls != "" && !containsStr(classes, cls) {
+			classes = append(classes, cls)
+		}
+	}
+	for _, cls := range node.list("classes") {
+		if pyStrip(cls) == "" {
+			continue
+		}
+		addClass(cls)
+	}
+	if classStr != "" {
+		if strings.IndexFunc(classStr, isPySpace) < 0 {
+			addClass(classStr)
+		} else {
+			for _, cls := range pySplit(classStr) {
+				addClass(cls)
+			}
+		}
+	}
+	if classesOf != nil {
+		classesOf.setAttr("classes", append([]string{}, classes...))
+	} else if classesPtr != nil {
+		*classesPtr = append([]string{}, classes...)
+	}
+	if lang != "" {
+		replaced := false
+		for i := range atts {
+			if atts[i].name == "lang" {
+				atts[i].value, replaced = lang, true
+			}
+		}
+		if !replaced {
+			atts = append(atts, tagAttr{"lang", lang})
+		}
 	}
 	if node.Tag == "table" {
-		var kept []string
+		kept := classes[:0]
 		for _, c := range classes {
 			if c != "colwidths-auto" && c != "colwidths-given" && c != "colwidths-grid" {
 				kept = append(kept, c)
@@ -324,66 +404,60 @@ func (t *htmlTranslator) tag(node *Node, tagname, suffix string, empty bool, att
 		}
 		classes = kept
 	}
-	if len(classes) > 0 {
-		atts["class"] = strings.Join(classes, " ")
+	if len(extraIDs) > 0 {
+		node.appendTo("ids", extraIDs...)
 	}
-	if extra, ok := atts["ids"].([]string); ok && len(extra) > 0 {
-		node.appendTo("ids", extra...)
-	}
-	delete(atts, "ids")
 	ids := node.list("ids")
-	var prefix string
 	if len(ids) > 0 {
-		atts["id"] = ids[0]
+		atts = append(atts, tagAttr{"id", ids[0]})
 		for _, id := range ids[1:] {
 			if empty || sequentialTags[node.Tag] || node.Tag == "docinfo" || node.Tag == "table" {
-				prefix += `<span id="` + id + `"></span>`
-			} else {
-				suffix += `<span id="` + id + `"></span>`
+				dst = append(dst, `<span id="`...)
+				dst = append(dst, id...)
+				dst = append(dst, `"></span>`...)
 			}
 		}
 	}
-	names := make([]string, 0, len(atts))
-	for k := range atts {
-		names = append(names, k)
+	if len(classes) > 0 {
+		atts = append(atts, tagAttr{"class", ""})
 	}
-	sort.Strings(names)
-	var b strings.Builder
-	b.WriteString(prefix)
-	b.WriteByte('<')
-	b.WriteString(tagname)
-	for _, name := range names {
-		var val string
-		switch v := atts[name].(type) {
-		case []string:
-			val = strings.Join(v, " ")
-		case string:
-			val = v
-		case int:
-			val = strconv.Itoa(v)
-		case bool:
-			if v {
-				val = "True"
-			} else {
-				val = "False"
-			}
-		case float64:
-			val = pyFloatStr(v)
-		default:
-			val = fmt.Sprint(v)
+	// sort by attribute name
+	for i := 1; i < len(atts); i++ {
+		for j := i; j > 0 && atts[j].name < atts[j-1].name; j-- {
+			atts[j], atts[j-1] = atts[j-1], atts[j]
 		}
-		b.WriteByte(' ')
-		b.WriteString(name)
-		b.WriteString(`="`)
-		b.WriteString(t.attval(val))
-		b.WriteByte('"')
+	}
+	dst = append(dst, '<')
+	dst = append(dst, tagname...)
+	for _, a := range atts {
+		dst = append(dst, ' ')
+		dst = append(dst, a.name...)
+		dst = append(dst, `="`...)
+		if a.name == "class" && len(classes) > 0 {
+			for i, c := range classes {
+				if i > 0 {
+					dst = append(dst, ' ')
+				}
+				dst = append(dst, t.attval(c)...)
+			}
+		} else {
+			dst = append(dst, t.attval(a.value)...)
+		}
+		dst = append(dst, '"')
 	}
 	if empty {
-		b.WriteString(" /")
+		dst = append(dst, " /"...)
 	}
-	b.WriteByte('>')
-	b.WriteString(suffix)
-	return b.String()
+	dst = append(dst, '>')
+	dst = append(dst, suffix...)
+	if len(ids) > 1 && !(empty || sequentialTags[node.Tag] || node.Tag == "docinfo" || node.Tag == "table") {
+		for _, id := range ids[1:] {
+			dst = append(dst, `<span id="`...)
+			dst = append(dst, id...)
+			dst = append(dst, `"></span>`...)
+		}
+	}
+	return dst
 }
 
 func (t *htmlTranslator) reportMessages(node *Node) {
@@ -444,7 +518,7 @@ func (t *htmlTranslator) walkabout(n *Node) {
 		return
 	}
 	if act != actSkipChildren {
-		for _, c := range append([]*Node{}, n.Children...) {
+		for _, c := range n.Children {
 			t.walkabout(c)
 		}
 	}
@@ -544,7 +618,7 @@ func (t *htmlTranslator) visitDocinfoItem(node *Node, name string, meta bool) {
 		t.meta = append(t.meta, fmt.Sprintf("<meta name=\"%s\" content=\"%s\" />\n", name, t.attval(node.astext())))
 	}
 	if t.v4 {
-		t.out(t.starttag(node, "tr", "", nil))
+		t.outTag(node, "tr", "", nil)
 		t.out(fmt.Sprintf("<th class=\"docinfo-name\">%s:</th>\n<td>", docinfoLabels[name]))
 		if len(node.Children) > 0 {
 			if f := node.Children[0]; !f.IsText() {
@@ -557,7 +631,7 @@ func (t *htmlTranslator) visitDocinfoItem(node *Node, name string, meta bool) {
 		return
 	}
 	t.out(fmt.Sprintf("<dt class=\"%s\">%s<span class=\"colon\">:</span></dt>\n", name, docinfoLabels[name]))
-	t.out(t.starttag(node, "dd", "", A{"class": name}))
+	t.outTag(node, "dd", "", A{"class": name})
 }
 
 func (t *htmlTranslator) departDocinfoItem() {

@@ -124,7 +124,7 @@ func (t *htmlTranslator) visitMath(node *Node) visitAction {
 		suffix = "\n"
 	}
 	if tag != "" {
-		t.out(t.starttag(node, tag, suffix, A{"classes_ptr": t.mathClasses[format]}))
+		t.outTag(node, tag, suffix, A{"classes_ptr": t.mathClasses[format]})
 	}
 	t.out(mathCode, suffix)
 	if tag != "" {

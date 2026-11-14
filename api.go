@@ -374,7 +374,7 @@ func convert(src []byte, opts *Options) (parts *Parts, res Result, err error) {
 	t.walkabout(doc.Root)
 	j := func(l []string) string { return strings.Join(l, "") }
 	parts = &Parts{
-		HTMLBody: j(t.htmlBody), Body: j(t.body), Fragment: j(t.fragment),
+		HTMLBody: string(t.htmlBody), Body: string(t.body), Fragment: string(t.fragment),
 		Title: j(t.title), Subtitle: j(t.subtitle), HTMLTitle: j(t.htmlTitle),
 		HTMLSubtitle: j(t.htmlSubtitle), Docinfo: j(t.docinfo), Header: j(t.header),
 		Footer: j(t.footer), Head: j(t.head), Stylesheet: j(t.stylesheet), Meta: j(t.meta),

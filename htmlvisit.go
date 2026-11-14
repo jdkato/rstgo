@@ -16,27 +16,27 @@ var html5InlineTags = []string{"code", "kbd", "dfn", "samp", "var", "bdi", "del"
 func (t *htmlTranslator) visit(node *Node) visitAction {
 	switch node.Tag {
 	case "abbreviation":
-		t.out(t.starttag(node, "abbr", "", nil))
+		t.outTag(node, "abbr", "", nil)
 	case "acronym":
 		if t.v4 {
-			t.out(t.starttag(node, "acronym", "", nil))
+			t.outTag(node, "acronym", "", nil)
 		} else {
-			t.out(t.starttag(node, "abbr", "", nil))
+			t.outTag(node, "abbr", "", nil)
 		}
 	case "address":
 		t.visitDocinfoItem(node, "address", false)
 		if t.v4 {
-			t.out(t.starttag(node, "pre", "\n", A{"class": "address"}))
+			t.outTag(node, "pre", "\n", A{"class": "address"})
 		} else {
-			t.out(t.starttag(node, "pre", "", A{"class": "address"}))
+			t.outTag(node, "pre", "", A{"class": "address"})
 		}
 	case "admonition":
 		if t.v4 {
-			node.Attrs["classes"] = append([]string{"admonition"}, node.list("classes")...)
-			t.out(t.starttag(node, "div", "\n", nil))
+			node.setAttr("classes", append([]string{"admonition"}, node.list("classes")...))
+			t.outTag(node, "div", "\n", nil)
 			t.setFirstLast(node)
 		} else {
-			t.out(t.starttag(node, "aside", "\n", A{"classes": []string{"admonition"}}))
+			t.outTag(node, "aside", "\n", A{"classes": []string{"admonition"}})
 		}
 	case "attribution":
 		f, ok := attributionFormats[t.settings.attribution]
@@ -48,7 +48,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			prefix = "&mdash;"
 		}
 		t.push(f[1])
-		t.out(t.starttag(node, "p", prefix, A{"class": "attribution"}))
+		t.outTag(node, "p", prefix, A{"class": "attribution"})
 	case "author":
 		if t.v4 {
 			if node.Parent.Tag == "authors" {
@@ -75,7 +75,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			}
 		}
 	case "block_quote":
-		t.out(t.starttag(node, "blockquote", "\n", nil))
+		t.outTag(node, "blockquote", "\n", nil)
 	case "bullet_list":
 		atts := A{}
 		oldCompactSimple := t.compactSimple
@@ -85,26 +85,26 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		if t.compactSimple && !oldCompactSimple {
 			atts["class"] = "simple"
 		}
-		t.out(t.starttag(node, "ul", "\n", atts))
+		t.outTag(node, "ul", "\n", atts)
 	case "caption":
 		if t.v4 {
-			t.out(t.starttag(node, "p", "", A{"class": "caption"}))
+			t.outTag(node, "p", "", A{"class": "caption"})
 		} else {
 			if node.Parent.Tag == "figure" {
-				t.out(t.starttag(node, "figcaption", "\n", nil))
+				t.outTag(node, "figcaption", "\n", nil)
 			}
 			t.out("<p>")
 		}
 	case "citation":
 		if t.v4 {
-			t.out(t.starttag(node, "table", "\n", A{"class": "docutils citation", "frame": "void", "rules": "none"}))
+			t.outTag(node, "table", "\n", A{"class": "docutils citation", "frame": "void", "rules": "none"})
 			t.out("<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr>")
 			t.footnoteBackrefs(node)
 		} else {
 			if ps := node.previousSibling(); ps == nil || ps.Tag != "citation" {
 				t.out("<div role=\"list\" class=\"citation-list\">\n")
 			}
-			t.out(t.starttag(node, "div", "\n", A{"classes": []string{node.Tag}, "role": "doc-biblioentry"}))
+			t.outTag(node, "div", "\n", A{"classes": []string{node.Tag}, "role": "doc-biblioentry"})
 		}
 	case "citation_reference":
 		href := "#"
@@ -117,12 +117,12 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		if !t.v4 {
 			atts["role"] = "doc-biblioref"
 		}
-		t.out(t.starttag(node, "a", "[", atts))
+		t.outTag(node, "a", "[", atts)
 	case "classifier":
 		if t.v4 {
 			t.out(` <span class="classifier-delimiter">:</span> `)
 		}
-		t.out(t.starttag(node, "span", "", A{"class": "classifier"}))
+		t.outTag(node, "span", "", A{"class": "classifier"})
 	case "colspec":
 		t.colspecs = append(t.colspecs, node)
 		t.stubs[node.Parent] = append(t.stubs[node.Parent], node.truthy("stub"))
@@ -130,7 +130,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		t.out("<!-- " + spaceDashes(node.astext()) + " -->\n")
 		return actSkipNode
 	case "compound":
-		t.out(t.starttag(node, "div", "\n", A{"class": "compound"}))
+		t.outTag(node, "div", "\n", A{"class": "compound"})
 		if t.v4 && len(node.Children) > 1 {
 			addClass(node.Children[0], "compound-first")
 			addClass(node.Children[len(node.Children)-1], "compound-last")
@@ -153,7 +153,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			}
 			t.html5tag[node] = tagname
 		}
-		t.out(t.starttag(node, tagname, "\n", A{"class": "docutils container"}))
+		t.outTag(node, tagname, "\n", A{"class": "docutils container"})
 	case "contact":
 		t.visitDocinfoItem(node, "contact", false)
 	case "copyright":
@@ -173,22 +173,22 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 	case "decoration":
 	case "definition":
 		if t.v4 {
-			t.out(t.starttag(node, "dd", "", nil))
+			t.outTag(node, "dd", "", nil)
 			t.setFirstLast(node)
 		} else if !hasClass(node.Parent.Parent, "details") {
-			t.out(t.starttag(node, "dd", "", nil))
+			t.outTag(node, "dd", "", nil)
 		}
 	case "definition_list":
 		if t.v4 {
-			t.out(t.starttag(node, "dl", "\n", A{"class": "docutils"}))
+			t.outTag(node, "dl", "\n", A{"class": "docutils"})
 		} else if hasClass(node, "details") {
-			t.out(t.starttag(node, "div", "\n", nil))
+			t.outTag(node, "div", "\n", nil)
 		} else {
 			var classes []string
 			if t.isCompactable(node) {
 				classes = []string{"simple"}
 			}
-			t.out(t.starttag(node, "dl", "\n", A{"classes": classes}))
+			t.outTag(node, "dl", "\n", A{"classes": classes})
 		}
 	case "definition_list_item":
 		if !t.v4 && hasClass(node.Parent, "details") {
@@ -196,19 +196,19 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			if hasClass(node.Parent, "open") {
 				atts["open"] = "open"
 			}
-			t.out(t.starttag(node, "details", "\n", atts))
+			t.outTag(node, "details", "\n", atts)
 		}
 	case "description":
 		if t.v4 {
-			t.out(t.starttag(node, "td", "", nil))
+			t.outTag(node, "td", "", nil)
 			t.setFirstLast(node)
 		} else {
-			t.out(t.starttag(node, "dd", "", nil))
+			t.outTag(node, "dd", "", nil)
 		}
 	case "docinfo":
 		t.push(len(t.body))
 		if t.v4 {
-			t.out(t.starttag(node, "table", "\n", A{"class": "docinfo", "frame": "void", "rules": "none"}))
+			t.outTag(node, "table", "\n", A{"class": "docinfo", "frame": "void", "rules": "none"})
 			t.out("<col class=\"docinfo-name\" />\n<col class=\"docinfo-content\" />\n<tbody valign=\"top\">\n")
 			t.inDocinfo = true
 		} else {
@@ -216,13 +216,13 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			if t.isCompactable(node) {
 				classes = append(classes, "simple")
 			}
-			t.out(t.starttag(node, "dl", "\n", A{"classes": classes}))
+			t.outTag(node, "dl", "\n", A{"classes": classes})
 		}
 	case "doctest_block":
 		if t.v4 {
-			t.out(t.starttag(node, "pre", "\n", A{"class": "doctest-block"}))
+			t.outTag(node, "pre", "\n", A{"class": "doctest-block"})
 		} else {
-			t.out(t.starttag(node, "pre", "", A{"classes": []string{"code", "python", "doctest"}}))
+			t.outTag(node, "pre", "", A{"classes": []string{"code", "python", "doctest"}})
 		}
 	case "document":
 		title := node.str("title")
@@ -237,7 +237,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		}
 		t.head = append(t.head, "<title>"+t.encode(title)+"</title>\n")
 	case "emphasis":
-		t.out(t.starttag(node, "em", "", nil))
+		t.outTag(node, "em", "", nil)
 	case "entry":
 		t.visitEntry(node)
 	case "enumerated_list":
@@ -260,7 +260,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			if cls != "" {
 				atts["class"] = cls
 			}
-			t.out(t.starttag(node, "ol", "\n", atts))
+			t.outTag(node, "ol", "\n", atts)
 		} else {
 			var classes []string
 			atts := A{}
@@ -274,13 +274,13 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				classes = append(classes, "simple")
 			}
 			atts["classes"] = classes
-			t.out(t.starttag(node, "ol", "\n", atts))
+			t.outTag(node, "ol", "\n", atts)
 		}
 	case "field_list":
 		t.visitFieldList(node)
 	case "field":
 		if t.v4 {
-			t.out(t.starttag(node, "tr", "", A{"class": "field"}))
+			t.outTag(node, "tr", "", A{"class": "field"})
 		} else {
 			for _, child := range node.Children {
 				if child.Tag == "field_name" {
@@ -302,13 +302,13 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			} else {
 				t.push("")
 			}
-			t.out(t.starttag(node, "th", "", atts))
+			t.outTag(node, "th", "", atts)
 		} else {
-			t.out(t.starttag(node, "dt", "", A{"classes_of": node.Parent}))
+			t.outTag(node, "dt", "", A{"classes_of": node.Parent})
 		}
 	case "field_body":
 		if t.v4 {
-			t.out(t.starttag(node, "td", "", A{"class": "field-body"}))
+			t.outTag(node, "td", "", A{"class": "field-body"})
 			t.setClassOnChild(node, "first", 0)
 			field := node.Parent
 			if t.compactFieldList || field.Parent.Tag == "docinfo" ||
@@ -316,7 +316,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				t.setClassOnChild(node, "last", -1)
 			}
 		} else {
-			t.out(t.starttag(node, "dd", "", A{"classes_of": node.Parent}))
+			t.outTag(node, "dd", "", A{"classes_of": node.Parent})
 			if len(node.Children) == 0 {
 				t.out("<p></p>")
 			}
@@ -332,7 +332,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				cls += " align-" + node.str("align")
 			}
 			atts["class"] = cls
-			t.out(t.starttag(node, "div", "\n", atts))
+			t.outTag(node, "div", "\n", atts)
 		} else {
 			atts := A{}
 			if node.has("width") {
@@ -341,13 +341,13 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			if node.truthy("align") {
 				atts["class"] = "align-" + node.str("align")
 			}
-			t.out(t.starttag(node, "figure", "\n", atts))
+			t.outTag(node, "figure", "\n", atts)
 		}
 	case "footer", "header":
 		t.push(len(t.body))
 	case "footnote":
 		if t.v4 {
-			t.out(t.starttag(node, "table", "\n", A{"class": "docutils footnote", "frame": "void", "rules": "none"}))
+			t.outTag(node, "table", "\n", A{"class": "docutils footnote", "frame": "void", "rules": "none"})
 			t.out("<colgroup><col class=\"label\" /><col /></colgroup>\n<tbody valign=\"top\">\n<tr>")
 			t.footnoteBackrefs(node)
 		} else {
@@ -355,7 +355,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			if ps := node.previousSibling(); ps == nil || ps.Tag != "footnote" {
 				t.out("<aside class=\"footnote-list " + labelStyle + "\">\n")
 			}
-			t.out(t.starttag(node, "aside", "\n", A{"classes": []string{node.Tag, labelStyle}, "role": "doc-footnote"}))
+			t.outTag(node, "aside", "\n", A{"classes": []string{node.Tag, labelStyle}, "role": "doc-footnote"})
 		}
 	case "footnote_reference":
 		href := "#" + node.str("refid")
@@ -368,9 +368,9 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				suffix = "<sup>"
 				t.push("</sup>")
 			}
-			t.out(t.starttag(node, "a", suffix, A{"class": "footnote-reference", "href": href}))
+			t.outTag(node, "a", suffix, A{"class": "footnote-reference", "href": href})
 		} else {
-			t.out(t.starttag(node, "a", "", A{"classes": []string{t.settings.footnoteReferences}, "role": "doc-noteref", "href": href}))
+			t.outTag(node, "a", "", A{"classes": []string{t.settings.footnoteReferences}, "role": "doc-noteref", "href": href})
 			t.out(`<span class="fn-bracket">[</span>`)
 		}
 	case "generated":
@@ -387,13 +387,13 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		}
 	case "inline":
 		if t.v4 {
-			t.out(t.starttag(node, "span", "", nil))
+			t.outTag(node, "span", "", nil)
 		} else {
 			t.visitInline5(node)
 		}
 	case "label":
 		if t.v4 {
-			t.out(t.starttag(node, "td", t.popStr()+"[", A{"class": "label"}))
+			t.outTag(node, "td", t.popStr()+"[", A{"class": "label"})
 		} else {
 			t.out(`<span class="label">`)
 			t.out(`<span class="fn-bracket">[</span>`)
@@ -410,16 +410,16 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				t.out("<figcaption>\n")
 			}
 		}
-		t.out(t.starttag(node, "div", "\n", A{"class": "legend"}))
+		t.outTag(node, "div", "\n", A{"class": "legend"})
 	case "line":
-		t.out(t.starttag(node, "div", "", A{"class": "line"}))
+		t.outTag(node, "div", "", A{"class": "line"})
 		if len(node.Children) == 0 {
 			t.out("<br />")
 		}
 	case "line_block":
-		t.out(t.starttag(node, "div", "\n", A{"class": "line-block"}))
+		t.outTag(node, "div", "\n", A{"class": "line-block"})
 	case "list_item":
-		t.out(t.starttag(node, "li", "", nil))
+		t.outTag(node, "li", "", nil)
 		if t.v4 && len(node.Children) > 0 {
 			addClass(node.Children[0], "first")
 		}
@@ -427,9 +427,9 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		return t.visitLiteral(node)
 	case "literal_block":
 		if t.v4 {
-			t.out(t.starttag(node, "pre", "\n", A{"class": "literal-block"}))
+			t.outTag(node, "pre", "\n", A{"class": "literal-block"})
 		} else {
-			t.out(t.starttag(node, "pre", "", A{"class": "literal-block"}))
+			t.outTag(node, "pre", "", A{"class": "literal-block"})
 			if hasClass(node, "code") {
 				t.out("<code>")
 			}
@@ -439,7 +439,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 	case "meta":
 		atts := A{}
 		if !t.v4 && node.has("lang") {
-			node.Attrs["xml:lang"] = node.Attrs["lang"]
+			node.setAttr("xml:lang", node.Attrs["lang"])
 		}
 		for _, k := range node.attlist() {
 			atts[k] = node.Attrs[k]
@@ -447,7 +447,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		t.meta = append(t.meta, t.emptytag(node, "meta", "\n", atts))
 	case "option":
 		if !t.v4 {
-			t.out(t.starttag(node, "span", "", A{"class": "option"}))
+			t.outTag(node, "span", "", A{"class": "option"})
 		} else {
 			t.visitOption4(node)
 		}
@@ -457,7 +457,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			d = node.str("delimiter")
 		}
 		t.out(d)
-		t.out(t.starttag(node, "var", "", nil))
+		t.outTag(node, "var", "", nil)
 	case "option_group":
 		if t.v4 {
 			atts := A{"class": "option-group"}
@@ -467,23 +467,23 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			} else {
 				t.push("")
 			}
-			t.out(t.starttag(node, "td", "\n", atts))
+			t.outTag(node, "td", "\n", atts)
 			t.out("<kbd>")
 			t.push(0)
 		} else {
-			t.out(t.starttag(node, "dt", "", nil))
+			t.outTag(node, "dt", "", nil)
 			t.out("<kbd>")
 		}
 	case "option_list":
 		if t.v4 {
-			t.out(t.starttag(node, "table", "\n", A{"class": "docutils option-list", "frame": "void", "rules": "none"}))
+			t.outTag(node, "table", "\n", A{"class": "docutils option-list", "frame": "void", "rules": "none"})
 			t.out("<col class=\"option\" />\n<col class=\"description\" />\n<tbody valign=\"top\">\n")
 		} else {
-			t.out(t.starttag(node, "dl", "\n", A{"class": "option-list"}))
+			t.outTag(node, "dl", "\n", A{"class": "option-list"})
 		}
 	case "option_list_item":
 		if t.v4 {
-			t.out(t.starttag(node, "tr", "", nil))
+			t.outTag(node, "tr", "", nil)
 		}
 	case "option_string":
 	case "organization":
@@ -493,11 +493,11 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			if t.shouldBeCompactParagraph(node) {
 				t.push("")
 			} else {
-				t.out(t.starttag(node, "p", "", nil))
+				t.outTag(node, "p", "", nil)
 				t.push("</p>\n")
 			}
 		} else {
-			t.out(t.starttag(node, "p", "", nil))
+			t.outTag(node, "p", "", nil)
 		}
 	case "problematic":
 		if node.has("refid") {
@@ -506,7 +506,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		} else {
 			t.push("")
 		}
-		t.out(t.starttag(node, "span", "", A{"class": "problematic"}))
+		t.outTag(node, "span", "", A{"class": "problematic"})
 	case "raw":
 		if containsStr(pySplit(node.str("format")), "html") {
 			tagname := "div"
@@ -515,7 +515,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			}
 			has := len(node.list("classes")) > 0
 			if has {
-				t.out(t.starttag(node, tagname, "", nil))
+				t.outTag(node, tagname, "", nil)
 			}
 			t.out(node.astext())
 			if has {
@@ -546,33 +546,33 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			suffix = "\n"
 		}
 		atts["classes"] = classes
-		t.out(t.starttag(node, "a", suffix, atts))
+		t.outTag(node, "a", suffix, atts)
 	case "revision":
 		t.visitDocinfoItem(node, "revision", false)
 	case "row":
-		t.out(t.starttag(node, "tr", "", nil))
+		t.outTag(node, "tr", "", nil)
 		t.column[node] = 0
 	case "rubric":
-		t.out(t.starttag(node, "p", "", A{"class": "rubric"}))
+		t.outTag(node, "p", "", A{"class": "rubric"})
 	case "section":
 		t.sectionLevel++
 		if t.v4 {
-			t.out(t.starttag(node, "div", "\n", A{"class": "section"}))
+			t.outTag(node, "div", "\n", A{"class": "section"})
 		} else {
-			t.out(t.starttag(node, "section", "\n", nil))
+			t.outTag(node, "section", "\n", nil)
 		}
 	case "sidebar":
 		if t.v4 {
-			t.out(t.starttag(node, "div", "\n", A{"class": "sidebar"}))
+			t.outTag(node, "div", "\n", A{"class": "sidebar"})
 			t.setFirstLast(node)
 		} else {
-			t.out(t.starttag(node, "aside", "\n", A{"class": "sidebar"}))
+			t.outTag(node, "aside", "\n", A{"class": "sidebar"})
 		}
 		t.inSidebar = true
 	case "status":
 		t.visitDocinfoItem(node, "status", false)
 	case "strong":
-		t.out(t.starttag(node, "strong", "", nil))
+		t.outTag(node, "strong", "", nil)
 	case "subscript", "superscript":
 		tag := "sub"
 		cls := "subscript"
@@ -580,9 +580,9 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			tag, cls = "sup", "superscript"
 		}
 		if t.v4 && node.Parent.Tag == "literal_block" {
-			t.out(t.starttag(node, "span", "", A{"class": cls}))
+			t.outTag(node, "span", "", A{"class": cls})
 		} else {
-			t.out(t.starttag(node, tag, "", nil))
+			t.outTag(node, tag, "", nil)
 		}
 	case "substitution_definition":
 		return actSkipNode
@@ -607,7 +607,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				atts["style"] = "width: " + width
 			}
 			atts["class"] = strings.Join(classes, " ")
-			t.out(t.starttag(node, "table", "\n", atts))
+			t.outTag(node, "table", "\n", atts)
 		} else {
 			classes := pySplit(strings.ReplaceAll(t.settings.tableStyle, ",", " "))
 			atts := A{}
@@ -622,24 +622,24 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				atts["style"] = "width: " + width + ";"
 			}
 			atts["classes"] = classes
-			t.out(t.starttag(node, "table", "\n", atts))
+			t.outTag(node, "table", "\n", atts)
 		}
 	case "target":
 		if !node.has("refuri") && !node.has("refid") && !node.has("refname") {
-			t.out(t.starttag(node, "span", "", A{"class": "target"}))
+			t.outTag(node, "span", "", A{"class": "target"})
 			t.push("</span>")
 		} else {
 			t.push("")
 		}
 	case "tbody":
 		if t.v4 {
-			t.out(t.starttag(node, "tbody", "\n", A{"valign": "top"}))
+			t.outTag(node, "tbody", "\n", A{"valign": "top"})
 		} else {
-			t.out(t.starttag(node, "tbody", "\n", nil))
+			t.outTag(node, "tbody", "\n", nil)
 		}
 	case "term":
 		if !t.v4 && hasClass(node.Parent.Parent, "details") {
-			t.out(t.starttag(node, "summary", "", nil))
+			t.outTag(node, "summary", "", nil)
 		} else {
 			t.out(t.starttag(node, "dt", "", A{"classes_of": node.Parent,
 				"ids": append([]string{}, node.Parent.list("ids")...)}))
@@ -649,17 +649,17 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		t.stubs[node] = nil
 	case "thead":
 		if t.v4 {
-			t.out(t.starttag(node, "thead", "\n", A{"valign": "bottom"}))
+			t.outTag(node, "thead", "\n", A{"valign": "bottom"})
 		} else {
-			t.out(t.starttag(node, "thead", "\n", nil))
+			t.outTag(node, "thead", "\n", nil)
 		}
 	case "title":
 		t.visitTitle(node)
 	case "title_reference":
-		t.out(t.starttag(node, "cite", "", nil))
+		t.outTag(node, "cite", "", nil)
 	case "topic":
 		if t.v4 {
-			t.out(t.starttag(node, "div", "\n", A{"class": "topic"}))
+			t.outTag(node, "div", "\n", A{"class": "topic"})
 		} else {
 			atts := A{"classes": []string{"topic"}}
 			var tag string
@@ -680,10 +680,10 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				tag = "aside"
 			}
 			t.html5tag[node] = tag
-			t.out(t.starttag(node, tag, "\n", atts))
+			t.outTag(node, tag, "\n", atts)
 		}
 	case "transition":
-		t.out(t.emptytag(node, "hr", "\n", A{"class": "docutils"}))
+		t.outEmptyTag(node, "hr", "\n", A{"class": "docutils"})
 	case "version":
 		t.visitDocinfoItem(node, "version", false)
 	case "pending", "substitution_reference":
@@ -798,7 +798,7 @@ func (t *htmlTranslator) depart(node *Node) {
 			t.out("</dl>\n")
 		}
 		start := t.pop().(int)
-		t.docinfo = append([]string{}, t.body[start:]...)
+		t.docinfo = []string{string(t.body[start:])}
 		t.body = nil
 	case "doctest_block":
 		t.out("\n</pre>\n")
@@ -853,11 +853,11 @@ func (t *htmlTranslator) depart(node *Node) {
 		var footer []string
 		if t.v4 {
 			footer = []string{t.starttag(node, "div", "\n", A{"class": "footer"}), "<hr class=\"footer\" />\n"}
-			footer = append(footer, t.body[start:]...)
+			footer = append(footer, string(t.body[start:]))
 			footer = append(footer, "\n</div>\n")
 		} else {
 			footer = []string{t.starttag(node, "footer", "\n", nil)}
-			footer = append(footer, t.body[start:]...)
+			footer = append(footer, string(t.body[start:]))
 			footer = append(footer, "</footer>\n")
 		}
 		t.footer = append(t.footer, footer...)
@@ -868,11 +868,11 @@ func (t *htmlTranslator) depart(node *Node) {
 		var header []string
 		if t.v4 {
 			header = []string{t.starttag(node, "div", "\n", A{"class": "header"})}
-			header = append(header, t.body[start:]...)
+			header = append(header, string(t.body[start:]))
 			header = append(header, "\n<hr class=\"header\"/>\n</div>\n")
 		} else {
 			header = []string{t.starttag(node, "header", "\n", nil)}
-			header = append(header, t.body[start:]...)
+			header = append(header, string(t.body[start:]))
 			header = append(header, "</header>\n")
 		}
 		t.bodyPrefix = append(t.bodyPrefix, header...)
@@ -1049,10 +1049,10 @@ func (t *htmlTranslator) depart(node *Node) {
 	case "title":
 		t.out(t.popStr())
 		if t.inDocumentTitle != 0 {
-			t.title = append([]string{}, t.body[t.inDocumentTitle:len(t.body)-1]...)
+			t.title = []string{string(t.body[t.inDocumentTitle:t.last])}
 			t.inDocumentTitle = 0
-			t.bodyPreDocinfo = append(t.bodyPreDocinfo, t.body...)
-			t.htmlTitle = append(t.htmlTitle, t.body...)
+			t.bodyPreDocinfo = append(t.bodyPreDocinfo, string(t.body))
+			t.htmlTitle = append(t.htmlTitle, string(t.body))
 			t.body = nil
 		}
 	case "title_reference":
@@ -1108,10 +1108,10 @@ func (t *htmlTranslator) departColspec(node *Node) {
 		for _, c := range t.colspecs {
 			total += propwidth(c)
 		}
-		t.out(t.starttag(node, "colgroup", "\n", nil))
+		t.outTag(node, "colgroup", "\n", nil)
 		for _, c := range t.colspecs {
 			colwidth := propwidth(c)*100.0/total + 0.5
-			t.out(t.emptytag(c, "col", "\n", A{"width": fmt.Sprintf("%d%%", int(colwidth))}))
+			t.outEmptyTag(c, "col", "\n", A{"width": fmt.Sprintf("%d%%", int(colwidth))})
 		}
 		t.out("</colgroup>\n")
 		return
@@ -1120,14 +1120,14 @@ func (t *htmlTranslator) departColspec(node *Node) {
 		(!strings.Contains(t.settings.tableStyle, "colwidths-grid") && !hasClass(table, "colwidths-given")) {
 		return
 	}
-	t.out(t.starttag(node, "colgroup", "\n", nil))
+	t.outTag(node, "colgroup", "\n", nil)
 	total := 0.0
 	for _, c := range t.colspecs {
 		total += propwidth(c)
 	}
 	for _, c := range t.colspecs {
 		colwidth := propwidth(c) / total
-		t.out(t.emptytag(c, "col", "\n", A{"style": fmt.Sprintf("width: %.1f%%", colwidth*100)}))
+		t.outEmptyTag(c, "col", "\n", A{"style": fmt.Sprintf("width: %.1f%%", colwidth*100)})
 	}
 	t.out("</colgroup>\n")
 }
@@ -1155,7 +1155,7 @@ func (t *htmlTranslator) visitEntry(node *Node) {
 		atts["colspan"] = node.get("morecols").(int) + 1
 		t.column[row] += node.get("morecols").(int)
 	}
-	t.out(t.starttag(node, tagname, "", atts))
+	t.outTag(node, tagname, "", atts)
 	t.push("</" + tagname + ">\n")
 	if t.v4 {
 		if len(node.Children) == 0 {
@@ -1184,7 +1184,7 @@ func (t *htmlTranslator) visitFieldList(node *Node) {
 				}
 			}
 		}
-		t.out(t.starttag(node, "table", "\n", A{"frame": "void", "rules": "none", "class": "docutils field-list"}))
+		t.outTag(node, "table", "\n", A{"frame": "void", "rules": "none", "class": "docutils field-list"})
 		t.out("<col class=\"field-name\" />\n<col class=\"field-body\" />\n<tbody valign=\"top\">\n")
 		return
 	}
@@ -1202,11 +1202,11 @@ func (t *htmlTranslator) visitFieldList(node *Node) {
 		}
 	}
 	classes = append(classes, "field-list")
-	node.Attrs["classes"] = classes
+	node.setAttr("classes", classes)
 	if t.isCompactable(node) {
 		node.appendTo("classes", "simple")
 	}
-	t.out(t.starttag(node, "dl", "\n", atts))
+	t.outTag(node, "dl", "\n", atts)
 }
 
 func (t *htmlTranslator) footnoteBackrefs(node *Node) {
@@ -1240,7 +1240,7 @@ func (t *htmlTranslator) footnoteBackrefs(node *Node) {
 
 func (t *htmlTranslator) visitOption4(node *Node) {
 	// html4css1 inherits visit_option from the base writer
-	t.out(t.starttag(node, "span", "", A{"class": "option"}))
+	t.outTag(node, "span", "", A{"class": "option"})
 }
 
 func (t *htmlTranslator) departOption4(node *Node) {
@@ -1296,11 +1296,11 @@ func (t *htmlTranslator) visitLiteral(node *Node) visitAction {
 					kept = append(kept, c)
 				}
 			}
-			node.Attrs["classes"] = kept
-			t.out(t.starttag(node, "code", "", nil))
+			node.setAttr("classes", kept)
+			t.outTag(node, "code", "", nil)
 			return actProceed
 		}
-		t.out(t.starttag(node, "tt", "", A{"class": "docutils literal"}))
+		t.outTag(node, "tt", "", A{"class": "docutils literal"})
 		text := node.astext()
 		for _, token := range wordsAndSpacesTokens(text) {
 			if pyStrip(token) != "" {
@@ -1328,10 +1328,10 @@ func (t *htmlTranslator) visitLiteral(node *Node) visitAction {
 	}
 	if tagname == "code" {
 		t.html5tag[node] = tagname
-		t.out(t.starttag(node, tagname, "", nil))
+		t.outTag(node, tagname, "", nil)
 		return actProceed
 	}
-	t.out(t.starttag(node, tagname, "", A{"class": "docutils literal"}))
+	t.outTag(node, tagname, "", A{"class": "docutils literal"})
 	text := node.astext()
 	if node.Parent.Tag != "literal_block" {
 		text = strings.ReplaceAll(text, "\n", " ")
@@ -1353,8 +1353,8 @@ func (t *htmlTranslator) visitInline5(node *Node) {
 	p := node.Parent
 	if (p.Tag == "literal_block" && hasClass(p, "code")) || (p.Tag == "literal" && t.html5tag[p] == "code") {
 		if len(classes) == 1 && classes[0] == "ln" {
-			if len(t.body) > 0 && t.body[len(t.body)-1] == "<code>" {
-				t.body = t.body[:len(t.body)-1]
+			if len(t.body) > 0 && string(t.body[t.last:]) == "<code>" {
+				t.body = t.body[:t.last]
 			} else {
 				t.out("</code>")
 			}
@@ -1370,7 +1370,7 @@ func (t *htmlTranslator) visitInline5(node *Node) {
 		}
 	}
 	t.html5tag[node] = tagname
-	t.out(t.starttag(node, tagname, "", nil))
+	t.outTag(node, tagname, "", nil)
 }
 
 func (t *htmlTranslator) departInline5(node *Node) {
@@ -1387,10 +1387,10 @@ func (t *htmlTranslator) visitSubtitle(node *Node) {
 	if t.v4 {
 		switch node.Parent.Tag {
 		case "sidebar":
-			t.out(t.starttag(node, "p", "", A{"class": "sidebar-subtitle"}))
+			t.outTag(node, "p", "", A{"class": "sidebar-subtitle"})
 			t.push("</p>\n")
 		case "document":
-			t.out(t.starttag(node, "h2", "", A{"class": "subtitle"}))
+			t.outTag(node, "h2", "", A{"class": "subtitle"})
 			t.push("</h2>\n")
 			t.inDocumentTitle = len(t.body)
 		case "section":
@@ -1409,21 +1409,25 @@ func (t *htmlTranslator) visitSubtitle(node *Node) {
 		classes = []string{"sidebar-subtitle"}
 	case "document":
 		classes = []string{"subtitle"}
-		t.inDocumentTitle = len(t.body) + 1
 	case "section":
 		classes = []string{"section-subtitle"}
 	}
-	t.out(t.starttag(node, "p", "", A{"classes": classes}))
+	t.outTag(node, "p", "", A{"classes": classes})
+	if node.Parent.Tag == "document" {
+		// Docutils: in_document_title = len(self.body) + 1, i.e. the
+		// position after the start tag
+		t.inDocumentTitle = len(t.body)
+	}
 }
 
 func (t *htmlTranslator) departSubtitle(node *Node) {
 	if t.v4 {
 		t.out(t.popStr())
 		if t.inDocumentTitle != 0 {
-			t.subtitle = append([]string{}, t.body[t.inDocumentTitle:len(t.body)-1]...)
+			t.subtitle = []string{string(t.body[t.inDocumentTitle:t.last])}
 			t.inDocumentTitle = 0
-			t.bodyPreDocinfo = append(t.bodyPreDocinfo, t.body...)
-			t.htmlSubtitle = append(t.htmlSubtitle, t.body...)
+			t.bodyPreDocinfo = append(t.bodyPreDocinfo, string(t.body))
+			t.htmlSubtitle = append(t.htmlSubtitle, string(t.body))
 			t.body = nil
 		}
 		return
@@ -1431,22 +1435,22 @@ func (t *htmlTranslator) departSubtitle(node *Node) {
 	t.out("</p>\n")
 	if node.Parent.Tag == "document" {
 		a := t.inDocumentTitle
-		if a > len(t.body)-1 {
-			a = len(t.body) - 1
+		if a > t.last {
+			a = t.last
 		}
-		t.subtitle = append([]string{}, t.body[a:len(t.body)-1]...)
+		t.subtitle = []string{string(t.body[a:t.last])}
 		t.inDocumentTitle = 0
-		t.bodyPreDocinfo = append(t.bodyPreDocinfo, t.body...)
-		t.htmlSubtitle = append(t.htmlSubtitle, t.body...)
+		t.bodyPreDocinfo = append(t.bodyPreDocinfo, string(t.body))
+		t.htmlSubtitle = append(t.htmlSubtitle, string(t.body))
 		t.body = nil
 	}
 }
 
 func (t *htmlTranslator) visitSystemMessage(node *Node) {
 	if t.v4 {
-		t.out(t.starttag(node, "div", "\n", A{"class": "system-message"}))
+		t.outTag(node, "div", "\n", A{"class": "system-message"})
 	} else {
-		t.out(t.starttag(node, "aside", "\n", A{"class": "system-message"}))
+		t.outTag(node, "aside", "\n", A{"class": "system-message"})
 	}
 	t.out(`<p class="system-message-title">`)
 	backrefText := ""
@@ -1479,20 +1483,20 @@ func (t *htmlTranslator) visitTitle(node *Node) {
 	p := node.Parent
 	switch {
 	case p.Tag == "topic":
-		t.out(t.starttag(node, "p", "", A{"class": "topic-title"}))
+		t.outTag(node, "p", "", A{"class": "topic-title"})
 		if t.settings.tocBacklinks != "" && hasClass(p, "contents") {
 			t.out(`<a class="reference internal" href="#top">`)
 			closeTag = "</a></p>\n"
 		}
 	case p.Tag == "sidebar":
-		t.out(t.starttag(node, "p", "", A{"class": "sidebar-title"}))
+		t.outTag(node, "p", "", A{"class": "sidebar-title"})
 	case admonitionTags[p.Tag]:
-		t.out(t.starttag(node, "p", "", A{"class": "admonition-title"}))
+		t.outTag(node, "p", "", A{"class": "admonition-title"})
 	case p.Tag == "table":
-		t.out(t.starttag(node, "caption", "", nil))
+		t.outTag(node, "caption", "", nil)
 		closeTag = "</caption>\n"
 	case p.Tag == "document":
-		t.out(t.starttag(node, "h1", "", A{"class": "title"}))
+		t.outTag(node, "h1", "", A{"class": "title"})
 		closeTag = "</h1>\n"
 		t.inDocumentTitle = len(t.body)
 	default:
@@ -1526,12 +1530,16 @@ func (t *htmlTranslator) departDocument(node *Node) {
 	}
 	t.bodyPrefix = append(t.bodyPrefix, t.starttag(node, t.documentTag, "\n", atts))
 	t.bodySuffix = append([]string{"</" + t.documentTag + ">\n"}, t.bodySuffix...)
-	t.fragment = append(t.fragment, t.body...)
-	t.htmlBody = append(t.htmlBody, t.bodyPrefix[1:]...)
-	t.htmlBody = append(t.htmlBody, t.bodyPreDocinfo...)
-	t.htmlBody = append(t.htmlBody, t.docinfo...)
+	t.fragment = t.body
+	for _, part := range [][]string{t.bodyPrefix[1:], t.bodyPreDocinfo, t.docinfo} {
+		for _, x := range part {
+			t.htmlBody = append(t.htmlBody, x...)
+		}
+	}
 	t.htmlBody = append(t.htmlBody, t.body...)
-	t.htmlBody = append(t.htmlBody, t.bodySuffix[:len(t.bodySuffix)-1]...)
+	for _, x := range t.bodySuffix[:len(t.bodySuffix)-1] {
+		t.htmlBody = append(t.htmlBody, x...)
+	}
 }
 
 // ---------------------------------------------------------------- images
@@ -1615,7 +1623,7 @@ func (t *htmlTranslator) visitImage4(node *Node) {
 	if isObject {
 		t.out(t.starttag(node, "object", "", atts) + alt + "</object>" + suffix)
 	} else {
-		t.out(t.emptytag(node, "img", suffix, atts))
+		t.outEmptyTag(node, "img", suffix, atts)
 	}
 }
 

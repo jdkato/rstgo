@@ -298,15 +298,15 @@ func codeBlock(d *directive, language string, content []string) []*Node {
 		tokens = numberLines(tokens, startline, endline)
 	}
 	node := newElem("literal_block", code)
-	node.Attrs["classes"] = classes
+	node.setAttr("classes", classes)
 	d.addName(node)
 	if src, ok := options["source"]; ok {
-		node.Attrs["source"] = src
+		node.setAttr("source", src)
 	}
 	for _, t := range tokens {
 		if len(t.classes) > 0 {
 			in := newTextElem("inline", t.value, t.value)
-			in.Attrs["classes"] = append([]string{}, t.classes...)
+			in.setAttr("classes", append([]string{}, t.classes...))
 			node.append(in)
 		} else {
 			node.append(newText(t.value))

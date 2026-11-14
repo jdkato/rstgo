@@ -6,13 +6,18 @@ package rstgo
 import (
 	"fmt"
 	"strings"
+	"sync"
 )
 
 type rstState struct {
 	kind  string
 	sm    *stateMachine
 	order []string
-	trans map[string]*transition
+	list  []*transition // transitions in order (shared with the prototype)
+	// shared reports that order/trans/list belong to the per-kind
+	// prototype and must be copied before modification
+	shared bool
+	trans  map[string]*transition
 
 	memo     *memo
 	document *Document
@@ -45,12 +50,36 @@ func (s *rstState) setParent(n *Node) { s.sm.node = n }
 
 func (s *rstState) gotoLine(absLineOffset int) { s.sm.gotoLine(absLineOffset) }
 
+// unshare gives the state its own transition table.
+func (s *rstState) unshare() {
+	if !s.shared {
+		return
+	}
+	trans := make(map[string]*transition, len(s.trans))
+	for k, v := range s.trans {
+		trans[k] = v
+	}
+	s.trans = trans
+	s.order = append([]string{}, s.order...)
+	s.shared = false
+}
+
+func (s *rstState) relist() {
+	s.list = make([]*transition, len(s.order))
+	for i, n := range s.order {
+		s.list[i] = s.trans[n]
+	}
+}
+
 func (s *rstState) addTransition(t *transition) {
+	s.unshare()
 	s.order = append([]string{t.name}, s.order...)
 	s.trans[t.name] = t
+	s.relist()
 }
 
 func (s *rstState) removeTransition(name string) {
+	s.unshare()
 	delete(s.trans, name)
 	for i, n := range s.order {
 		if n == name {
@@ -58,6 +87,7 @@ func (s *rstState) removeTransition(name string) {
 			break
 		}
 	}
+	s.relist()
 }
 
 // nestedParse mirrors RSTState.nested_parse with the default state machine.
@@ -320,8 +350,23 @@ func init() {
 	}
 }
 
+var stateProtos sync.Map // kind -> *rstState with the transition table
+
+// newRSTState returns a state of the given kind; the (immutable)
+// transition table is built once per kind and shared.
 func newRSTState(kind string, sm *stateMachine) *rstState {
-	s := &rstState{kind: kind, sm: sm, trans: map[string]*transition{}}
+	p, ok := stateProtos.Load(kind)
+	if !ok {
+		proto := buildRSTState(kind)
+		proto.relist()
+		p, _ = stateProtos.LoadOrStore(kind, proto)
+	}
+	proto := p.(*rstState)
+	return &rstState{kind: kind, sm: sm, order: proto.order, trans: proto.trans, list: proto.list, shared: true}
+}
+
+func buildRSTState(kind string) *rstState {
+	s := &rstState{kind: kind, trans: map[string]*transition{}}
 	add := func(name string, method transFn, next string) {
 		if next == "" {
 			next = kind

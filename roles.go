@@ -140,9 +140,9 @@ func normalizeRoleOptions(options map[string]any) map[string]any {
 func applyOptions(n *Node, options map[string]any) {
 	for k, v := range options {
 		if l, ok := v.([]string); ok {
-			n.Attrs[k] = append([]string{}, l...)
+			n.setAttr(k, append([]string{}, l...))
 		} else {
-			n.Attrs[k] = v
+			n.setAttr(k, v)
 		}
 	}
 }
@@ -307,7 +307,7 @@ func codeRole(r *role, roleName, rawtext, text string, lineno int, inl *inliner,
 		}
 	}
 	node := newTextElem("literal", rawtext, "")
-	node.Attrs["classes"] = classes
+	node.setAttr("classes", classes)
 	if v := unescape(text, true); v != "" || true {
 		node.append(newText(v))
 	}

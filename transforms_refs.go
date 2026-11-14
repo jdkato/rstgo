@@ -52,8 +52,8 @@ func xPropagateTargets(d *Document, _ *Node) {
 			continue
 		}
 		target.setAttr("refid", target.list("ids")[0])
-		target.Attrs["ids"] = []string{}
-		target.Attrs["names"] = []string{}
+		target.setAttr("ids", []string{})
+		target.setAttr("names", []string{})
 		d.noteRefid(target)
 	}
 }
@@ -552,7 +552,7 @@ func xTargetNotes(d *Document, start *Node) {
 			footnoteID := d.setID(footnote, nil, "")
 			footnoteName = "TARGET_NOTE: " + footnoteID
 			footnote.setAttr("auto", 1)
-			footnote.Attrs["names"] = []string{footnoteName}
+			footnote.setAttr("names", []string{footnoteName})
 			p := newElem("paragraph", "")
 			r := newTextElem("reference", "", refuri)
 			r.setAttr("refuri", refuri)
@@ -576,7 +576,7 @@ func xTargetNotes(d *Document, start *Node) {
 			if !d.settings.trimFootnoteRefSpace() {
 				if len(classes) > 0 {
 					in := newTextElem("inline", "", " ")
-					in.Attrs["classes"] = append([]string{}, classes...)
+					in.setAttr("classes", append([]string{}, classes...))
 					reflist = []*Node{in, refnode}
 				} else {
 					reflist = []*Node{newText(" "), refnode}
@@ -681,7 +681,7 @@ func xDanglingReferences(d *Document, _ *Node) {
 		if n.is("reference", "footnote_reference", "citation_reference") {
 			visit(n)
 		}
-		for _, c := range append([]*Node{}, n.Children...) {
+		for _, c := range n.Children {
 			walk(c)
 		}
 	}

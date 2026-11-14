@@ -125,10 +125,10 @@ func (r *reporter) systemMessage(level int, message string, children []*Node, op
 		msg.append(ch)
 	}
 	for k, v := range attrs {
-		msg.Attrs[k] = v
+		msg.setAttr(k, v)
 	}
-	msg.Attrs["level"] = level
-	msg.Attrs["type"] = levelNames[level]
+	msg.setAttr("level", level)
+	msg.setAttr("type", levelNames[level])
 	if r.stream != nil && (level >= r.reportLevel || level >= r.haltLevel) {
 		io.WriteString(r.stream, msg.astext()+"\n")
 	}

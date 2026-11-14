@@ -39,7 +39,7 @@ type stateMachine struct {
 	lineOffset   int
 	initialState string
 	currentState string
-	states       map[string]*rstState
+	states       []*rstState
 	observing    bool
 
 	matchTitles        bool
@@ -53,7 +53,7 @@ type stateMachine struct {
 
 func newStateMachine(initialState string, parent *stateMachine) *stateMachine {
 	return &stateMachine{initialState: initialState, currentState: initialState,
-		states: map[string]*rstState{}, parentSM: parent, lineOffset: -1}
+		parentSM: parent, lineOffset: -1}
 }
 
 func (sm *stateMachine) getState(next string) *rstState {
@@ -64,10 +64,16 @@ func (sm *stateMachine) getState(next string) *rstState {
 }
 
 func (sm *stateMachine) state(name string) *rstState {
-	st, ok := sm.states[name]
-	if !ok {
+	var st *rstState
+	for _, x := range sm.states {
+		if x.kind == name {
+			st = x
+			break
+		}
+	}
+	if st == nil {
 		st = newRSTState(name, sm)
-		sm.states[name] = st
+		sm.states = append(sm.states, st)
 		if sm.memo != nil {
 			st.runtimeInit()
 		}
@@ -223,7 +229,12 @@ func (sm *stateMachine) getFirstKnownIndented(indent int, untilBlank, stripInden
 
 func (sm *stateMachine) checkLine(context []string, st *rstState, transitions []string) ([]string, string) {
 	if transitions == nil {
-		transitions = st.order
+		for _, t := range st.list {
+			if m, ok := t.scan(sm.line); ok {
+				return t.method(st, m, context, t.nextState)
+			}
+		}
+		return context, ""
 	}
 	for _, name := range transitions {
 		t := st.trans[name]

@@ -228,9 +228,9 @@ func xAdmonitions(d *Document, _ *Node) {
 			adm := newElem("admonition", node.Rawsource, node.Children...)
 			for k, v := range node.Attrs {
 				if l, ok := v.([]string); ok {
-					adm.Attrs[k] = append([]string{}, l...)
+					adm.setAttr(k, append([]string{}, l...))
 				} else {
-					adm.Attrs[k] = v
+					adm.setAttr(k, v)
 				}
 			}
 			adm.insert(0, newTextElem("title", "", admonitionLabels[name]))
@@ -511,10 +511,10 @@ func (n *Node) updateAllAttsConcatenating(from *Node) {
 				}
 				continue
 			}
-			n.Attrs[k] = append([]string{}, l...)
+			n.setAttr(k, append([]string{}, l...))
 			continue
 		}
-		n.Attrs[k] = v
+		n.setAttr(k, v)
 	}
 }
 

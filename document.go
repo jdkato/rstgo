@@ -73,7 +73,7 @@ func newDocument(sourcePath string, st *settings, stderr io.Writer) *Document {
 	d.reporter = &reporter{source: sourcePath, reportLevel: st.reportLevel,
 		haltLevel: st.haltLevel, stream: stderr, maxLevel: -1}
 	d.Root = newElem("document", "")
-	d.Root.Attrs["source"] = sourcePath
+	d.Root.setAttr("source", sourcePath)
 	d.Root.doc = d
 	d.noteSource(sourcePath, true, -1, true)
 	return d

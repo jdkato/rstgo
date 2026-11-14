@@ -231,8 +231,8 @@ func runInclude(d *directive) []*Node {
 			text = pyExpandtabs(text, tabWidth)
 		}
 		lb := newElem("literal_block", "")
-		lb.Attrs["source"] = path
-		lb.Attrs["classes"] = append([]string{}, d.optClasses()...)
+		lb.setAttr("source", path)
+		lb.setAttr("classes", append([]string{}, d.optClasses()...))
 		ln := 1
 		if hasStart {
 			ln = startline + 1
@@ -249,7 +249,7 @@ func runInclude(d *directive) []*Node {
 			for _, t := range numberLines([]codeToken{{nil, text}}, firstline, lastline) {
 				if len(t.classes) > 0 {
 					in := newTextElem("inline", "", t.value)
-					in.Attrs["classes"] = append([]string{}, t.classes...)
+					in.setAttr("classes", append([]string{}, t.classes...))
 					lb.append(in)
 				} else {
 					lb.append(newText(t.value))
@@ -369,10 +369,10 @@ func runRaw(d *directive) []*Node {
 		d.assertHasContent()
 	}
 	rawNode := newTextElem("raw", "", text)
-	rawNode.Attrs["classes"] = append([]string{}, d.optClasses()...)
-	rawNode.Attrs["format"] = format
+	rawNode.setAttr("classes", append([]string{}, d.optClasses()...))
+	rawNode.setAttr("format", format)
 	if hasSource {
-		rawNode.Attrs["source"] = source
+		rawNode.setAttr("source", source)
 	}
 	rawNode.setSrcLine(d.sm.getSourceAndLine(d.lineno, true))
 	return []*Node{rawNode}
@@ -391,7 +391,7 @@ func runReplace(d *directive) []*Node {
 		if node == nil && elem.Tag == "paragraph" {
 			node = elem
 		} else if elem.Tag == "system_message" {
-			elem.Attrs["backrefs"] = []string{}
+			elem.setAttr("backrefs", []string{})
 			messages = append(messages, elem)
 		} else {
 			return []*Node{d.reporter().error(fmt.Sprintf(`Error in "%s" directive: may contain a single paragraph only.`, d.name),
@@ -410,14 +410,14 @@ func runUnicode(d *directive) []*Node {
 	}
 	subdef := d.sm.node
 	if d.hasOpt("trim") {
-		subdef.Attrs["ltrim"] = 1
-		subdef.Attrs["rtrim"] = 1
+		subdef.setAttr("ltrim", 1)
+		subdef.setAttr("rtrim", 1)
 	}
 	if d.hasOpt("ltrim") {
-		subdef.Attrs["ltrim"] = 1
+		subdef.setAttr("ltrim", 1)
 	}
 	if d.hasOpt("rtrim") {
-		subdef.Attrs["rtrim"] = 1
+		subdef.setAttr("rtrim", 1)
 	}
 	codes := pySplit(beforeUnicodeComment(d.arguments[0]))
 	var out []*Node
@@ -542,7 +542,7 @@ func (s *rstState) parsemeta(m lineMatch) *Node {
 	name = unescape(escape2null(name), false)
 	indented, _, _, _ := s.sm.getFirstKnownIndented(m.End(0), false, true, true)
 	node := newElem("meta", "")
-	node.Attrs["content"] = unescape(escape2null(strings.Join(indented.data, " ")), false)
+	node.setAttr("content", unescape(escape2null(strings.Join(indented.data, " ")), false))
 	if len(indented.data) == 0 {
 		line := s.sm.line
 		return s.reporter.info(fmt.Sprintf(`No content for meta tag "%s".`, name),
@@ -550,9 +550,9 @@ func (s *rstState) parsemeta(m lineMatch) *Node {
 	}
 	tokens := pySplit(name)
 	if attname, val, err := extractNameValue(tokens[0]); err == "" {
-		node.Attrs[strings.ToLower(attname)] = val
+		node.setAttr(strings.ToLower(attname), val)
 	} else {
-		node.Attrs["name"] = tokens[0]
+		node.setAttr("name", tokens[0])
 	}
 	for _, token := range tokens[1:] {
 		attname, val, err := extractNameValue(token)
@@ -561,7 +561,7 @@ func (s *rstState) parsemeta(m lineMatch) *Node {
 			return s.reporter.error(fmt.Sprintf(`Error parsing meta tag attribute "%s": %s.`, token, err),
 				[]*Node{newTextElem("literal_block", line, line)})
 		}
-		node.Attrs[strings.ToLower(attname)] = val
+		node.setAttr(strings.ToLower(attname), val)
 	}
 	return node
 }
