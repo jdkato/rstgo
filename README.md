@@ -190,6 +190,17 @@ nested and unterminated constructs, and `FuzzConvert` is a native fuzz
 target; none may panic or hang.
 <!-- /test-status -->
 
+## Performance
+
+`go test -bench Convert -benchmem` converts four corpus documents. On a
+generated 150 KB document (headings, paragraphs with inline markup, lists,
+code blocks, block quotes) written equivalently in reStructuredText and
+Markdown, rstgo runs at roughly 2.5 MB/s against roughly 19 MB/s for
+[goldmark](https://github.com/yuin/goldmark) on the same machine, and
+allocates about 6x as much. Most of the time and allocation is in the
+closure-based regex engine (`pyre.go`) that runs Docutils' patterns
+unchanged.
+
 ## Development
 
 ```

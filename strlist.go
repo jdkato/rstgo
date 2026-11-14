@@ -68,6 +68,22 @@ func (sl *stringList) slice(start, end int) *stringList {
 
 func (sl *stringList) from(start int) *stringList { return sl.slice(start, len(sl.data)) }
 
+// view is like from but shares sl's storage instead of copying it, which
+// keeps nested parsing of the remaining input from being quadratic. The
+// capacity is clipped so that inserting into the view reallocates rather
+// than writing into sl. Only use it for lists whose lines are never
+// assigned in place (state machine input); use slice or from otherwise.
+func (sl *stringList) view(start int) *stringList {
+	pstart := start
+	start, end := clampSlice(start, len(sl.data), len(sl.data))
+	return &stringList{
+		data:         sl.data[start:end:end],
+		items:        sl.items[start:end:end],
+		parent:       sl,
+		parentOffset: pstart,
+	}
+}
+
 // set mirrors self[i] = line (propagating to parents).
 func (sl *stringList) set(i int, line string) {
 	sl.data[i] = line

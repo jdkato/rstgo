@@ -12,6 +12,7 @@ package rstgo
 import (
 	"fmt"
 	"strings"
+	"sync"
 	"unicode"
 	"unicode/utf8"
 )
@@ -29,6 +30,47 @@ type reState struct {
 	s     string
 	caps  []int
 	steps int
+	// accept is the final continuation; it is allocated once per state so
+	// that a match attempt allocates nothing.
+	accept func(int) bool
+	full   bool
+	end    int
+}
+
+// getState returns a reusable matcher state for s.
+func (re *pyRegexp) getState(s string, full bool) *reState {
+	st, _ := re.pool.Get().(*reState)
+	if st == nil {
+		st = &reState{caps: make([]int, 2*re.ncap)}
+		st.accept = func(p int) bool {
+			if st.full && p != len(st.s) {
+				return false
+			}
+			st.end = p
+			return true
+		}
+	}
+	st.s, st.full, st.steps = s, full, 0
+	return st
+}
+
+func (re *pyRegexp) putState(st *reState) {
+	st.s = ""
+	re.pool.Put(st)
+}
+
+// attempt tries to match at pos using st, returning the match or nil.
+func (re *pyRegexp) attempt(st *reState, pos int) *pyMatch {
+	for i := range st.caps {
+		st.caps[i] = -1
+	}
+	if !re.prog(st, pos, st.accept) {
+		return nil
+	}
+	caps := make([]int, len(st.caps))
+	copy(caps, st.caps)
+	caps[0], caps[1] = pos, st.end
+	return &pyMatch{re: re, s: st.s, caps: caps}
 }
 
 type reFunc func(st *reState, pos int, k func(int) bool) bool
@@ -40,6 +82,17 @@ type reNode struct {
 	fn    reFunc
 	one   runeTest // non-nil if node matches exactly one rune
 	width int      // fixed width in runes, -1 if variable
+	// zw is non-nil for zero-width assertions: it reports whether the
+	// assertion holds at pos. Like one, it lets sequences chain the node
+	// without allocating a continuation.
+	zw func(st *reState, pos int) bool
+}
+
+// zwNode builds a zero-width assertion node from its test.
+func zwNode(zw func(st *reState, pos int) bool) reNode {
+	return reNode{width: 0, zw: zw, fn: func(st *reState, pos int, k func(int) bool) bool {
+		return zw(st, pos) && k(pos)
+	}}
 }
 
 type pyRegexp struct {
@@ -52,6 +105,8 @@ type pyRegexp struct {
 	// quick rejects whole subjects, prefilter rejects start positions.
 	quick     func(s string) bool
 	prefilter func(s string, pos int) bool
+
+	pool sync.Pool // idle *reState values
 }
 
 type pyMatch struct {
@@ -84,23 +139,10 @@ func (m *pyMatch) StartNamed(name string) int {
 func (m *pyMatch) EndNamed(name string) int { return m.End(m.idx(name)) }
 
 func (re *pyRegexp) run(s string, pos int, full bool) *pyMatch {
-	st := &reState{s: s, caps: make([]int, 2*re.ncap)}
-	for i := range st.caps {
-		st.caps[i] = -1
-	}
-	end := -1
-	ok := re.prog(st, pos, func(p int) bool {
-		if full && p != len(s) {
-			return false
-		}
-		end = p
-		return true
-	})
-	if !ok {
-		return nil
-	}
-	st.caps[0], st.caps[1] = pos, end
-	return &pyMatch{re: re, s: s, caps: st.caps}
+	st := re.getState(s, full)
+	m := re.attempt(st, pos)
+	re.putState(st)
+	return m
 }
 
 // Match is like Python's pattern.match(s).
@@ -119,9 +161,13 @@ func (re *pyRegexp) SearchFrom(s string, pos int) *pyMatch {
 	if re.quick != nil && !re.quick(s[pos:]) {
 		return nil
 	}
+	st := re.getState(s, false)
+	defer re.putState(st)
 	for {
 		if re.prefilter == nil || re.prefilter(s, pos) {
-			if m := re.run(s, pos, false); m != nil {
+			// the step budget applies to each start position
+			st.steps = 0
+			if m := re.attempt(st, pos); m != nil {
 				return m
 			}
 		}
@@ -330,6 +376,30 @@ func (p *reParser) parseSeq() reNode {
 	fn := items[len(items)-1].fn
 	for i := len(items) - 2; i >= 0; i-- {
 		a, b := items[i].fn, fn
+		if t := items[i].one; t != nil {
+			// a single-rune item cannot backtrack, so no continuation
+			// closure is needed to chain it to the rest
+			fn = func(st *reState, pos int, k func(int) bool) bool {
+				if pos >= len(st.s) {
+					return false
+				}
+				r, w := rune(st.s[pos]), 1
+				if r >= utf8.RuneSelf {
+					r, w = utf8.DecodeRuneInString(st.s[pos:])
+				}
+				if !t(r) {
+					return false
+				}
+				return b(st, pos+w, k)
+			}
+			continue
+		}
+		if zw := items[i].zw; zw != nil {
+			fn = func(st *reState, pos int, k func(int) bool) bool {
+				return zw(st, pos) && b(st, pos, k)
+			}
+			continue
+		}
 		fn = func(st *reState, pos int, k func(int) bool) bool {
 			return a(st, pos, func(p int) bool { return b(st, p, k) })
 		}
@@ -727,20 +797,14 @@ func (p *reParser) parseAtom() reNode {
 		return reNode{fn: oneFn(t), one: t, width: 1}
 	case '^':
 		ml := p.flags&reMultiline != 0
-		return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
-			if pos == 0 || (ml && st.s[pos-1] == '\n') {
-				return k(pos)
-			}
-			return false
-		}}
+		return zwNode(func(st *reState, pos int) bool {
+			return pos == 0 || (ml && st.s[pos-1] == '\n')
+		})
 	case '$':
 		ml := p.flags&reMultiline != 0
-		return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
-			if pos == len(st.s) || (pos == len(st.s)-1 && st.s[pos] == '\n') || (ml && st.s[pos] == '\n') {
-				return k(pos)
-			}
-			return false
-		}}
+		return zwNode(func(st *reState, pos int) bool {
+			return pos == len(st.s) || (pos == len(st.s)-1 && st.s[pos] == '\n') || (ml && st.s[pos] == '\n')
+		})
 	case '[':
 		return p.parseClass()
 	case '(':
@@ -755,7 +819,7 @@ func (p *reParser) parseAtom() reNode {
 		case 'b', 'B':
 			p.pos++
 			want := e == 'b'
-			return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
+			return zwNode(func(st *reState, pos int) bool {
 				before, after := false, false
 				if pos > 0 {
 					r, _ := utf8.DecodeLastRuneInString(st.s[:pos])
@@ -765,21 +829,14 @@ func (p *reParser) parseAtom() reNode {
 					r, _ := utf8.DecodeRuneInString(st.s[pos:])
 					after = isPyWord(r)
 				}
-				if (before != after) == want {
-					return k(pos)
-				}
-				return false
-			}}
+				return (before != after) == want
+			})
 		case 'A':
 			p.pos++
-			return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
-				return pos == 0 && k(pos)
-			}}
+			return zwNode(func(st *reState, pos int) bool { return pos == 0 })
 		case 'Z':
 			p.pos++
-			return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
-				return pos == len(st.s) && k(pos)
-			}}
+			return zwNode(func(st *reState, pos int) bool { return pos == len(st.s) })
 		}
 		if e >= '1' && e <= '9' {
 			p.pos++
@@ -821,13 +878,9 @@ func (p *reParser) parseGroup() reNode {
 			p.expect(')')
 			inner := n.fn
 			neg := c == '!'
-			return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
-				ok := inner(st, pos, func(int) bool { return true })
-				if ok == neg {
-					return false
-				}
-				return k(pos)
-			}}
+			return zwNode(func(st *reState, pos int) bool {
+				return inner(st, pos, func(int) bool { return true }) != neg
+			})
 		case '<':
 			c2 := p.peek()
 			p.pos++
@@ -842,7 +895,7 @@ func (p *reParser) parseGroup() reNode {
 			inner := n.fn
 			width := n.width
 			neg := c2 == '!'
-			return reNode{width: 0, fn: func(st *reState, pos int, k func(int) bool) bool {
+			return zwNode(func(st *reState, pos int) bool {
 				start := pos
 				ok := true
 				for i := 0; i < width; i++ {
@@ -856,11 +909,8 @@ func (p *reParser) parseGroup() reNode {
 				if ok {
 					ok = inner(st, start, func(q int) bool { return q == pos })
 				}
-				if ok == neg {
-					return false
-				}
-				return k(pos)
-			}}
+				return ok != neg
+			})
 		case 'P':
 			c2 := p.peek()
 			p.pos++

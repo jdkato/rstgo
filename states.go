@@ -210,7 +210,9 @@ func (s *rstState) paragraph(lines []string, lineno int) ([]*Node, bool) {
 	data := pyRstrip(strings.Join(lines, "\n"))
 	var text string
 	literalnext := false
-	if paragraphLiteralRe.Search(data) != nil {
+	// data has no trailing whitespace, so the pattern can only match a
+	// final "::"; checking that first avoids scanning every paragraph
+	if strings.HasSuffix(data, "::") && paragraphLiteralRe.Search(data) != nil {
 		if len(data) == 2 {
 			return nil, true
 		} else if c := data[len(data)-3]; c == ' ' || c == '\n' {
@@ -549,7 +551,7 @@ func bodyBullet(s *rstState, m *pyMatch, context []string, nextState string) ([]
 	i, blankFinish := s.listItem(m.End(0))
 	ul.append(i)
 	offset := s.sm.lineOffset + 1
-	newLineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.from(offset),
+	newLineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
 		s.sm.absLineOffset()+1, ul, "BulletList", blankFinish, nestedListOpts{})
 	s.gotoLine(newLineOffset)
 	if !blankFinish {
@@ -600,7 +602,7 @@ func bodyEnumerator(s *rstState, m *pyMatch, context []string, nextState string)
 	listitem, blankFinish := s.listItem(m.End(0))
 	enumlist.append(listitem)
 	offset := s.sm.lineOffset + 1
-	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.from(offset),
+	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
 		s.sm.absLineOffset()+1, enumlist, "EnumeratedList", blankFinish,
 		nestedListOpts{lastordinal: ordinal, format: format, auto: sequence == "#"})
 	s.gotoLine(newlineOffset)
@@ -723,7 +725,7 @@ func bodyFieldMarker(s *rstState, m *pyMatch, context []string, nextState string
 	field, blankFinish := s.field(m)
 	fieldList.append(field)
 	offset := s.sm.lineOffset + 1
-	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.from(offset),
+	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
 		s.sm.absLineOffset()+1, fieldList, "FieldList", blankFinish, nestedListOpts{})
 	s.gotoLine(newlineOffset)
 	if !blankFinish {
@@ -789,7 +791,7 @@ func bodyOptionMarker(s *rstState, m *pyMatch, context []string, nextState strin
 	s.parent().append(optionlist)
 	optionlist.append(listitem)
 	offset := s.sm.lineOffset + 1
-	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.from(offset),
+	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
 		s.sm.absLineOffset()+1, optionlist, "OptionList", blankFinish, nestedListOpts{})
 	s.gotoLine(newlineOffset)
 	if !blankFinish {
@@ -877,7 +879,7 @@ func bodyLineBlock(s *rstState, m *pyMatch, context []string, nextState string) 
 	if !blankFinish {
 		offset := s.sm.lineOffset + 1
 		var newLineOffset int
-		newLineOffset, blankFinish = s.nestedListParse(s.sm.inputLines.from(offset),
+		newLineOffset, blankFinish = s.nestedListParse(s.sm.inputLines.view(offset),
 			s.sm.absLineOffset()+1, block, "LineBlock", false, nestedListOpts{})
 		s.gotoLine(newLineOffset)
 	}

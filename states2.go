@@ -642,7 +642,7 @@ func (s *rstState) explicitConstruct(m *pyMatch) ([]*Node, bool) {
 
 func (s *rstState) explicitList(blankFinish bool) {
 	offset := s.sm.lineOffset + 1
-	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.from(offset),
+	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
 		s.sm.absLineOffset()+1, s.parent(), "Explicit", blankFinish, nestedListOpts{})
 	s.gotoLine(newlineOffset)
 	if !blankFinish {
@@ -800,7 +800,7 @@ func textIndent(s *rstState, m *pyMatch, context []string, nextState string) ([]
 	dl.append(dlItem)
 	s.parent().append(dl)
 	offset := s.sm.lineOffset + 1
-	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.from(offset),
+	newlineOffset, blankFinish := s.nestedListParse(s.sm.inputLines.view(offset),
 		s.sm.absLineOffset()+1, dl, "DefinitionList", blankFinish,
 		nestedListOpts{blankFinishState: "Definition"})
 	s.gotoLine(newlineOffset)
@@ -886,7 +886,7 @@ func (s *rstState) quotedLiteralBlock() []*Node {
 	absLineOffset := s.sm.absLineOffset()
 	offset := s.sm.lineOffset
 	parentNode := newElem("Element", "")
-	newAbsOffset := s.nestedParseWith(s.sm.inputLines.from(offset), absLineOffset, parentNode, false, "QuotedLiteralBlock")
+	newAbsOffset := s.nestedParseWith(s.sm.inputLines.view(offset), absLineOffset, parentNode, false, "QuotedLiteralBlock")
 	s.gotoLine(newAbsOffset)
 	return parentNode.Children
 }
