@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_strip_comments.py",
+ "cases": [
+  {
+   "name": "strip_comments/0",
+   "input": ".. this is a comment\n\nTitle\n=====\n\nParagraph.\n\n.. second comment\n"
+  }
+ ]
+}

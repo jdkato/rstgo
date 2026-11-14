@@ -1,0 +1,2 @@
+testdata/fixtures/indent_nonascii.rst:19: (WARNING/2) Enumerated list ends without a blank line; unexpected unindent.
+testdata/fixtures/indent_nonascii.rst:34: (WARNING/2) Duplicate explicit target name: "é".

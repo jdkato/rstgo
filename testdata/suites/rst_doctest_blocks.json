@@ -1,0 +1,17 @@
+{
+ "origin": "test/test_parsers/test_rst/test_doctest_blocks.py",
+ "cases": [
+  {
+   "name": "doctest_blocks/0",
+   "input": "Paragraph.\n\n>>> print(\"Doctest block.\")\nDoctest block.\n\nParagraph.\n"
+  },
+  {
+   "name": "doctest_blocks/1",
+   "input": "Paragraph.\n\n>>> print(\"    Indented output.\")\n    Indented output.\n"
+  },
+  {
+   "name": "doctest_blocks/2",
+   "input": "Paragraph.\n\n    >>> print(\"    Indented block & output.\")\n        Indented block & output.\n"
+  }
+ ]
+}

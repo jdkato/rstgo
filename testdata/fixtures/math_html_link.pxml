@@ -1,0 +1,16 @@
+<document ids="math-as-html-with-a-linked-stylesheet" names="math\ as\ html\ with\ a\ linked\ stylesheet" source="testdata/fixtures/math_html_link.rst" title="Math as HTML with a linked stylesheet">
+    <title>
+        Math as HTML with a linked stylesheet
+    <paragraph>
+        With 
+        <literal>
+            embed_stylesheet
+         off, 
+        <literal>
+            math.css
+         is linked:
+        <math>
+            \frac{a}{b}
+         and
+    <math_block xml:space="preserve">
+        \left( \begin{matrix} a \\ b \end{matrix} \right)

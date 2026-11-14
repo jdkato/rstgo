@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>images.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<img alt="testdata/fixtures/square.png" src="testdata/fixtures/square.png" style="width: 16.0px; height: 16.0px;" />
+<img alt="testdata/fixtures/square.png" src="testdata/fixtures/square.png" style="width: 20.0px; height: 64.0px;" />
+<img alt="missing.png" src="missing.png" />
+<a class="reference external image-reference" href="http://example.org/">
+<img alt="testdata/fixtures/square.png" src="testdata/fixtures/square.png" style="width: 50%; height: 2em;" />
+</a>
+<object class="controls" data="movie.mp4" type="video/mp4">movie.mp4</object>
+<object data="drawing.svg" type="image/svg+xml">SVG</object>
+<div class="figure align-right" style="width: 32px">
+<img alt="testdata/fixtures/square.png" src="testdata/fixtures/square.png" />
+<p class="caption">Caption</p>
+</div>
+<p id="fig-target">Inline <img alt="sq" class="align-middle" src="testdata/fixtures/square.png" style="width: 3.2px; height: 3.2px;" /> image and a <a class="reference external" href="http://e.org">link around image</a>.</p>
+</div>
+</body>
+</html>

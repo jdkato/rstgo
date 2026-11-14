@@ -1,0 +1,7 @@
+testdata/fixtures/class_pending_no_target.rst:None: (ERROR/3) No suitable element following "class" directive
+
+.. class:: quoted
+
+testdata/fixtures/class_pending_no_target.rst:12: (ERROR/3) No suitable element following "class" directive
+
+.. class:: last

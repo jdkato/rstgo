@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>nested.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<ul>
+<li><p>a</p>
+<ul>
+<li><p>b</p>
+<ul>
+<li><p>c</p>
+<ol class="arabic">
+<li><p>d</p>
+<ol class="loweralpha">
+<li><p>e</p>
+<dl>
+<dt>term</dt>
+<dd><p>def</p>
+<dl class="field-list">
+<dt>field<span class="colon">:</span></dt>
+<dd><p>value</p>
+<p>quote</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/nested.rst</span>, line 21)</p>
+<p>Malformed table.
+Right border not aligned or missing.</p>
+<pre class="literal-block">+---+---+
+| x | y |
++---+---+
+| - list in cell
+| - two |
++---+---+</pre>
+</aside>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<aside class="admonition warning">
+<p class="admonition-title">Warning</p>
+<aside class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>deep</p>
+<pre class="literal-block">literal</pre>
+</aside>
+</aside>
+</aside>
+</li>
+</ul>
+<aside class="admonition admonition-outer">
+<p class="admonition-title">Outer</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/nested.rst</span>, line 37)</p>
+<p>The &quot;topic&quot; directive may not be used within topics or body elements.</p>
+<pre class="literal-block">.. topic:: Not allowed here
+
+   text
+</pre>
+</aside>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/nested.rst</span>, line 41)</p>
+<p>The &quot;sidebar&quot; directive may not be used within topics or body elements.</p>
+<pre class="literal-block">.. sidebar:: Nor here
+
+   text</pre>
+</aside>
+</aside>
+<section id="title">
+<h2>Title</h2>
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/nested.rst</span>, line 51)</p>
+<p>Unexpected section title.</p>
+<pre class="literal-block">Section in note
+---------------</pre>
+</aside>
+<p>text</p>
+</aside>
+</section>
+</main>
+</body>
+</html>

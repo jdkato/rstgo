@@ -1,0 +1,15 @@
+testdata/fixtures/nested.rst:21: (ERROR/3) Malformed table.
+Right border not aligned or missing.
+
++---+---+
+| x | y |
++---+---+
+| - list in cell
+| - two |
++---+---+
+testdata/fixtures/nested.rst:37: (ERROR/3) The "topic" directive may not be used within topics or body elements.
+testdata/fixtures/nested.rst:41: (ERROR/3) The "sidebar" directive may not be used within topics or body elements.
+testdata/fixtures/nested.rst:51: (ERROR/3) Unexpected section title.
+
+Section in note
+---------------

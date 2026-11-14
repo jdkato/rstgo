@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>garbled.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/garbled.rst</span>, line 1)</p>
+<p>Title overline &amp; underline mismatch.</p>
+<pre class="literal-block">=====
+ x
+==</pre>
+</aside>
+<p><a href="#system-message-1"><span class="problematic" id="problematic-1">``</span></a></p>
+<aside class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/garbled.rst</span>, line 5); <em><a href="#problematic-1">backlink</a></em></p>
+<p>Inline literal start-string without end-string.</p>
+</aside>
+<p><a href="#system-message-2"><span class="problematic" id="problematic-2">**</span></a></p>
+<aside class="system-message" id="system-message-2">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/garbled.rst</span>, line 7); <em><a href="#problematic-2">backlink</a></em></p>
+<p>Inline strong start-string without end-string.</p>
+</aside>
+<!--  -->
+<!--  -->
+<!-- _ -->
+<!-- | -->
+<!-- [ -->
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/garbled.rst</span>, line 14)</p>
+<p>Footnote content expected.</p>
+</aside>
+</aside>
+</aside>
+<!-- [#]_ x -->
+<p id="target-2"><span id="target-1"></span>:</p>
+<pre class="literal-block">:field</pre>
+<ul class="simple">
+<li></li>
+</ul>
+<ol class="arabic simple">
+<li></li>
+</ol>
+<p>(1</p>
+<p>+--</p>
+<p>+--+</p>
+<p>==</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/garbled.rst</span>, line 45)</p>
+<p>Malformed table.
+No bottom table border found.</p>
+<pre class="literal-block">== ==
+
+|
+
+|
+
+&gt;&gt;&gt;
+
+-o
+
+--
+
+`
+
+`x
+
+x`_
+
+_`
+
+|x
+
+[1]_
+
+\
+
+\\
+
+.. |a| replace:: |a|
+
+|a|
+
+.. |b| replace:: |c|
+.. |c| replace:: |b|
+
+|b|
+
+.. _a: b_
+.. _b: a_
+
+a_</pre>
+</aside>
+<section class="system-messages">
+<h2>Docutils System Messages</h2>
+<aside class="system-message" id="system-message-3">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/garbled.rst</span>, line 86)</p>
+<p>Anonymous hyperlink mismatch: 0 references but 2 targets.
+See &quot;backrefs&quot; attribute for IDs.</p>
+</aside>
+</section>
+</main>
+</body>
+</html>

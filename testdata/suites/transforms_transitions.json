@@ -1,0 +1,57 @@
+{
+ "origin": "test/test_transforms/test_transitions.py",
+ "cases": [
+  {
+   "name": "transitions/0",
+   "input": "Section 1\n=========\n\nSubsection 1\n------------\n\nA transition at the end of a section is moved behind the section.\n\n----------\n\nSection 2\n=========\n\nSome text.\n"
+  },
+  {
+   "name": "transitions/1",
+   "input": "A paragraph.\n\n----------\n\nSection 1\n=========\n\nParagraph.\n"
+  },
+  {
+   "name": "transitions/2",
+   "input": "--------\n\nA system message warns about invalid placement of transitions.\n"
+  },
+  {
+   "name": "transitions/3",
+   "input": "rST and Doctree specifications say ...\n\n--------\n\n--------\n\n... that two transitions should not be adjacent.\n"
+  },
+  {
+   "name": "transitions/4",
+   "input": "The specs also say that a section or document\nmay not end with a transition.\n\n--------\n"
+  },
+  {
+   "name": "transitions/5",
+   "input": "Moving and invisible elements don't count.\n\n----------\n\n.. meta:: :keywords: transition test\n.. footer:: will move away\n.. _anchor:\n.. |substitution reference| replace:: is invisible\n"
+  },
+  {
+   "name": "transitions/6",
+   "input": "Sections with transitions at beginning and end.\n\nSection 1\n=========\n\n----------\n\n.. Comment after transition.\n\nSection 2\n=========\n\nSome text before the transition.\n\n----------\n"
+  },
+  {
+   "name": "transitions/7",
+   "input": "A paragraph and two transitions.\n\n----------\n\n----------\n"
+  },
+  {
+   "name": "transitions/8",
+   "input": "A paragraph, two transitions, and a blank line.\n\n----------\n\n----------\n\n"
+  },
+  {
+   "name": "transitions/9",
+   "input": "----------\n\nDocument beginning with a transition.\n"
+  },
+  {
+   "name": "transitions/10",
+   "input": ".. class:: classy\n.. meta:: :keywords: transition test\n.. footer:: will move away\n.. _anchor:\n.. |substitution reference| replace:: is invisible\n\n----------\n\nDocument beginning with a transition (title, moving elements,\nand invisible elements don't count).\n"
+  },
+  {
+   "name": "transitions/11",
+   "input": "Section 1\n=========\n\n----------\n\n----------\n\n----------\n\nSection 2\n=========\n"
+  },
+  {
+   "name": "transitions/12",
+   "input": "----------\n\n----------\n\n----------\n"
+  }
+ ]
+}

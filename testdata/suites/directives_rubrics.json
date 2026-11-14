@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_rubrics.py",
+ "cases": [
+  {
+   "name": "rubrics/0",
+   "input": ".. rubric:: This is a rubric\n"
+  },
+  {
+   "name": "rubrics/1",
+   "input": ".. rubric::\n.. rubric:: A rubric has no content\n\n   Invalid content\n"
+  },
+  {
+   "name": "rubrics/2",
+   "input": ".. rubric:: A rubric followed by a block quote\n..\n\n   Block quote\n"
+  },
+  {
+   "name": "rubrics/3",
+   "input": ".. rubric:: A Rubric\n   :class: foo bar\n   :name: Foo Rubric\n"
+  }
+ ]
+}

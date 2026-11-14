@@ -1,0 +1,125 @@
+{
+ "origin": "test/test_parsers/test_rst/test_interpreted.py",
+ "cases": [
+  {
+   "name": "basics/0",
+   "input": "`interpreted`\n"
+  },
+  {
+   "name": "basics/1",
+   "input": ":title:`interpreted`\n"
+  },
+  {
+   "name": "basics/2",
+   "input": "`interpreted`:title:\n"
+  },
+  {
+   "name": "basics/3",
+   "input": "\n`interpreted \\`title``\n"
+  },
+  {
+   "name": "basics/4",
+   "input": ":title:`:not-role: interpreted`\n"
+  },
+  {
+   "name": "basics/5",
+   "input": "\n`interpreted` but not \\`interpreted` [`] or ({[`] or [`]}) or `\n"
+  },
+  {
+   "name": "basics/6",
+   "input": "`interpreted`-text `interpreted`: text `interpreted`:text `text`'s interpreted\n"
+  },
+  {
+   "name": "basics/7",
+   "input": "`interpreted without closing backquote\n"
+  },
+  {
+   "name": "basics/8",
+   "input": "`interpreted`:not a role if it contains whitespace:\n"
+  },
+  {
+   "name": "basics/9",
+   "input": ":title:`` (empty interpreted text not recognized)\n"
+  },
+  {
+   "name": "basics/10",
+   "input": "\n:title:`\\ ` (interpreted text containing empty string)\n"
+  },
+  {
+   "name": "basics/11",
+   "input": "\n`\\ `:title: (interpreted text containing empty string (postfix))\n"
+  },
+  {
+   "name": "basics/12",
+   "input": "\n:title:`\\ non-empty`\n"
+  },
+  {
+   "name": "basics/13",
+   "input": "\n:title:`\\  ` (trailing unquoted space)\n"
+  },
+  {
+   "name": "basics/14",
+   "input": "Explicit roles for standard inline markup:\n:emphasis:`emphasis`,\n:strong:`strong`,\n:literal:`inline literal text`.\n"
+  },
+  {
+   "name": "basics/15",
+   "input": "Simple explicit roles:\n:ab:`abbreviation`,\n:ac:`acronym`,\n:sup:`superscript`,\n:sub:`subscript`,\n:title:`title reference`.\n"
+  },
+  {
+   "name": "code/0",
+   "input": "\nCode role for inline code snippets:\n:code:`$\\alpha = \\int_0^\\infty f(x) dx$`.\n"
+  },
+  {
+   "name": "code_parsing/0",
+   "input": ".. role:: tex(code)\n   :language: latex\n\nCustom role based on code role:\n:tex:`$\u0007lpha = f(x)$`.\n"
+  },
+  {
+   "name": "code_parsing/1",
+   "input": "Custom role based on code role:\n\n.. role:: python(code)\n   :class: testclass\n\nPython code :python:`print(\"The end\")`.\n"
+  },
+  {
+   "name": "code_parsing/2",
+   "input": "Turn off syntax highlight with language \"none\".\n\n.. role:: python(code)\n   :language: none\n\nPython code :python:`print(\"The end\")`.\n"
+  },
+  {
+   "name": "references/0",
+   "input": ":PEP:`0`\n"
+  },
+  {
+   "name": "references/1",
+   "input": ":PEP:`-1`\n"
+  },
+  {
+   "name": "references/2",
+   "input": ":RFC:`2822`\n"
+  },
+  {
+   "name": "references/3",
+   "input": ":RFC:`0`\n"
+  },
+  {
+   "name": "references/4",
+   "input": ":RFC:`2822#section1`\n"
+  },
+  {
+   "name": "unknown_roles/0",
+   "input": ":role:`interpreted`\n"
+  },
+  {
+   "name": "unknown_roles/1",
+   "input": "`interpreted`:role:\n"
+  },
+  {
+   "name": "unknown_roles/2",
+   "input": ":role:`interpreted`:role:\n"
+  },
+  {
+   "name": "unknown_roles/3",
+   "input": ":very.long-role_name:`interpreted`\n"
+  },
+  {
+   "name": "unknown_roles/4",
+   "input": ":restructuredtext-unimplemented-role:`interpreted`\n"
+  }
+ ]
+}

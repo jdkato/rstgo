@@ -1,0 +1,45 @@
+{
+ "origin": "test/test_transforms/test_doctitle.py",
+ "cases": [
+  {
+   "name": "section_headers/0",
+   "input": ".. test title promotion\n\nTitle\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/1",
+   "input": "Title\n=====\nParagraph (no blank line).\n"
+  },
+  {
+   "name": "section_headers/2",
+   "input": "Paragraph.\n\nTitle\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/3",
+   "input": "Title\n=====\n\nSubtitle\n--------\n\n.. title:: Another Title\n\nTest title, subtitle, and title metadata.\n"
+  },
+  {
+   "name": "section_headers/4",
+   "input": "Title\n====\n\nTest short underline.\n"
+  },
+  {
+   "name": "section_headers/5",
+   "input": "=======\n Long    Title\n=======\n\nTest long title and space normalization.\nThe system_message should move after the document title\n(it was before the beginning of the section).\n"
+  },
+  {
+   "name": "section_headers/6",
+   "input": ".. Test multiple second-level titles.\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n-------\nParagraph 3.\n"
+  },
+  {
+   "name": "section_headers/7",
+   "input": ".. |foo| replace:: bar\n\n.. _invisible target:\n\nTitle\n=====\nThis title should be the document title despite the\nsubstitution_definition.\n"
+  },
+  {
+   "name": "section_headers/8",
+   "input": "(Because of this paragraph, the following is not a doc title.)\n\n===============\n Section Title\n===============\n\nSubtitle\n========\n\n-----------------\n Another Section\n-----------------\n\nAnother Subtitle\n----------------\n\n"
+  },
+  {
+   "name": "section_headers/9",
+   "input": "-----\nTitle\n-----\n\nThis is a document, it flows nicely, so the attributes of it are at the\nbottom.\n\n.. add-name-to-title::\n\n"
+  }
+ ]
+}

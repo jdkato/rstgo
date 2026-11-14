@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_parsers/test_rst/test_interpreted_fr.py",
+ "cases": [
+  {
+   "name": "basics/0",
+   "input": "Simple explicit roles and english fallbacks:\n:acronym:`acronym`,\n:exp:`superscript`,\n:ind:`subscript`,\n:titre:`title reference`.\n"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_class.py",
+ "cases": [
+  {
+   "name": "class/0",
+   "input": ".. class:: class1  class2\n"
+  },
+  {
+   "name": "class/1",
+   "input": ".. class:: class1  class2\n\n   The classes are applied to this paragraph.\n\n   And this one.\n"
+  },
+  {
+   "name": "class/2",
+   "input": ".. rst-class:: class1  class2\n..\n\n   The classes will be applied to this block quote.\n"
+  }
+ ]
+}

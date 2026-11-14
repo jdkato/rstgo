@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_strip_elements_with_class.py",
+ "cases": [
+  {
+   "name": "strip_spam/0",
+   "input": "not classy\n\n.. class:: spam\n\nthis is spam\n\n.. class:: ham noise\n\nthis is ham\n\n.. code::\n   :class: spam\n   \n   print(\"spam\")\n   \n.. image:: spam.jpg\n   :class: spam\n\nthis is not ham\n"
+  }
+ ]
+}

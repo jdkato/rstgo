@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_filter.py",
+ "cases": [
+  {
+   "name": "meta/0",
+   "input": ".. meta::\n   :description: The reStructuredText plaintext markup language\n   :keywords: plaintext,markup language\n"
+  }
+ ]
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>nested.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<ul>
+<li><p class="first">a</p>
+<ul>
+<li><p class="first">b</p>
+<ul>
+<li><p class="first">c</p>
+<ol class="arabic">
+<li><p class="first">d</p>
+<ol class="loweralpha">
+<li><p class="first">e</p>
+<dl class="docutils">
+<dt>term</dt>
+<dd><p class="first">def</p>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">field:</th><td class="field-body"><p class="first">value</p>
+<p>quote</p>
+<div class="last system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/nested.rst</tt>, line 21)</p>
+<p>Malformed table.
+Right border not aligned or missing.</p>
+<pre class="literal-block">
++---+---+
+| x | y |
++---+---+
+| - list in cell
+| - two |
++---+---+
+</pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="admonition warning last">
+<p class="first admonition-title">Warning</p>
+<div class="admonition tip last">
+<p class="first admonition-title">Tip</p>
+<p>deep</p>
+<pre class="last literal-block">
+literal
+</pre>
+</div>
+</div>
+</div>
+</li>
+</ul>
+<div class="admonition admonition-outer">
+<p class="first admonition-title">Outer</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/nested.rst</tt>, line 37)</p>
+<p>The &quot;topic&quot; directive may not be used within topics or body elements.</p>
+<pre class="literal-block">
+.. topic:: Not allowed here
+
+   text
+
+</pre>
+</div>
+<div class="last system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/nested.rst</tt>, line 41)</p>
+<p>The &quot;sidebar&quot; directive may not be used within topics or body elements.</p>
+<pre class="literal-block">
+.. sidebar:: Nor here
+
+   text
+</pre>
+</div>
+</div>
+<div class="section" id="title">
+<h1>Title</h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/nested.rst</tt>, line 51)</p>
+<p>Unexpected section title.</p>
+<pre class="literal-block">
+Section in note
+---------------
+</pre>
+</div>
+<p class="last">text</p>
+</div>
+</div>
+</div>
+</body>
+</html>

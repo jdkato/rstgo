@@ -1,0 +1,33 @@
+{
+ "origin": "test/test_transforms/test_docinfo.py",
+ "cases": [
+  {
+   "name": "bibliographic_field_lists/0",
+   "input": ".. Bibliographic element extraction.\n\n:Abstract:\n    There can only be one abstract.\n\n    It is automatically moved to the end of the other bibliographic elements.\n\n:Author: E. *Xample*\n\n:Version: 1\n\n:Date: 2001-08-11\n\n:Parameter i: integer\n"
+  },
+  {
+   "name": "bibliographic_field_lists/1",
+   "input": ".. Bibliographic element extraction.\n\n:Abstract: Abstract 1.\n:Author: Me\n:Address: 123 My Street\n          Example, EX\n:Contact: me@my.org\n:Version: 1\n:Abstract: Abstract 2 (should generate a warning).\n:Date: 2001-08-11\n:Parameter i: integer\n"
+  },
+  {
+   "name": "bibliographic_field_lists/2",
+   "input": ":Author: - must be a paragraph\n:Status: a *simple* paragraph\n:Date: But only one\n\n       paragraph.\n:Version:\n\n.. and not empty either\n"
+  },
+  {
+   "name": "bibliographic_field_lists/3",
+   "input": ":Authors: Me, Myself, **I**\n:Authors: PacMan; Ms. PacMan; PacMan, Jr.\n:Authors:\n    Here\n\n    There\n\n    *Everywhere*\n:Authors: - First\n          - Second\n          - Third\n"
+  },
+  {
+   "name": "bibliographic_field_lists/4",
+   "input": ":Authors: Only One\n:Authors: One, Only;\n"
+  },
+  {
+   "name": "bibliographic_field_lists/5",
+   "input": ":Authors: Me\\, Myself; **I**\n:Authors: Pac\\;Man\\\\; Ms. Pac\\Man; Pac\\ Man, Jr.\n:Authors:\n    Here\n\n    The\\re\n\n    *Every\\ where*\n:Authors: - First\\\\\n          - Se\\ cond\n          - Thir\\d\n"
+  },
+  {
+   "name": "bibliographic_field_lists/6",
+   "input": ":Authors:\n\n:Authors: A. Einstein\n          B. Shaw\n\n:Authors:\n    -\n    -\n\n:Authors:\n    - One\n\n    Two\n\n:Authors:\n    - One\n\n      Two\n"
+  }
+ ]
+}

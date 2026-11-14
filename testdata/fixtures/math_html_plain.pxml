@@ -1,0 +1,17 @@
+<document ids="math-as-html-without-a-stylesheet" names="math\ as\ html\ without\ a\ stylesheet" source="testdata/fixtures/math_html_plain.rst" title="Math as HTML without a stylesheet">
+    <title>
+        Math as HTML without a stylesheet
+    <paragraph>
+        The 
+        <literal>
+            math_output
+         setting is 
+        <literal>
+            HTML
+         (no stylesheet option) for both HTML
+        writers: 
+        <math>
+            \frac{a}{b} + \sqrt{x}
+         and
+    <math_block xml:space="preserve">
+        \sum_{i=1}^n \left( \begin{matrix} a_i \\ b_i \end{matrix} \right)

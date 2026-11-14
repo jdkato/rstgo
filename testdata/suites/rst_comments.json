@@ -1,0 +1,73 @@
+{
+ "origin": "test/test_parsers/test_rst/test_comments.py",
+ "cases": [
+  {
+   "name": "comments/0",
+   "input": ".. A comment\n\nParagraph.\n"
+  },
+  {
+   "name": "comments/1",
+   "input": ".. A comment\n   block.\n\nParagraph.\n"
+  },
+  {
+   "name": "comments/2",
+   "input": "..\n   A comment consisting of multiple lines\n   starting on the line after the\n   explicit markup start.\n"
+  },
+  {
+   "name": "comments/3",
+   "input": ".. A comment.\n.. Another.\n\nParagraph.\n"
+  },
+  {
+   "name": "comments/4",
+   "input": ".. A comment\nno blank line\n\nParagraph.\n"
+  },
+  {
+   "name": "comments/5",
+   "input": ".. A comment.\n.. Another.\nno blank line\n\nParagraph.\n"
+  },
+  {
+   "name": "comments/6",
+   "input": ".. A comment::\n\nParagraph.\n"
+  },
+  {
+   "name": "comments/7",
+   "input": "..\n   comment::\n\nThe extra newline before the comment text prevents\nthe parser from recognizing a directive.\n"
+  },
+  {
+   "name": "comments/8",
+   "input": "..\n   _comment: http://example.org\n\nThe extra newline before the comment text prevents\nthe parser from recognizing a hyperlink target.\n"
+  },
+  {
+   "name": "comments/9",
+   "input": "..\n   [comment] Not a citation.\n\nThe extra newline before the comment text prevents\nthe parser from recognizing a citation.\n"
+  },
+  {
+   "name": "comments/10",
+   "input": "..\n   |comment| image:: bogus.png\n\nThe extra newline before the comment text prevents\nthe parser from recognizing a substitution definition.\n"
+  },
+  {
+   "name": "comments/11",
+   "input": ".. Next is an empty comment, which serves to end this comment and\n   prevents the following block quote being swallowed up.\n\n..\n\n    A block quote.\n"
+  },
+  {
+   "name": "comments/12",
+   "input": "term 1\n  definition 1\n\n  .. a comment\n\nterm 2\n  definition 2\n"
+  },
+  {
+   "name": "comments/13",
+   "input": "term 1\n  definition 1\n\n.. a comment\n\nterm 2\n  definition 2\n"
+  },
+  {
+   "name": "comments/14",
+   "input": "+ bullet paragraph 1\n\n  bullet paragraph 2\n\n  .. comment between bullet paragraphs 2 and 3\n\n  bullet paragraph 3\n"
+  },
+  {
+   "name": "comments/15",
+   "input": "+ bullet paragraph 1\n\n  .. comment between bullet paragraphs 1 (leader) and 2\n\n  bullet paragraph 2\n"
+  },
+  {
+   "name": "comments/16",
+   "input": "+ bullet\n\n  .. trailing comment\n"
+  }
+ ]
+}

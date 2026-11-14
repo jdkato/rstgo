@@ -1,0 +1,189 @@
+{
+ "origin": "test/test_parsers/test_rst/test_targets.py",
+ "cases": [
+  {
+   "name": "targets/0",
+   "input": ".. _target:\n\n(Internal hyperlink target.)\n"
+  },
+  {
+   "name": "targets/1",
+   "input": ".. _optional space before colon :\n"
+  },
+  {
+   "name": "targets/2",
+   "input": "\nExternal hyperlink targets:\n\n.. _one-liner: http://structuredtext.sourceforge.net\n\n.. _starts-on-this-line: http://\n                         structuredtext.\n                         sourceforge.net\n\n.. _entirely-below:\n   http://structuredtext.\n   sourceforge.net\n\n.. _escaped-whitespace: http://example.org/a\\ path\\ with\\\n   spaces.html\n\n.. _not-indirect: uri\\_\n"
+  },
+  {
+   "name": "targets/3",
+   "input": "Indirect hyperlink targets:\n\n.. _target1: reference_\n\n.. _target2: `phrase-link reference`_\n"
+  },
+  {
+   "name": "targets/4",
+   "input": ".. _a long target name:\n\n.. _`a target name: including a colon (quoted)`:\n\n.. _a target name\\: including a colon (escaped):\n"
+  },
+  {
+   "name": "targets/5",
+   "input": ".. _`target: No matching backquote.\n.. _`: No matching backquote either.\n"
+  },
+  {
+   "name": "targets/6",
+   "input": ".. _a very long target name,\n   split across lines:\n.. _`and another,\n   with backquotes`:\n"
+  },
+  {
+   "name": "targets/7",
+   "input": "External hyperlink:\n\n.. _target: http://www.python.org/\n"
+  },
+  {
+   "name": "targets/8",
+   "input": ".. _email: jdoe@example.com\n\n.. _multi-line email: jdoe\n   @example.com\n"
+  },
+  {
+   "name": "targets/9",
+   "input": "Malformed target:\n\n.. __malformed: no good\n\nTarget beginning with an underscore:\n\n.. _`_target`: OK\n"
+  },
+  {
+   "name": "targets/10",
+   "input": "Duplicate external targets (different URIs):\n\n.. _target: first\n\n.. _target: second\n"
+  },
+  {
+   "name": "targets/11",
+   "input": "Duplicate external targets (same URIs):\n\n.. _target: first\n\n.. _target: first\n"
+  },
+  {
+   "name": "targets/12",
+   "input": "Duplicate external targets (embedded/explicit, same URIs):\n\nSee the `example <example.rst>`_\n\nSee the example_\n\n.. _example: example.rst\n"
+  },
+  {
+   "name": "targets/13",
+   "input": "Duplicate indirect _`targets` (same refname):\n\n.. _link: targets_\n\n.. _link: targets_\n\ndo not conflict. The reference name can be used in a link_.\n"
+  },
+  {
+   "name": "targets/14",
+   "input": "Duplicate implicit targets.\n\nTitle\n=====\n\nParagraph.\n\nTitle\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "targets/15",
+   "input": "Duplicate implicit/explicit targets.\n\nTitle\n=====\n\n.. _title:\n\nParagraph.\n"
+  },
+  {
+   "name": "targets/16",
+   "input": "Duplicate implicit/directive targets.\n\nTitle\n=====\n\n.. note:: remember remember\n   :name: title\n"
+  },
+  {
+   "name": "targets/17",
+   "input": "Duplicate explicit targets.\n\n.. _title:\n\nFirst.\n\n.. _title:\n\nSecond.\n\n.. _title:\n\nThird.\n"
+  },
+  {
+   "name": "targets/18",
+   "input": "Duplicate explicit/directive targets.\n\n.. _title:\n\nFirst.\n\n.. rubric:: this is a title too\n   :name: title\n\nThe system message is left dangling\n(to be handled by the \"universal.Messages\" transform).\n"
+  },
+  {
+   "name": "targets/19",
+   "input": "Duplicate targets:\n\nTarget\n======\n\nImplicit section header target.\n\n.. [TARGET] Citation target.\n\n.. [#target] Autonumber-labeled footnote target.\n\n.. _target:\n\nExplicit internal target.\n\n.. _target: Explicit_external_target\n\n| Do not insert <system_message> element for duplicate\n| _`target`, if this results in an invalid doctree.\n\n.. rubric:: directive with target\n   :name: Target\n\n:field list: with\n:_`target`: in a field name\n"
+  },
+  {
+   "name": "targets/20",
+   "input": ".. _unescaped colon at end:: no good\n\n.. _:: no good either\n\n.. _escaped colon\\:: OK\n\n.. _`unescaped colon, quoted:`: OK\n"
+  },
+  {
+   "name": "legacy-ids/0",
+   "input": "Duplicate external targets (embedded/explicit, same URIs):\n\nSee the `example <example.rst>`_\n\nSee the example_\n\n.. _example: example.rst\n"
+  },
+  {
+   "name": "legacy-ids/1",
+   "input": "Duplicate implicit targets.\n\nTitle\n=====\n\nParagraph.\n\nTitle\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "legacy-ids/2",
+   "input": "Duplicate implicit/explicit targets.\n\nTitle\n=====\n\n.. _title:\n\nParagraph.\n"
+  },
+  {
+   "name": "legacy-ids/3",
+   "input": "Duplicate implicit/directive targets.\n\nTitle\n=====\n\n.. note:: remember remember\n   :name: title\n"
+  },
+  {
+   "name": "legacy-ids/4",
+   "input": "Duplicate explicit targets.\n\n.. _title:\n\nFirst.\n\n.. _title:\n\nSecond.\n\n.. _title:\n\nThird.\n"
+  },
+  {
+   "name": "legacy-ids/5",
+   "input": "Duplicate targets:\n\nTarget\n======\n\nImplicit section header target.\n\n.. [TARGET] Citation target.\n\n.. [#target] Autonumber-labeled footnote target.\n\n.. _target:\n\nExplicit internal target.\n\n.. _target: Explicit_external_target\n\n| Do not insert <system_message> element for duplicate\n| _`target`, if this results in an invalid doctree.\n\n.. rubric:: directive with target\n   :name: Target\n\n:field list: with\n:_`target`: in a field name\n"
+  },
+  {
+   "name": "anonymous_targets/0",
+   "input": "Anonymous external hyperlink target:\n\n.. __: http://w3c.org/\n"
+  },
+  {
+   "name": "anonymous_targets/1",
+   "input": "Anonymous external hyperlink target:\n\n__ http://w3c.org/\n"
+  },
+  {
+   "name": "anonymous_targets/2",
+   "input": "Anonymous indirect hyperlink target:\n\n.. __: reference_\n"
+  },
+  {
+   "name": "anonymous_targets/3",
+   "input": "Anonymous external hyperlink target, not indirect:\n\n__ uri\\_\n\n__ this URI ends with an underscore_\n"
+  },
+  {
+   "name": "anonymous_targets/4",
+   "input": "Anonymous indirect hyperlink targets:\n\n__ reference_\n__ `a very long\n   reference`_\n"
+  },
+  {
+   "name": "anonymous_targets/5",
+   "input": "Mixed anonymous & named indirect hyperlink targets:\n\n__ reference_\n.. __: reference_\n__ reference_\n.. _target1: reference_\nno blank line\n\n.. _target2: reference_\n__ reference_\n.. __: reference_\n__ reference_\nno blank line\n"
+  },
+  {
+   "name": "anonymous_targets/6",
+   "input": ".. _\n"
+  },
+  {
+   "name": "legacy auto-id prefix/0",
+   "input": "Duplicate external targets (different URIs):\n\n.. _target: first\n\n.. _target: second\n"
+  },
+  {
+   "name": "legacy auto-id prefix/1",
+   "input": "Duplicate external targets (same URIs):\n\n.. _target: first\n\n.. _target: first\n"
+  },
+  {
+   "name": "legacy auto-id prefix/2",
+   "input": "Duplicate external targets (embedded/explicit, same URIs):\n\nSee the `example <example.rst>`_\n\nSee the example_\n\n.. _example: example.rst\n"
+  },
+  {
+   "name": "legacy auto-id prefix/3",
+   "input": "Duplicate indirect _`targets` (same refname):\n\n.. _link: targets_\n\n.. _link: targets_\n\ndo not conflict. The reference name can be used in a link_.\n"
+  },
+  {
+   "name": "legacy auto-id prefix/4",
+   "input": "Duplicate implicit targets.\n\nTitle\n=====\n\nParagraph.\n\nTitle\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "legacy auto-id prefix/5",
+   "input": "Duplicate implicit/explicit targets.\n\nTitle\n=====\n\n.. _title:\n\nParagraph.\n"
+  },
+  {
+   "name": "legacy auto-id prefix/6",
+   "input": "Duplicate implicit/directive targets.\n\nTitle\n=====\n\n.. note:: remember remember\n   :name: title\n"
+  },
+  {
+   "name": "legacy auto-id prefix/7",
+   "input": "Duplicate explicit targets.\n\n.. _title:\n\nFirst.\n\n.. _title:\n\nSecond.\n\n.. _title:\n\nThird.\n"
+  },
+  {
+   "name": "legacy auto-id prefix/8",
+   "input": "Duplicate explicit/directive targets.\n\n.. _title:\n\nFirst.\n\n.. rubric:: this is a title too\n   :name: title\n\nThe system message is left dangling\n(to be handled by the \"universal.Messages\" transform).\n"
+  },
+  {
+   "name": "legacy auto-id prefix/9",
+   "input": "Duplicate targets:\n\nTarget\n======\n\nImplicit section header target.\n\n.. [TARGET] Citation target.\n\n.. [#target] Autonumber-labeled footnote target.\n\n.. _target:\n\nExplicit internal target.\n\n.. _target: Explicit_external_target\n\n| Do not insert <system_message> element for duplicate\n| _`target`, if this results in an invalid doctree.\n\n.. rubric:: directive with target\n   :name: Target\n\n:field list: with\n:_`target`: in a field name\n"
+  },
+  {
+   "name": "legacy auto-id prefix/10",
+   "input": "Anonymous external hyperlink target:\n\n__ http://w3c.org/\n"
+  },
+  {
+   "name": "legacy auto-id prefix/11",
+   "input": "Anonymous indirect hyperlink target:\n\n.. __: reference_\n"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_default_role.py",
+ "cases": [
+  {
+   "name": "default_role/0",
+   "input": ".. default-role:: subscript\n\nThis is a `subscript`.\n"
+  },
+  {
+   "name": "default_role/1",
+   "input": "Must define a custom role before using it.\n\n.. default-role:: custom\n"
+  },
+  {
+   "name": "default_role/2",
+   "input": ".. role:: custom\n.. default-role:: custom\n\nThis text uses the `default role`.\n\n.. default-role::\n\nReturned the `default role` to its standard default.\n"
+  }
+ ]
+}

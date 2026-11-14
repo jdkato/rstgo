@@ -1,0 +1,45 @@
+{
+ "origin": "test/test_transforms/test_contents.py",
+ "cases": [
+  {
+   "name": "tables_of_contents/0",
+   "input": ".. contents::\n\nTitle 1\n=======\nParagraph 1.\n\nTitle_ 2\n--------\nParagraph 2.\n\n_`Title` 3\n``````````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "tables_of_contents/1",
+   "input": ".. contents:: Table of Contents\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n"
+  },
+  {
+   "name": "tables_of_contents/2",
+   "input": ".. contents:: There's an image in Title 2\n\nTitle 1\n=======\nParagraph 1.\n\n|Title 2|\n=========\nParagraph 2.\n\n.. |Title 2| image:: title2.png\n"
+  },
+  {
+   "name": "tables_of_contents/3",
+   "input": ".. contents::\n   :depth: 2\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "tables_of_contents/4",
+   "input": "Title 1\n=======\n\n.. contents::\n   :local:\n\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "tables_of_contents/5",
+   "input": ".. contents::\n   :local:\n\nTest duplicate name \"Contents\".\n\nSection\n--------\nParagraph.\n"
+  },
+  {
+   "name": "tables_of_contents/6",
+   "input": ".. contents::\n   :backlinks: top\n\nSection\n--------\nParagraph.\n"
+  },
+  {
+   "name": "tables_of_contents/7",
+   "input": ".. contents::\n   :backlinks: none\n\nSection\n--------\nParagraph.\n"
+  },
+  {
+   "name": "tables_of_contents/8",
+   "input": ".. contents::\n\nDegenerate case, no table of contents generated.\n"
+  },
+  {
+   "name": "tables_of_contents/9",
+   "input": "Title 1\n=======\n\nParagraph 1.\n\n.. sidebar:: Contents\n\n   .. contents::\n      :local:\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n"
+  }
+ ]
+}

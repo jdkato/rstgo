@@ -1,0 +1,33 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_raw.py",
+ "cases": [
+  {
+   "name": "raw/0",
+   "input": ".. raw:: html\n\n   <span>This is some plain old raw text.</span>\n"
+  },
+  {
+   "name": "raw/1",
+   "input": ".. raw:: html\n   :file: rawfile.html\n   :url: http://example.org/\n"
+  },
+  {
+   "name": "raw/2",
+   "input": ".. raw:: html\n   :file: rawfile.html\n\n   <p>Can't have both content and file attribute.</p>\n"
+  },
+  {
+   "name": "raw/3",
+   "input": "\n.. raw:: latex html\n\n   \\[ \\sum_{n=1}^\\infty \\frac{1}{n} \\text{ etc.} \\]\n"
+  },
+  {
+   "name": "raw/4",
+   "input": ".. raw:: html\n   :encoding: utf-8\n\n   Should the parser complain becauße there is no :file:?  BUG?\n"
+  },
+  {
+   "name": "raw/5",
+   "input": ".. raw:: html\n"
+  },
+  {
+   "name": "raw/6",
+   "input": ".. raw:: html\n   :file: non-existent.file\n"
+  }
+ ]
+}

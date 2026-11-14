@@ -1,0 +1,23 @@
+<document source="testdata/fixtures/images.rst">
+    <image scale="50" uri="testdata/fixtures/square.png">
+    <image scale="200" uri="testdata/fixtures/square.png" width="10">
+    <image scale="50" uri="missing.png">
+    <reference refuri="http://example.org/">
+        <image height="2em" uri="testdata/fixtures/square.png" width="50%">
+    <image classes="controls" uri="movie.mp4">
+    <image alt="SVG" uri="drawing.svg">
+    <figure align="right" width="32px">
+        <image uri="testdata/fixtures/square.png">
+        <caption>
+            Caption
+    <target refid="fig-target">
+    <paragraph ids="fig-target" names="fig-target">
+        Inline 
+        <image align="middle" alt="sq" scale="10" uri="testdata/fixtures/square.png">
+         image and a 
+        <reference name="link around image" refuri="http://e.org">
+            link around image
+        <target ids="link-around-image" names="link\ around\ image" refuri="http://e.org">
+        .
+    <substitution_definition names="sq">
+        <image align="middle" alt="sq" scale="10" uri="testdata/fixtures/square.png">

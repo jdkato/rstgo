@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_hyperlinks_de.py",
+ "cases": [
+  {
+   "name": "hyperlinks/0",
+   "input": "Target_ should propagate past the system_message to set \"id\" on note.\n\n.. _target:\n.. note:: Kurznotiz\n   :name: mynote\n"
+  }
+ ]
+}

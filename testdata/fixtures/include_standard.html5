@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Standard include files</title>
+
+</head>
+<body>
+<main id="standard-include-files">
+<h1 class="title">Standard include files</h1>
+
+<!-- This data file has been placed in the public domain. -->
+<!-- Derived from the Unicode character mappings available from
+<http://www.w3.org/2003/entities/xml/>.
+Processed by unicode2rstsubs.py, part of Docutils:
+<https://docutils.sourceforge.io>. -->
+<p>Used: á Ñ.</p>
+<pre class="literal-block">.. This data file has been placed in the public domain.
+.. Derived from the Unicode character mappings available from
+   &lt;http://www.w3.org/2003/entities/xml/&gt;.
+   Processed by unicode2rstsubs.py, part of Docutils:</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/include_standard.rst</span>, line 12)</p>
+<p>Problems with &quot;include&quot; directive path:
+InputError: [Errno 2] No such file or directory: '/usr/local/lib/python3.13/site-packages/docutils/parsers/rst/include/nonexistent.txt'.</p>
+<pre class="literal-block">.. include:: &lt;nonexistent.txt&gt;
+</pre>
+</aside>
+<pre class="code literal-block"><code>.. |ast|    unicode:: U+0002A .. ASTERISK
+.. |brvbar| unicode:: U+000A6 .. BROKEN BAR</code></pre>
+</main>
+</body>
+</html>

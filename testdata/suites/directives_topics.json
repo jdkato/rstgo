@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_topics.py",
+ "cases": [
+  {
+   "name": "topics/0",
+   "input": ".. topic::\n"
+  },
+  {
+   "name": "topics/1",
+   "input": ".. topic:: Title\n"
+  },
+  {
+   "name": "topics/2",
+   "input": ".. topic:: Title\n\n   Body.\n"
+  },
+  {
+   "name": "topics/3",
+   "input": ".. topic:: With Options\n   :class: custom\n   :name: my point\n\n   Body.\n"
+  },
+  {
+   "name": "topics/4",
+   "input": ".. topic::\n\n   Title\n\n   Body.\n"
+  },
+  {
+   "name": "topics/5",
+   "input": ".. topic:: Title\n   Body.\n"
+  },
+  {
+   "name": "topics/6",
+   "input": ".. topic::\n\n   Title\n   Body.\n"
+  },
+  {
+   "name": "topics/7",
+   "input": ".. topic:: Title\n\n   .. topic:: Nested\n\n      Body.\n"
+  },
+  {
+   "name": "topics/8",
+   "input": ".. topic:: Title\n\n   .. topic:: Nested\n\n      Body.\n   More.\n"
+  },
+  {
+   "name": "topics/9",
+   "input": ".. topic:: Title\n\n   .. topic:: Nested\n\n      Body.\n\n   More.\n\nMore.\n"
+  },
+  {
+   "name": "topics/10",
+   "input": ".. topic:: First\n\n   Body\n\n.. topic:: Second\n\n   Body.\n"
+  },
+  {
+   "name": "topics/11",
+   "input": ".. sidebar:: Title\n   :subtitle: Outer\n\n   .. topic:: Nested\n\n      Body.\n\n   More.\n\nMore.\n"
+  }
+ ]
+}

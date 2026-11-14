@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>indent_nonascii.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<ul class="simple">
+<li>item one
+continued</li>
+<li>item two</li>
+</ul>
+<p>&nbsp; quoted?</p>
+<dl class="docutils">
+<dt>term</dt>
+<dd>def line
+second</dd>
+</dl>
+<pre class="literal-block">
+lit
+lit2
+</pre>
+<ol class="arabic simple">
+<li>enum
+more</li>
+</ol>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/indent_nonascii.rst</tt>, line 19)</p>
+Enumerated list ends without a blank line; unexpected unindent.</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">fiéld:</th><td class="field-body">body
+more</td>
+</tr>
+<tr class="field"><th class="field-name">fiéld2:</th><td class="field-body">x</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>-ö  option desc</dt>
+<dd>more</dd>
+</dl>
+<table class="docutils citation" frame="void" id="e" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[é]</td><td>citation
+more</td></tr>
+</tbody>
+</table>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/indent_nonascii.rst</tt>, line 34)</p>
+Duplicate explicit target name: &quot;é&quot;.</div>
+<!-- é comment
+more -->
+<ul class="simple">
+<li>a<ul>
+<li>nested
+more</li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li>x</li>
+<li>y</li>
+</ul>
+</div>
+</body>
+</html>

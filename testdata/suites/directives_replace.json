@@ -1,0 +1,29 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_replace.py",
+ "cases": [
+  {
+   "name": "replace/0",
+   "input": "Test the |name| directive.\n\n.. |name| replace:: \"**replace**\"\n"
+  },
+  {
+   "name": "replace/1",
+   "input": ".. |name| replace:: paragraph 1\n\n                    paragraph 2\n"
+  },
+  {
+   "name": "replace/2",
+   "input": ".. |name| replace::\n"
+  },
+  {
+   "name": "replace/3",
+   "input": ".. |Python| replace:: Python, *the* best language around\n\n.. _Python: http://www.python.org/\n\nI recommend you try |Python|_.\n"
+  },
+  {
+   "name": "replace/4",
+   "input": ".. |name| replace::  *error in **inline ``markup\n"
+  },
+  {
+   "name": "replace/5",
+   "input": ".. replace:: not valid outside of a substitution definition\n"
+  }
+ ]
+}

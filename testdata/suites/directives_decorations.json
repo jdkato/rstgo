@@ -1,0 +1,25 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_decorations.py",
+ "cases": [
+  {
+   "name": "headers/0",
+   "input": ".. header:: a paragraph for the header\n"
+  },
+  {
+   "name": "headers/1",
+   "input": ".. header::\n"
+  },
+  {
+   "name": "headers/2",
+   "input": ".. header:: first part of the header\n.. header:: second part of the header\n"
+  },
+  {
+   "name": "footers/0",
+   "input": ".. footer:: a paragraph for the footer\n"
+  },
+  {
+   "name": "footers/1",
+   "input": ".. footer:: even if a footer is declared first\n.. header:: the header appears first\n"
+  }
+ ]
+}

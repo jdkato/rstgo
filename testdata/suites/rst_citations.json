@@ -1,0 +1,41 @@
+{
+ "origin": "test/test_parsers/test_rst/test_citations.py",
+ "cases": [
+  {
+   "name": "citations/0",
+   "input": ".. [citation] This is a citation.\n"
+  },
+  {
+   "name": "citations/1",
+   "input": ".. [citation1234] This is a citation with year.\n"
+  },
+  {
+   "name": "citations/2",
+   "input": ".. [citation] This is a citation\n   on multiple lines.\n"
+  },
+  {
+   "name": "citations/3",
+   "input": ".. [citation1] This is a citation\n     on multiple lines with more space.\n\n.. [citation2] This is a citation\n  on multiple lines with less space.\n"
+  },
+  {
+   "name": "citations/4",
+   "input": ".. [citation]\n   This is a citation on multiple lines\n   whose block starts on line 2.\n"
+  },
+  {
+   "name": "citations/5",
+   "input": ".. [citation]\n\nThat was an empty citation.\n"
+  },
+  {
+   "name": "citations/6",
+   "input": ".. [citation] The Source\nNo blank line.\n"
+  },
+  {
+   "name": "citations/7",
+   "input": ".. [citation label with spaces] this isn't a citation\n\n.. [*citationlabelwithmarkup*] this isn't a citation\n"
+  },
+  {
+   "name": "citations/8",
+   "input": "\nisolated internals : ``.-_``.\n\n.. [citation.withdot] one dot\n\n.. [citation-withdot] one hyphen\n\n.. [citation_withunderscore] one underscore\n\n.. [citation:with:colons] two colons\n\n.. [citation+withplus] one plus\n"
+  }
+ ]
+}

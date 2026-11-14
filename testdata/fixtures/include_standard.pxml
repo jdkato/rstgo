@@ -1,0 +1,154 @@
+<document ids="standard-include-files" names="standard\ include\ files" source="testdata/fixtures/include_standard.rst" title="Standard include files">
+    <title>
+        Standard include files
+    <comment xml:space="preserve">
+        This data file has been placed in the public domain.
+    <comment xml:space="preserve">
+        Derived from the Unicode character mappings available from
+        <http://www.w3.org/2003/entities/xml/>.
+        Processed by unicode2rstsubs.py, part of Docutils:
+        <https://docutils.sourceforge.io>.
+    <substitution_definition names="Aacute">
+        Á
+    <substitution_definition names="aacute">
+        á
+    <substitution_definition names="Acirc">
+        Â
+    <substitution_definition names="acirc">
+        â
+    <substitution_definition names="AElig">
+        Æ
+    <substitution_definition names="aelig">
+        æ
+    <substitution_definition names="Agrave">
+        À
+    <substitution_definition names="agrave">
+        à
+    <substitution_definition names="Aring">
+        Å
+    <substitution_definition names="aring">
+        å
+    <substitution_definition names="Atilde">
+        Ã
+    <substitution_definition names="atilde">
+        ã
+    <substitution_definition names="Auml">
+        Ä
+    <substitution_definition names="auml">
+        ä
+    <substitution_definition names="Ccedil">
+        Ç
+    <substitution_definition names="ccedil">
+        ç
+    <substitution_definition names="Eacute">
+        É
+    <substitution_definition names="eacute">
+        é
+    <substitution_definition names="Ecirc">
+        Ê
+    <substitution_definition names="ecirc">
+        ê
+    <substitution_definition names="Egrave">
+        È
+    <substitution_definition names="egrave">
+        è
+    <substitution_definition names="ETH">
+        Ð
+    <substitution_definition names="eth">
+        ð
+    <substitution_definition names="Euml">
+        Ë
+    <substitution_definition names="euml">
+        ë
+    <substitution_definition names="Iacute">
+        Í
+    <substitution_definition names="iacute">
+        í
+    <substitution_definition names="Icirc">
+        Î
+    <substitution_definition names="icirc">
+        î
+    <substitution_definition names="Igrave">
+        Ì
+    <substitution_definition names="igrave">
+        ì
+    <substitution_definition names="Iuml">
+        Ï
+    <substitution_definition names="iuml">
+        ï
+    <substitution_definition names="Ntilde">
+        Ñ
+    <substitution_definition names="ntilde">
+        ñ
+    <substitution_definition names="Oacute">
+        Ó
+    <substitution_definition names="oacute">
+        ó
+    <substitution_definition names="Ocirc">
+        Ô
+    <substitution_definition names="ocirc">
+        ô
+    <substitution_definition names="Ograve">
+        Ò
+    <substitution_definition names="ograve">
+        ò
+    <substitution_definition names="Oslash">
+        Ø
+    <substitution_definition names="oslash">
+        ø
+    <substitution_definition names="Otilde">
+        Õ
+    <substitution_definition names="otilde">
+        õ
+    <substitution_definition names="Ouml">
+        Ö
+    <substitution_definition names="ouml">
+        ö
+    <substitution_definition names="szlig">
+        ß
+    <substitution_definition names="THORN">
+        Þ
+    <substitution_definition names="thorn">
+        þ
+    <substitution_definition names="Uacute">
+        Ú
+    <substitution_definition names="uacute">
+        ú
+    <substitution_definition names="Ucirc">
+        Û
+    <substitution_definition names="ucirc">
+        û
+    <substitution_definition names="Ugrave">
+        Ù
+    <substitution_definition names="ugrave">
+        ù
+    <substitution_definition names="Uuml">
+        Ü
+    <substitution_definition names="uuml">
+        ü
+    <substitution_definition names="Yacute">
+        Ý
+    <substitution_definition names="yacute">
+        ý
+    <substitution_definition names="yuml">
+        ÿ
+    <paragraph>
+        Used: 
+        á
+         
+        Ñ
+        .
+    <literal_block source="/usr/local/lib/python3.13/site-packages/docutils/parsers/rst/include/mmlalias.txt" xml:space="preserve">
+        .. This data file has been placed in the public domain.
+        .. Derived from the Unicode character mappings available from
+           <http://www.w3.org/2003/entities/xml/>.
+           Processed by unicode2rstsubs.py, part of Docutils:
+    <system_message level="3" line="12" source="testdata/fixtures/include_standard.rst" type="ERROR">
+        <paragraph>
+            Problems with "include" directive path:
+            InputError: [Errno 2] No such file or directory: '/usr/local/lib/python3.13/site-packages/docutils/parsers/rst/include/nonexistent.txt'.
+        <literal_block xml:space="preserve">
+            .. include:: <nonexistent.txt>
+    <literal_block classes="code" source="/usr/local/lib/python3.13/site-packages/docutils/parsers/rst/include/isonum.txt" xml:space="preserve">
+        .. |ast|    unicode:: U+0002A .. ASTERISK
+        .. |brvbar| unicode:: U+000A6 .. BROKEN BAR

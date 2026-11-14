@@ -1,0 +1,4 @@
+<document source="testdata/fixtures/longline.rst">
+    <system_message level="3" source="testdata/fixtures/longline.rst" type="ERROR">
+        <paragraph>
+            Line 3 exceeds the line-length-limit.

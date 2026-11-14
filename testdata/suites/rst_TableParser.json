@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_TableParser.py",
+ "cases": [
+  {
+   "name": "grid_tables/0",
+   "input": "+-------------------------------------+\n| A table with one cell and one line. |\n+-------------------------------------+\n"
+  },
+  {
+   "name": "grid_tables/1",
+   "input": "+--------------+--------------+\n| A table with | two columns. |\n+--------------+--------------+\n"
+  },
+  {
+   "name": "grid_tables/2",
+   "input": "+--------------+------------------+\n| A tāble w̅ith | comb̲ining chars. |\n+--------------+------------------+\n"
+  },
+  {
+   "name": "grid_tables/3",
+   "input": "+--------------+-------------+\n| A tāble w̅ith | two columns |\n+--------------+-------------+\n| and          | two rows.   |\n+--------------+-------------+\n"
+  },
+  {
+   "name": "grid_tables/4",
+   "input": "+--------------------------+\n| A table with three rows, |\n+------------+-------------+\n| and two    | columns.    |\n+------------+-------------+\n| First and last rows      |\n| contain column spans.    |\n+--------------------------+\n"
+  },
+  {
+   "name": "grid_tables/5",
+   "input": "+------------+-------------+---------------+\n| A tāble    | two rows in | and row spans |\n| with t̲h̲r̲e̲e̲ +-------------+ to left and   |\n| columns,   | the middle, | right.        |\n+------------+-------------+---------------+\n"
+  },
+  {
+   "name": "grid_tables/6",
+   "input": "+------------+-------------+---------------+\n| A table |  | two rows in | and funny     |\n| with 3  +--+-------------+-+ stuff.      |\n| columns,   | the middle, | |             |\n+------------+-------------+---------------+\n"
+  },
+  {
+   "name": "grid_tables/7",
+   "input": "+-----------+-------------------------+\n| W/NW cell | N/NE cell               |\n|           +-------------+-----------+\n|           | Middle cell | E/SE cell |\n+-----------+-------------+           |\n| S/SE cell               |           |\n+-------------------------+-----------+\n"
+  },
+  {
+   "name": "grid_tables/8",
+   "input": "+--------------+-------------+\n| A bad table. |             |\n+--------------+             |\n| Cells must be rectangles.  |\n+----------------------------+\n"
+  },
+  {
+   "name": "grid_tables/9",
+   "input": "+-------------------------------+\n| A table with two header rows, |\n+------------+------------------+\n| the first  | with a span.     |\n+============+==================+\n| Two body   | rows,            |\n+------------+------------------+\n| the second with a span.       |\n+-------------------------------+\n"
+  },
+  {
+   "name": "grid_tables/10",
+   "input": "+-------------------------------+\n| A table with two head/body    |\n+=============+=================+\n| row         | separators.     |\n+=============+=================+\n| That's bad. |                 |\n+-------------+-----------------+\n"
+  },
+  {
+   "name": "grid_tables/11",
+   "input": "+-------------------------------------+\n|                                     |\n+-------------------------------------+\n"
+  }
+ ]
+}

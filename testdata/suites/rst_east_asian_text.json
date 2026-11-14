@@ -1,0 +1,25 @@
+{
+ "origin": "test/test_parsers/test_rst/test_east_asian_text.py",
+ "cases": [
+  {
+   "name": "double_width/0",
+   "input": "タイトル1\n=========\n\nタイトル2\n========\n"
+  },
+  {
+   "name": "double_width/1",
+   "input": "\n+-----------------------+\n| * ヒョウ:ダイ1ギョウ  |\n| * ダイ2ギョウ         |\n+-----------------------+\n| \\* ダイ1ギョウ        |\n| * ダイ2ギョウ         |\n+-----------------------+\n"
+  },
+  {
+   "name": "double_width/2",
+   "input": "Complex spanning pattern (no edge knows all rows/cols):\n\n+--------+---------------------+\n| 北西・ | 北・北東セル        |\n| 西セル +--------------+------+\n|        | 真ん中のセル | 東・ |\n+--------+--------------+ 南東 |\n| 南西・南セル          | セル |\n+-----------------------+------+\n"
+  },
+  {
+   "name": "double_width/3",
+   "input": "=========  =========\nダイ1ラン  ダイ2ラン\n=========  =========\n\n========  =========\nダイ1ラン ダイ2ラン\n========  =========\n"
+  },
+  {
+   "name": "double_width/4",
+   "input": "Some ambiguous-width characters:\n\n= ===================================\n© copyright sign\n® registered sign\n« left pointing guillemet\n» right pointing guillemet\n– en-dash\n— em-dash\n‘ single turned comma quotation mark\n’ single comma quotation mark\n‚ low single comma quotation mark\n“ double turned comma quotation mark\n” double comma quotation mark\n„ low double comma quotation mark\n† dagger\n‡ double dagger\n… ellipsis\n™ trade mark sign\n⇔ left-right double arrow\n= ===================================\n"
+  }
+ ]
+}

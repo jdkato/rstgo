@@ -1,0 +1,13 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_sectnum.py",
+ "cases": [
+  {
+   "name": "sectnum/0",
+   "input": ".. sectnum::\n"
+  },
+  {
+   "name": "sectnum/1",
+   "input": ".. sectnum::\n   :depth: 23\n   :start: 42\n   :prefix: A Prefix\n   :suffix: A Suffix\n"
+  }
+ ]
+}

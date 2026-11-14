@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_line_blocks.py",
+ "cases": [
+  {
+   "name": "line_blocks/0",
+   "input": ".. line-block::\n\n   This is a line block.\n   Newlines are *preserved*.\n       As is initial whitespace.\n"
+  },
+  {
+   "name": "line_blocks/1",
+   "input": ".. line-block::\n   :class: linear\n   :name:  cit:short\n\n   This is a line block with options.\n"
+  },
+  {
+   "name": "line_blocks/2",
+   "input": ".. line-block::\n\n   Inline markup *may not span\n       multiple lines* of a line block.\n"
+  },
+  {
+   "name": "line_blocks/3",
+   "input": ".. line-block::\n"
+  }
+ ]
+}

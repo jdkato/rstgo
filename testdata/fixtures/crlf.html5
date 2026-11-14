@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>crlf.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<p>CRLF line one
+line two</p>
+<p>Para
+with CR</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/crlf.rst</span>, line 6)</p>
+<p>Unexpected indentation.</p>
+</aside>
+<blockquote>
+<p>tab vt ff</p>
+</blockquote>
+</main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_parsed_literals.py",
+ "cases": [
+  {
+   "name": "parsed_literals/0",
+   "input": ".. parsed-literal::\n\n   This is a parsed literal block.\n   It may contain *inline markup\n   spanning lines.*\n"
+  },
+  {
+   "name": "parsed_literals/1",
+   "input": ".. parsed-literal::\n  :class: myliteral\n  :name: example: parsed\n\n   This is a parsed literal block with options.\n"
+  },
+  {
+   "name": "parsed_literals/2",
+   "input": ".. parsed-literal:: content may start on same line\n"
+  },
+  {
+   "name": "parsed_literals/3",
+   "input": ".. parsed-literal::\n"
+  }
+ ]
+}

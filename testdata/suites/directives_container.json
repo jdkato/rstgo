@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_container.py",
+ "cases": [
+  {
+   "name": "container/0",
+   "input": ".. container::\n\n   \"container\" is a generic element, an extension mechanism for\n   users & applications.\n\n   Containers may contain arbitrary body elements.\n"
+  },
+  {
+   "name": "container/1",
+   "input": ".. container:: custom\n\n   Some text.\n"
+  },
+  {
+   "name": "container/2",
+   "input": ".. container:: one two three\n   four\n\n   Multiple classes.\n\n   Multi-line argument.\n\n   Multiple paragraphs in the container.\n"
+  },
+  {
+   "name": "container/3",
+   "input": ".. container::\n   :name: my name\n\n   The name argument allows hyperlinks to `my name`_.\n"
+  }
+ ]
+}

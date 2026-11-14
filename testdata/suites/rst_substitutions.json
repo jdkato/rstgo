@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_substitutions.py",
+ "cases": [
+  {
+   "name": "substitution_definitions/0",
+   "input": "Here's an image substitution definition:\n\n.. |symbol| image:: symbol.png\n"
+  },
+  {
+   "name": "substitution_definitions/1",
+   "input": "Embedded directive starts on the next line:\n\n.. |symbol|\n   image:: symbol.png\n"
+  },
+  {
+   "name": "substitution_definitions/2",
+   "input": "Trailing spaces should not be significant:\n\n.. |symbol| image:: \n   symbol.png\n"
+  },
+  {
+   "name": "substitution_definitions/3",
+   "input": "Here's a series of substitution definitions:\n\n.. |symbol 1| image:: symbol1.png\n.. |SYMBOL 2| image:: symbol2.png\n   :height: 50\n   :width: 100\n.. |symbol 3| image:: symbol3.png\n"
+  },
+  {
+   "name": "substitution_definitions/4",
+   "input": ".. |very long substitution text,\n   split across lines| image:: symbol.png\n"
+  },
+  {
+   "name": "substitution_definitions/5",
+   "input": ".. |symbol 1| image:: symbol.png\n\n    Followed by a block quote.\n"
+  },
+  {
+   "name": "substitution_definitions/6",
+   "input": ".. |symbol 1| image:: symbol.png\n\nFollowed by a paragraph.\n\n.. |symbol 2| image:: symbol.png\n\n..\n\n    Followed by a block quote.\n"
+  },
+  {
+   "name": "substitution_definitions/7",
+   "input": "Substitutions support case differences:\n\n.. |eacute| replace:: é\n.. |Eacute| replace:: É\n"
+  },
+  {
+   "name": "substitution_definitions/8",
+   "input": "Raw substitution, backslashes should be preserved:\n\n.. |alpha| raw:: latex\n\n   $\\\\alpha$\n"
+  },
+  {
+   "name": "substitution_definitions/9",
+   "input": "Here are some duplicate substitution definitions:\n\n.. |symbol| image:: symbol.png\n.. |symbol| image:: symbol.png\n"
+  },
+  {
+   "name": "substitution_definitions/10",
+   "input": "Here are some bad cases:\n\n.. |symbol| image:: symbol.png\nNo blank line after.\n\n.. |empty|\n\n.. |unknown| directive:: symbol.png\n\n.. |invalid 1| there's no directive here\n.. |invalid 2| there's no directive here\n   With some block quote text, line 1.\n   And some more, line 2.\n\n.. |invalid 3| there's no directive here\n\n.. | bad name | bad data\n\n.. |\n"
+  },
+  {
+   "name": "substitution_definitions/11",
+   "input": "Elements that are prohibited inside of substitution definitions:\n\n.. |target| replace:: _`target`\n.. |reference| replace:: anonymous__\n.. |auto-numbered footnote| replace:: [#]_\n"
+  }
+ ]
+}

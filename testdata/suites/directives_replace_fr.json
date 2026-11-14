@@ -1,0 +1,13 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_replace_fr.py",
+ "cases": [
+  {
+   "name": "replace/0",
+   "input": "Test directive containing french role exposant (superscript).\n\n.. |Na+| remplace:: Na\\ :exp:`+`\n\nLe |Na+| est l'ion sodium.\n"
+  },
+  {
+   "name": "replace/1",
+   "input": "Test directive containing english role superscript.\n\n.. |Na+| remplace:: Na\\ :sup:`+`\n\nLe |Na+| est l'ion sodium.\n"
+  }
+ ]
+}

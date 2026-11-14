@@ -1,0 +1,22 @@
+* Unknown command \limits
+* Unknown equation environment pmatrix
+* Unknown equation environment bmatrix
+* Unknown command \overset
+* Unknown command \underset
+* No tag in OneParamFunction read in \underline{x}
+* No tag in OneParamFunction read in \underline{x}
+* Unknown command \!
+* Unknown command \iff
+* Unknown command \unknowncommand
+* Unknown command \foo
+* Impossible upgreek command: \Upgamma
+* Unknown command \Upgamma
+* Unknown equation environment unknownenv
+* Unknown command \end
+* Pending endings [Ending \end{equation*},Ending }] left open
+* No ending out of bounds
+* Expected ending }, got 
+* Pending endings [Ending \end{equation*},Ending }] left open
+* No ending out of bounds
+* Expected ending \end{equation*}, got 
+* Pending endings [Ending \end{equation*},Ending }] left open

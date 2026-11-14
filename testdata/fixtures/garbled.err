@@ -1,0 +1,54 @@
+testdata/fixtures/garbled.rst:1: (ERROR/3) Title overline & underline mismatch.
+
+=====
+ x
+==
+testdata/fixtures/garbled.rst:5: (WARNING/2) Inline literal start-string without end-string.
+testdata/fixtures/garbled.rst:7: (WARNING/2) Inline strong start-string without end-string.
+testdata/fixtures/garbled.rst:14: (WARNING/2) Footnote content expected.
+testdata/fixtures/garbled.rst:45: (ERROR/3) Malformed table.
+No bottom table border found.
+
+== ==
+
+|
+
+|
+
+>>>
+
+-o
+
+--
+
+`
+
+`x
+
+x`_
+
+_`
+
+|x
+
+[1]_
+
+\
+
+\\
+
+.. |a| replace:: |a|
+
+|a|
+
+.. |b| replace:: |c|
+.. |c| replace:: |b|
+
+|b|
+
+.. _a: b_
+.. _b: a_
+
+a_
+testdata/fixtures/garbled.rst:86: (ERROR/3) Anonymous hyperlink mismatch: 0 references but 2 targets.
+See "backrefs" attribute for IDs.

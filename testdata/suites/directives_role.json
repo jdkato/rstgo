@@ -1,0 +1,73 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_role.py",
+ "cases": [
+  {
+   "name": "role/0",
+   "input": ".. role:: custom\n.. role:: special\n\n:custom:`interpreted` and :special:`interpreted`\n"
+  },
+  {
+   "name": "role/1",
+   "input": ".. role:: custom\n   :class: custom-class\n.. role:: special\n   :class: special-class\n\n:custom:`interpreted` and :special:`interpreted`\n"
+  },
+  {
+   "name": "role/2",
+   "input": "Must define :custom:`interpreted` before using it.\n\n.. role:: custom\n\nNow that it's defined, :custom:`interpreted` works.\n"
+  },
+  {
+   "name": "role/3",
+   "input": ".. role:: custom(emphasis)\n\n:custom:`text`\n"
+  },
+  {
+   "name": "role/4",
+   "input": ".. role:: custom ( emphasis )\n\n:custom:`text`\n"
+  },
+  {
+   "name": "role/5",
+   "input": ".. role:: custom(emphasis)\n   :class: special\n\n:custom:`text`\n"
+  },
+  {
+   "name": "role/6",
+   "input": ".. role:: custom(unknown-role)\n"
+  },
+  {
+   "name": "role/7",
+   "input": ".. role:: custom\n   :class: 1\n"
+  },
+  {
+   "name": "role/8",
+   "input": ".. role:: 1\n"
+  },
+  {
+   "name": "role/9",
+   "input": ".. role:: (error)\n"
+  },
+  {
+   "name": "role/10",
+   "input": ".. role::\n"
+  },
+  {
+   "name": "role/11",
+   "input": "Test\n----\n\n.. role:: fileref(emphasis)\n\nTesting a :fileref:`role` in a nested parse.\n"
+  },
+  {
+   "name": "role/12",
+   "input": ".. role:: custom\n.. role:: special\n\nEmpty :custom:`\\ ` and empty `\\ `:special:\n"
+  },
+  {
+   "name": "role/13",
+   "input": ".. role:: CaSiNg\n\nRole names are :cAsInG:`case-insensitive`.\n"
+  },
+  {
+   "name": "raw_role/0",
+   "input": ".. role:: html(raw)\n   :format: html\n\nHere's some :html:`<i>raw HTML data</i>`.\n"
+  },
+  {
+   "name": "raw_role/1",
+   "input": ".. role:: itex(raw)\n   :format: latex html\n\nHere's some itex markup: :itex:`$x^\\infty$`.\n"
+  },
+  {
+   "name": "raw_role/2",
+   "input": "Can't use the :raw:`role` directly.\n"
+  }
+ ]
+}

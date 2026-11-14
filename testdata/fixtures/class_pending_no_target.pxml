@@ -1,0 +1,22 @@
+<document source="testdata/fixtures/class_pending_no_target.rst">
+    <definition_list>
+        <definition_list_item>
+            <term>
+                term
+            <definition>
+    <bullet_list bullet="-" classes="narrow">
+        <list_item>
+            <paragraph>
+                item
+    <comment xml:space="preserve">
+    <block_quote classes="other">
+        <system_message level="3" line="True" source="testdata/fixtures/class_pending_no_target.rst" type="ERROR">
+            <paragraph>
+                No suitable element following "class" directive
+            <literal_block xml:space="preserve">
+                .. class:: quoted
+    <system_message level="3" line="12" source="testdata/fixtures/class_pending_no_target.rst" type="ERROR">
+        <paragraph>
+            No suitable element following "class" directive
+        <literal_block xml:space="preserve">
+            .. class:: last

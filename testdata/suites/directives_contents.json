@@ -1,0 +1,61 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_contents.py",
+ "cases": [
+  {
+   "name": "contents/0",
+   "input": ".. contents::\n"
+  },
+  {
+   "name": "contents/1",
+   "input": ".. contents:: Table of Contents\n"
+  },
+  {
+   "name": "contents/2",
+   "input": ".. contents::\n   Table of Contents\n"
+  },
+  {
+   "name": "contents/3",
+   "input": ".. contents:: Table\n   of\n   Contents\n"
+  },
+  {
+   "name": "contents/4",
+   "input": ".. contents:: *Table* of ``Contents``\n"
+  },
+  {
+   "name": "contents/5",
+   "input": ".. contents::\n   :depth: 2\n   :local:\n"
+  },
+  {
+   "name": "contents/6",
+   "input": ".. contents::\n   :local: arg\n"
+  },
+  {
+   "name": "contents/7",
+   "input": ".. contents:: Table of Contents\n   :local:\n   :depth: 2\n   :backlinks: none\n"
+  },
+  {
+   "name": "contents/8",
+   "input": ".. contents::\n   :depth: two\n"
+  },
+  {
+   "name": "contents/9",
+   "input": ".. contents::\n   :width: 2\n"
+  },
+  {
+   "name": "contents/10",
+   "input": ".. contents::\n   :backlinks: no way!\n"
+  },
+  {
+   "name": "contents/11",
+   "input": ".. contents::\n   :backlinks:\n"
+  },
+  {
+   "name": "contents/12",
+   "input": "* .. contents::\n"
+  },
+  {
+   "name": "contents/13",
+   "input": ".. sidebar:: containing contents\n\n   .. contents::\n"
+  }
+ ]
+}

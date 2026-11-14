@@ -1,0 +1,9 @@
+<document ids="math-as-html-with-two-stylesheets" names="math\ as\ html\ with\ two\ stylesheets" source="testdata/fixtures/math_html_sheets.rst" title="Math as HTML with two stylesheets">
+    <title>
+        Math as HTML with two stylesheets
+    <paragraph>
+        <math>
+            x^2
+         and
+    <math_block xml:space="preserve">
+        \int_0^1 x\,dx = \tfrac{1}{2}

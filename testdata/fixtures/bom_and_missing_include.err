@@ -1,0 +1,4 @@
+testdata/fixtures/bom_and_missing_include.rst:4: (ERROR/3) Problems with "include" directive path:
+InputError: [Errno 2] No such file or directory: 'testdata/fixtures/no\\\\such\\\\file.txt'.
+testdata/fixtures/bom_and_missing_include.rst:6: (ERROR/3) Problems with "include" directive path:
+InputError: [Errno 2] No such file or directory: "testdata/fixtures/it's-missing.txt".

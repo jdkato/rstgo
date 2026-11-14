@@ -1,0 +1,185 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_tables.py",
+ "cases": [
+  {
+   "name": "table/0",
+   "input": ".. table:: Truth table for \"not\"\n   :class: custom\n   :name:  tab:truth.not\n\n   =====  =====\n     A    not A\n   =====  =====\n   False  True\n   True   False\n   =====  =====\n"
+  },
+  {
+   "name": "table/1",
+   "input": ".. table::\n\n   ========== ==========\n   Table      without\n   a          title\n   ========== ==========\n"
+  },
+  {
+   "name": "table/2",
+   "input": ".. table:: title with an *error\n\n   ======  =====\n   Simple  table\n   ======  =====\n"
+  },
+  {
+   "name": "table/3",
+   "input": ".. table:: Not a table.\n\n   This is a paragraph.\n"
+  },
+  {
+   "name": "table/4",
+   "input": ".. table:: empty\n"
+  },
+  {
+   "name": "table/5",
+   "input": ".. table::\n    :width: 100 %\n\n    ============ ==============\n    col 1        col 2\n    ============ ==============\n"
+  },
+  {
+   "name": "table/6",
+   "input": ".. table::\n    :width: 100px\n\n    ============ ==============\n    col 1        col 2\n    ============ ==============\n"
+  },
+  {
+   "name": "table/7",
+   "input": ".. table::\n    :width: 321\n\n    ============ ==============\n    col 1        col 2\n    ============ ==============\n"
+  },
+  {
+   "name": "table/8",
+   "input": ".. table::\n    :widths: 15, 25\n\n    ============ ==============\n    Columns with custom widths.\n    ============ ==============\n"
+  },
+  {
+   "name": "table/9",
+   "input": ".. table::\n    :widths: 10, 20\n\n    +--------------+----------------+\n    | Columns with | custom widths. |\n    +--------------+----------------+\n"
+  },
+  {
+   "name": "table/10",
+   "input": ".. table::\n    :widths: auto\n\n    +--------------+-------------------+\n    | Columns with | automatic widths. |\n    +--------------+-------------------+\n"
+  },
+  {
+   "name": "table/11",
+   "input": ".. table::\n    :widths: grid\n\n    +--------------+-------------------+\n    | Columns with | automatic widths. |\n    +--------------+-------------------+\n"
+  },
+  {
+   "name": "table/12",
+   "input": ".. table::\n    :align: center\n\n    ======  =====\n    Simple  table\n    ======  =====\n"
+  },
+  {
+   "name": "csv_table/0",
+   "input": ".. csv-table:: inline with integral header\n   :width: 80%\n   :widths: 10, 20, 30\n   :header-rows: 1\n   :stub-columns: 1\n\n   \"Treat\", \"Quantity\", \"Description\"\n   \"Albatross\", 2.99, \"On a stick!\"\n   \"Crunchy Frog\", 1.49, \"If we took the bones out, it wouldn't be\n   crunchy, now would it?\"\n   \"Gannet Ripple\", 1.99, \"On a stick!\"\n"
+  },
+  {
+   "name": "csv_table/1",
+   "input": ".. csv-table:: inline with separate header\n   :delim: space\n   :header: \"Treat\" Quantity \"Description\"\n   :widths: 10,20,30\n\n   \"Albatross\" 2.99 \"On a stick!\"\n"
+  },
+  {
+   "name": "csv_table/2",
+   "input": ".. csv-table:: complex internal structure\n   :header: \"Treat\", Quantity, \"\n            * Description,\n            * Definition, or\n            * Narrative\"\n\n   \"\n   * Ice cream\n   * Sorbet\n   * Albatross\", 2.99, \"On a stick!\"\n"
+  },
+  {
+   "name": "csv_table/3",
+   "input": ".. csv-table:: short rows\n\n   one, 2, three\n   4, five\n"
+  },
+  {
+   "name": "csv_table/4",
+   "input": ".. csv-table:: short rows\n   :header-rows: 1\n\n   header col 1, header col 2\n   one, 2, three\n   4\n"
+  },
+  {
+   "name": "csv_table/5",
+   "input": ".. csv-table:: non-ASCII characters\n\n   Heizölrückstoßabdämpfung\n"
+  },
+  {
+   "name": "csv_table/6",
+   "input": ".. csv-table:: center aligned\n   :align: center\n\n   11, 12\n   21, 22\n"
+  },
+  {
+   "name": "csv_table/7",
+   "input": ".. csv-table:: empty\n"
+  },
+  {
+   "name": "csv_table/8",
+   "input": ".. csv-table:: insufficient header row data\n   :header-rows: 2\n\n   some, csv, data\n"
+  },
+  {
+   "name": "csv_table/9",
+   "input": ".. csv-table:: insufficient body data\n   :header-rows: 1\n\n   some, csv, data\n"
+  },
+  {
+   "name": "csv_table/10",
+   "input": ".. csv-table:: content and external\n   :file: bogus.csv\n\n   some, csv, data\n"
+  },
+  {
+   "name": "csv_table/11",
+   "input": ".. csv-table:: external file and url\n   :file: bogus.csv\n   :url: http://example.org/bogus.csv\n"
+  },
+  {
+   "name": "csv_table/12",
+   "input": ".. csv-table:: error in the *title\n\n   some, csv, data\n"
+  },
+  {
+   "name": "csv_table/13",
+   "input": ".. csv-table:: no such file\n   :file: bogus.csv\n"
+  },
+  {
+   "name": "csv_table/14",
+   "input": ".. csv-table:: bad URL\n   :url: bogus.csv\n"
+  },
+  {
+   "name": "csv_table/15",
+   "input": ".. csv-table:: column mismatch\n   :widths: 10,20\n\n   some, csv, data\n"
+  },
+  {
+   "name": "csv_table/16",
+   "input": ".. csv-table:: bad column widths\n   :widths: 10,y,z\n\n   some, csv, data\n\n.. csv-table:: bad column widths\n   :widths: 0 0 0\n\n   some, csv, data\n"
+  },
+  {
+   "name": "csv_table/17",
+   "input": ".. csv-table:: good delimiter\n   :delim: /\n\n   some/csv/data\n\n.. csv-table:: good delimiter\n   :delim: \\\n\n   some\\csv\\data\n\n.. csv-table:: good delimiter\n   :delim: 0x5c\n\n   some\\csv\\data\n\n.. csv-table:: good delimiter\n   :delim: space\n\n   some csv data\n"
+  },
+  {
+   "name": "csv_table/18",
+   "input": ".. csv-table:: bad delimiter\n   :delim: multiple\n\n.. csv-table:: bad delimiter\n   :delim: U+9999999999999\n"
+  },
+  {
+   "name": "csv_table/19",
+   "input": ".. csv-table:: bad CSV data\n\n   \"bad\", \"csv, data\n"
+  },
+  {
+   "name": "csv_table/20",
+   "input": ".. csv-table:: bad CSV header data\n   :header: \"bad\", \"csv, data\n\n   good, csv, data\n"
+  },
+  {
+   "name": "list_table/0",
+   "input": ".. list-table:: list table with integral header\n   :widths: 10 20 30\n   :header-rows: 1\n   :stub-columns: 1\n\n   * - Treat\n     - Quantity\n     - Description\n   * - Albatross\n     - 2.99\n     - On a stick!\n   * - Crunchy Frog\n     - 1.49\n     - If we took the bones out, it wouldn't be\n       crunchy, now would it?\n   * - Gannet Ripple\n     - 1.99\n     - On a stick!\n"
+  },
+  {
+   "name": "list_table/1",
+   "input": ".. list-table:: list table with integral header\n   :widths: auto\n   :header-rows: 1\n   :stub-columns: 1\n\n   * - Treat\n     - Quantity\n     - Description\n   * - Albatross\n     - 2.99\n     - On a stick!\n"
+  },
+  {
+   "name": "list_table/2",
+   "input": ".. list-table:: list table with integral header\n   :header-rows: 1\n   :stub-columns: 1\n\n   * - Treat\n     - Quantity\n     - Description\n   * - Albatross\n     - 2.99\n     - On a stick!\n   * - Crunchy Frog\n     - 1.49\n     - If we took the bones out, it wouldn't be\n       crunchy, now would it?\n   * - Gannet Ripple\n     - 1.99\n     - On a stick!\n"
+  },
+  {
+   "name": "list_table/3",
+   "input": ".. list-table:: center aligned\n   :align: center\n\n   * - 11\n     - 12\n   * - 21\n     - 22\n"
+  },
+  {
+   "name": "list_table/4",
+   "input": ".. list-table::\n\n   not a bullet list\n"
+  },
+  {
+   "name": "list_table/5",
+   "input": ".. list-table::\n\n   * not a second-level bullet list\n"
+  },
+  {
+   "name": "list_table/6",
+   "input": ".. list-table::\n\n   * - columns not uniform\n   * - first row has one,\n     - second row has two\n"
+  },
+  {
+   "name": "list_table/7",
+   "input": ".. list-table::\n   :widths: 10 20\n\n   * - \":widths:\" option doesn't match columns\n"
+  },
+  {
+   "name": "list_table/8",
+   "input": ".. list-table::\n   :stub-columns: 3\n\n   * - column 1\n     - column 2\n"
+  },
+  {
+   "name": "list_table/9",
+   "input": ".. list-table::\n   :stub-columns: 2\n\n   * - column 1\n     - column 2\n"
+  },
+  {
+   "name": "list_table/10",
+   "input": ".. list-table:: empty\n"
+  }
+ ]
+}

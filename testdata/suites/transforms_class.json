@@ -1,0 +1,49 @@
+{
+ "origin": "test/test_transforms/test_class.py",
+ "cases": [
+  {
+   "name": "class/0",
+   "input": ".. class:: one\n\nparagraph\n"
+  },
+  {
+   "name": "class/1",
+   "input": ".. class:: two\n..\n\n    Block quote\n"
+  },
+  {
+   "name": "class/2",
+   "input": "    Block quote\n\n    .. class:: three\n\nParagraph\n"
+  },
+  {
+   "name": "class/3",
+   "input": ".. class:: four\n\nSection Title\n=============\n\nParagraph\n"
+  },
+  {
+   "name": "class/4",
+   "input": ".. class:: multiple\n\n   paragraph 1\n\n   paragraph 2\n"
+  },
+  {
+   "name": "class/5",
+   "input": ".. class:: multiple\n\n   .. Just a comment.  It's silly, but possible\n"
+  },
+  {
+   "name": "class/6",
+   "input": ".. class::\n\n.. class:: 99\n"
+  },
+  {
+   "name": "class/7",
+   "input": ".. class:: one\n.. class:: two\n\nmultiple class values may be assigned to one element\n"
+  },
+  {
+   "name": "class/8",
+   "input": ".. class:: one two\n\nmultiple class values may be assigned to one element\n"
+  },
+  {
+   "name": "class/9",
+   "input": ".. class:: fancy\n\n2. List starts at 2.\n3. Class should apply to list, not to system message.\n"
+  },
+  {
+   "name": "class/10",
+   "input": "2. List starts at 2.\n3. Class should apply to next paragraph, not to system message.\n\n   .. class:: fancy\n\nA paragraph.\n"
+  }
+ ]
+}

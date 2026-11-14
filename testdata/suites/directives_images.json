@@ -1,0 +1,149 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_images.py",
+ "cases": [
+  {
+   "name": "images/0",
+   "input": ".. image:: picture.png\n"
+  },
+  {
+   "name": "images/1",
+   "input": ".. image::\n"
+  },
+  {
+   "name": "images/2",
+   "input": ".. image:: one two three.png\n"
+  },
+  {
+   "name": "images/3",
+   "input": ".. image:: picture.png\n   :height: 100\n   :width: 200\n   :scale: 50\n"
+  },
+  {
+   "name": "images/4",
+   "input": ".. image::\n   picture.png\n   :height: 100\n   :width: 200\n   :scale: 50\n"
+  },
+  {
+   "name": "images/5",
+   "input": ".. image::\n   :height: 100\n   :width: 200\n   :scale: 50\n"
+  },
+  {
+   "name": "images/6",
+   "input": ".. image:: a/very/long/path/to/\n   picture.png\n   :height: 100\n   :width: 200\n   :scale: 50\n"
+  },
+  {
+   "name": "images/7",
+   "input": ".. image:: picture.png\n   :scale 50\n"
+  },
+  {
+   "name": "images/8",
+   "input": ".. image:: picture.png\n   :: 50\n"
+  },
+  {
+   "name": "images/9",
+   "input": ".. image:: picture.png\n   scale: 50\n"
+  },
+  {
+   "name": "images/10",
+   "input": ".. image:: picture.png\n   :width: 200px\n   :height: 100 em\n"
+  },
+  {
+   "name": "images/11",
+   "input": ".. image:: picture.png\n   :width:  200 Q\n   :height: 100 em\n"
+  },
+  {
+   "name": "images/12",
+   "input": ".. image:: picture.png\n   :width: 50%\n   :height: 10vh\n"
+  },
+  {
+   "name": "images/13",
+   "input": ".. image:: picture.png\n   :width: 50%\n   :height: 40%\n"
+  },
+  {
+   "name": "images/14",
+   "input": ".. image:: picture.png\n   :width: 20mc\n"
+  },
+  {
+   "name": "images/15",
+   "input": ".. image:: picture.png\n   :height: 100\n   :width: 200\n   :scale: 50\n   :alt: Alternate text for the picture\n"
+  },
+  {
+   "name": "images/16",
+   "input": ".. image:: picture.png\n   :scale: -50\n"
+  },
+  {
+   "name": "images/17",
+   "input": ".. image:: picture.png\n   :scale:\n"
+  },
+  {
+   "name": "images/18",
+   "input": ".. image:: picture.png\n   :height: 100\n   :scale 50\n"
+  },
+  {
+   "name": "images/19",
+   "input": ".. image:: picture.png\n   :sale: 50\n"
+  },
+  {
+   "name": "images/20",
+   "input": ".. image:: picture.png\n   :scale is: 50\n"
+  },
+  {
+   "name": "images/21",
+   "input": ".. image:: picture.png\n   :scale: fifty\n"
+  },
+  {
+   "name": "images/22",
+   "input": ".. image:: picture.png\n   :scale: 50\n   :scale: 50\n"
+  },
+  {
+   "name": "images/23",
+   "input": ".. image:: picture.png\n   :alt:\n\n(Empty \"alt\" option.)\n"
+  },
+  {
+   "name": "images/24",
+   "input": ".. image:: picture.png\n   :target: bigpicture.png\n   :name: fig:pix\n"
+  },
+  {
+   "name": "images/25",
+   "input": ".. image:: picture.png\n   :target: indirect_\n"
+  },
+  {
+   "name": "images/26",
+   "input": ".. image:: picture.png\n   :target: a/multi/\n            line/uri\n\n.. image:: picture.png\n   :target: `a multi line\n            internal reference`_\n"
+  },
+  {
+   "name": "images/27",
+   "input": ".. image:: picture.png\n   :target:\n"
+  },
+  {
+   "name": "images/28",
+   "input": ".. image:: picture.png\n   :align: left\n"
+  },
+  {
+   "name": "images/29",
+   "input": ".. image:: picture.png\n   :align: top\n"
+  },
+  {
+   "name": "images/30",
+   "input": ".. |img| image:: picture.png\n   :align: top\n"
+  },
+  {
+   "name": "images/31",
+   "input": ".. |img| image:: picture.png\n   :align: left\n"
+  },
+  {
+   "name": "images/32",
+   "input": ".. image:: picture.png\n   :align: ä\n"
+  },
+  {
+   "name": "images/33",
+   "input": "\n.. image:: test.png\n   :target: Uppercase_\n\n.. _Uppercase: https://docutils.sourceforge.io/\n"
+  },
+  {
+   "name": "images/34",
+   "input": "\n.. image:: path\\ with\\ spaces/name\\ with\\ spaces.png\n   :target: path\\ with\\ spaces/\n            target\\ with\\ spaces\\ across\\ lines.html\n"
+  },
+  {
+   "name": "images/35",
+   "input": "\n.. image:: test.png\n   :loading: embed\n.. image:: test.png\n   :loading: link\n.. image:: test.png\n   :loading: lazy\n"
+  }
+ ]
+}

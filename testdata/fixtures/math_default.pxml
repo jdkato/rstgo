@@ -1,0 +1,10 @@
+<document ids="math" names="math" source="testdata/fixtures/math_default.rst" title="Math">
+    <title>
+        Math
+    <paragraph>
+        Inline 
+        <math>
+            \alpha^2 + \frac{1}{2}
+         formula.
+    <math_block xml:space="preserve">
+        \int_0^1 x\,dx = \frac{1}{2}

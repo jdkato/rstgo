@@ -1,0 +1,25 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_math.py",
+ "cases": [
+  {
+   "name": "argument/0",
+   "input": ".. math:: y = f(x)\n"
+  },
+  {
+   "name": "content/0",
+   "input": ".. math::\n\n  1+1=2\n"
+  },
+  {
+   "name": "options/0",
+   "input": ".. math::\n  :class: new\n  :name: eq:Eulers law\n\n  e^i*2*\\pi = 1\n"
+  },
+  {
+   "name": "argument_and_content/0",
+   "input": ".. math:: y = f(x)\n\n  1+1=2\n\n"
+  },
+  {
+   "name": "content_with_blank_line/0",
+   "input": ".. math::\n\n  1+1=2\n\n  E = mc^2\n"
+  }
+ ]
+}

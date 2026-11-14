@@ -1,0 +1,41 @@
+{
+ "origin": "test/test_parsers/test_rst/test_source_line.py",
+ "cases": [
+  {
+   "name": "transitions/0",
+   "input": "Paragraph starting in line 1.\nWith *inline* element in line 2.\n\n  Block quote in line 4\n\n  -- attribution\n     in line 6\n\n* bullet list in line 9\n*\n  second item in line 10\n  paragraph starts in line 11\n\n#. enumerated list in line 14\n"
+  },
+  {
+   "name": "transitions/1",
+   "input": "Paragraph\n\n  Block quote in line 3\n\n  -- attribution in line 5\n"
+  },
+  {
+   "name": "transitions/2",
+   "input": "Paragraph\n\n  Block quote in line 3\n\n     nested block quote\n     in line 5\n\n       double nested quote in line 8\n\n       -- double-nested attribution in line 10\n\n     line 12\n\n     -- nested attribution in line 14\n\n  -- attribution in line 16\n"
+  },
+  {
+   "name": "transitions/3",
+   "input": "Paragraph\n\n  Block quote in line 3\n\n  -- attribution in line 5\n\n  Second block quote in line 7\n\n  -- attribution in line 9\n\nFinal paragraph in line 11\n"
+  },
+  {
+   "name": "transitions/4",
+   "input": "Paragraph\n\n.. image:: line-3.png\n   :width: 3em\n\n.. figure:: line-6.png\n\n   caption on line 8\n\nFinal paragraph in line 10\n"
+  },
+  {
+   "name": "transitions/5",
+   "input": "Paragraph\n\n.. sidebar::\n\n   .. compound::\n      paragraph at line 6\n\n      | line block,\n        first line\n      | line block, second line at line 10\n      |   indented\n          line\n\n      .. line-block::  line block at line 14\n                       with legacy directive\n\n   continuation at line 17\n\n.. topic:: topic title at line 19\n\n   .. container::\n\n         container content at line 23\n\n.. rubric:: at line 25\n"
+  },
+  {
+   "name": "transitions/6",
+   "input": "==== ===\nline  2\n==== ===\n\n.. table:: test table\n\n  +--------+\n  | line 8 |\n  +--------+\n  | line 10|\n  +--------+\n"
+  },
+  {
+   "name": "transitions/7",
+   "input": ".. list-table:: list table\n\n  * - line 3\n"
+  },
+  {
+   "name": "transitions/8",
+   "input": ".. csv-table:: csv table\n\n  line, 3\n  \".. tip::\n            5\", 5\n"
+  }
+ ]
+}

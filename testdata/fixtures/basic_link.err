@@ -1,0 +1,7 @@
+testdata/fixtures/basic_link.rst:186: (WARNING/2) Cannot analyze code. Pygments package not found.
+testdata/fixtures/basic_link.rst:9: (WARNING/2) Cannot extract "Authors" from bibliographic field:
+Bibliographic field "Authors" must contain either
+ a single paragraph (with author names separated by a character from the set ";,"),
+ multiple paragraphs (one per author),
+ or a bullet list with one author name per item.
+Note: Leading initials can cause (mis)recognizing names as enumerated list.

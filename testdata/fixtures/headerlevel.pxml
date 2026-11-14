@@ -1,0 +1,28 @@
+<document source="testdata/fixtures/headerlevel.rst">
+    <section ids="top" names="top">
+        <title>
+            Top
+        <subtitle ids="a" names="a">
+            A
+        <section ids="b" names="b">
+            <title>
+                B
+            <subtitle ids="c" names="c">
+                C
+            <section ids="d" names="d">
+                <title>
+                    D
+                <subtitle ids="e" names="e">
+                    E
+                <section ids="f" names="f">
+                    <title>
+                        F
+                    <subtitle ids="g" names="g">
+                        G
+    <section ids="subtitle-candidate" names="subtitle\ candidate">
+        <title>
+            Subtitle Candidate
+        <subtitle ids="lone-sub" names="lone\ sub">
+            Lone Sub
+        <paragraph>
+            text

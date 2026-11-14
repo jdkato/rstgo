@@ -1,0 +1,3 @@
+<document source="testdata/fixtures/nonl.rst">
+    <paragraph>
+        No trailing newline

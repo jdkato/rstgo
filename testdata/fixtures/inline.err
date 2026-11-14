@@ -1,0 +1,7 @@
+testdata/fixtures/inline.rst:19: (ERROR/3) PEP number must be a number from 0 to 9999; "x" is invalid.
+testdata/fixtures/inline.rst:19: (ERROR/3) RFC number must be a number greater than or equal to 1; "0" is invalid.
+testdata/fixtures/inline.rst:61: (WARNING/2) Duplicate explicit target name: "x".
+testdata/fixtures/inline.rst:: (ERROR/3) Anonymous hyperlink mismatch: 3 references but 2 targets.
+See "backrefs" attribute for IDs.
+testdata/fixtures/inline.rst:4: (ERROR/3) Unknown target name: "f".
+testdata/fixtures/inline.rst:4: (ERROR/3) Duplicate target name, cannot be used as a unique reference: "x".

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Math as HTML (math2html)</title>
+
+</head>
+<body>
+<main id="math-as-html-math2html">
+<h1 class="title">Math as HTML (math2html)</h1>
+
+<p>Inline: <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <msub>
+    <mi>y</mi>
+    <mn>1</mn>
+  </msub>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>a</mi>
+    <mi>i</mi>
+    <mi>j</mi>
+  </msubsup>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>x</mi>
+    <mrow>
+      <mi>k</mi>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mi>n</mi>
+    </mrow>
+  </msubsup>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mfrac>
+    <mi>a</mi>
+    <mi>b</mi>
+  </mfrac>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mroot>
+    <mi>x</mi>
+    <mn>3</mn>
+  </mroot>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <munderover>
+    <mo movablelimits="true">∑</mo>
+    <mrow>
+      <mi>i</mi>
+      <mo>=</mo>
+      <mn>1</mn>
+    </mrow>
+    <mi>n</mi>
+  </munderover>
+  <mi>i</mi>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>α</mi>
+  <mi>β</mi>
+  <mi class="capital-greek">Γ</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi mathvariant="normal">d</mi>
+  <mi>x</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mi mathvariant="normal">m</mi>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mover accent="true">
+    <mi>x</mi>
+    <mo stretchy="false">ˆ</mo>
+  </mover>
+  <mover accent="true">
+    <mrow>
+      <mi>a</mi>
+      <mi>b</mi>
+    </mrow>
+    <mo stretchy="false">ˉ</mo>
+  </mover>
+  <mover accent="true">
+    <mi>v</mi>
+    <mo stretchy="false" scriptlevel="+1">→</mo>
+  </mover>
+  <mo>≠</mo>
+  <mo>∉</mo>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>≤</mo>
+  <mi>b</mi>
+  <mo>≠</mo>
+  <mi>c</mi>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>sin</mi>
+  <mo>&ApplyFunction;</mo>
+  <mi>x</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtext>some text</mtext>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>ℝ</mi>
+    <mi>n</mi>
+  </msup>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mo>(</mo>
+    <mfrac>
+      <mi>a</mi>
+      <mi>b</mi>
+    </mfrac>
+    <mo>)</mo>
+  </mrow>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow class="binom">
+    <mo>(</mo>
+    <mfrac linethickness="0">
+      <mi>n</mi>
+      <mi>k</mi>
+    </mfrac>
+    <mo>)</mo>
+  </mrow>
+</math>,
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mspace width="0.1667em"></mspace>
+  <mi>b</mi>
+  <mspace width="0.2778em"></mspace>
+  <mi>c</mi>
+  <mspace width="1em"></mspace>
+  <mi>d</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>'</mo>
+  <mo>&lt;</mo>
+  <mi>y</mi>
+  <mo>&gt;</mo>
+  <mi>z</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>100</mn>
+  <mi>%</mi>
+</math>,
+<span class="math problematic">\upalpha</span>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mover accent="false">
+    <mrow>
+      <mi>x</mi>
+      <mo>+</mo>
+      <mi>y</mi>
+    </mrow>
+    <mo accent="true">_</mo>
+  </mover>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <munder>
+    <mrow>
+      <mi>a</mi>
+      <mo>+</mo>
+      <mi>b</mi>
+    </mrow>
+    <mo>⏟</mo>
+  </munder>
+</math>.</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 4)</p>
+<p>Unknown LaTeX command &quot;\upalpha&quot;.</p>
+</aside>
+<p>Fractions and roots:</p>
+<pre class="math problematic">
+\frac{1}{1+\frac{1}{x}} \quad \dfrac{a}{b} \quad \tfrac{a}{b}
+\quad \cfrac[l]{a}{b} \quad \nicefrac{1}{2} \quad \sqrt{x}
+\quad \sqrt[n]{1+x}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 15)</p>
+<p>Unknown LaTeX command &quot;\nicefrac&quot;.</p>
+</aside>
+<p>Big operators with limits:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <munderover>
+    <mo movablelimits="true">∑</mo>
+    <mrow>
+      <mi>i</mi>
+      <mo>=</mo>
+      <mn>1</mn>
+    </mrow>
+    <mi>n</mi>
+  </munderover>
+  <mi>i</mi>
+  <mspace width="1em"></mspace>
+  <munder>
+    <mo movablelimits="true">∏</mo>
+    <mi>k</mi>
+  </munder>
+  <msub>
+    <mi>a</mi>
+    <mi>k</mi>
+  </msub>
+  <mspace width="1em"></mspace>
+  <msubsup>
+    <mo>∫</mo>
+    <mn>0</mn>
+    <mn>1</mn>
+  </msubsup>
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mspace width="0.1667em"></mspace>
+  <mi>d</mi>
+  <mi>x</mi>
+  <mspace width="1em"></mspace>
+  <munder>
+    <mo movablelimits="false">∑</mo>
+    <mi>i</mi>
+  </munder>
+  <mspace width="1em"></mspace>
+  <msubsup>
+    <mo>∫</mo>
+    <mi>a</mi>
+    <mi>b</mi>
+  </msubsup>
+  <mspace width="1em"></mspace>
+  <munder>
+    <mo movablelimits="true">lim</mo>
+    <mrow>
+      <mi>x</mi>
+      <mo>→</mo>
+      <mn>0</mn>
+    </mrow>
+  </munder>
+  <mi>f</mi>
+  <mspace width="1em"></mspace>
+  <mover>
+    <mo movablelimits="true">∑</mo>
+    <mi>n</mi>
+  </mover>
+  <mspace width="1em"></mspace>
+  <munder>
+    <mo movablelimits="true">max</mo>
+    <mi>i</mi>
+  </munder>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+</math>
+</div>
+<p>Delimiters:</p>
+<pre class="math problematic">
+\left( \frac{a}{b} \right) \left[ x \right] \left\{ y \right\}
+\left. \frac{a}{b} \right|_0
+\left\langle a \middle| b \right\rangle
+\left( \frac{\frac{a}{b}}{c} \right)
+\bigl( \Bigl( \biggl( x \biggr) \Bigr) \bigr)
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 27)</p>
+<p>Unknown LaTeX command &quot;\middle&quot;.</p>
+</aside>
+<p>Matrices and arrays:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable>
+    <mtr>
+      <mtd>
+        <mi>a</mi>
+      </mtd>
+      <mtd>
+        <mi>b</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mi>c</mi>
+      </mtd>
+      <mtd>
+        <mi>d</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
+</div>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow>
+    <mo>(</mo>
+    <mtable>
+      <mtr>
+        <mtd>
+          <mi>a</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>b</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>c</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo>)</mo>
+  </mrow>
+</math>
+</div>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow>
+    <mo>(</mo>
+    <mtable>
+      <mtr>
+        <mtd>
+          <mi>a</mi>
+        </mtd>
+        <mtd>
+          <mi>b</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mi>c</mi>
+        </mtd>
+        <mtd>
+          <mi>d</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo>)</mo>
+  </mrow>
+  <mrow>
+    <mo>[</mo>
+    <mtable>
+      <mtr>
+        <mtd>
+          <mn>1</mn>
+        </mtd>
+        <mtd>
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mn>0</mn>
+        </mtd>
+        <mtd>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo>]</mo>
+  </mrow>
+</math>
+</div>
+<pre class="math problematic">
+\begin{array}{lcr} a &amp; b &amp; c \\ d &amp; e &amp; f \end{array}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 42)</p>
+<p>Environment &quot;array&quot; not supported!</p>
+</aside>
+<pre class="math problematic">
+\left\{ \begin{array}{l} a \\ b \\ c \\ d \end{array} \right.
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 44)</p>
+<p>Environment &quot;array&quot; not supported!</p>
+</aside>
+<p>Cases:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>f</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mrow>
+    <mo rspace="0.17em">{</mo>
+    <mtable columnalign="left" class="cases">
+      <mtr>
+        <mtd>
+          <mn>1</mn>
+        </mtd>
+        <mtd>
+          <mi>x</mi>
+          <mo>&gt;</mo>
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd>
+          <mn>0</mn>
+        </mtd>
+        <mtd>
+          <mtext>otherwise</mtext>
+        </mtd>
+      </mtr>
+    </mtable>
+  </mrow>
+</math>
+</div>
+<p>Aligned environments:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable class="ams-align" displaystyle="true">
+    <mtr>
+      <mtd>
+        <mi>a</mi>
+      </mtd>
+      <mtd>
+        <mo>=</mo>
+        <mi>b</mi>
+        <mo>+</mo>
+        <mi>c</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd></mtd>
+      <mtd>
+        <mo>=</mo>
+        <mi>d</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>
+</div>
+<pre class="math problematic">
+\begin{align*} a &amp;= b \\ c &amp;= d \end{align*}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 57)</p>
+<p>Environment &quot;align*&quot; not supported!</p>
+</aside>
+<pre class="math problematic">
+\begin{eqnarray} a &amp; = &amp; b \end{eqnarray}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 59)</p>
+<p>Environment &quot;eqnarray&quot; not supported!</p>
+</aside>
+<pre class="math problematic">
+\begin{gathered} a \\ b \end{gathered}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 61)</p>
+<p>Environment &quot;gathered&quot; not supported!</p>
+</aside>
+<p>Two formulas in one directive:</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>a</mi>
+  <mo>=</mo>
+  <mi>b</mi>
+</math>
+</div>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>c</mi>
+  <mo>=</mo>
+  <mi>d</mi>
+</math>
+</div>
+<p>Accents and embellishments:</p>
+<pre class="math problematic">
+\hat{x} \bar{x} \tilde{x} \vec{x} \dot{x} \ddot{x} \acute{a}
+\grave{a} \check{a} \breve{a} \bar{\alpha} \bar{+} \bar{1}
+\widehat{abc} \overline{x+y} \underline{x} \overbrace{a+b}
+\overrightarrow{AB} \stackrel{def}{=} \overset{!}{=}
+\underset{x}{y}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 73)</p>
+<p>Unknown LaTeX command &quot;\stackrel&quot;.</p>
+</aside>
+<p>Fonts and text:</p>
+<pre class="math problematic">
+\mathrm{d}x \mathbf{v} \mathit{diff} \mathsf{A} \mathtt{code}
+\mathcal{L} \mathbb{R} \mathfrak{g} \mathscr{F}
+\boldsymbol{\alpha} \text{a_b^c \alpha {x}} \textbf{bold}
+\mbox{box} 3\text{kg}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 81)</p>
+<p>Unknown LaTeX command &quot;\textbf&quot;.</p>
+</aside>
+<p>Spacing, colour and boxes:</p>
+<pre class="math problematic">
+a\,b\:c\;d\quad e\qquad f\ g\!h ~ i \hspace{1em} j
+\color{red}{x} \textcolor{blue}{y} \colorbox{yellow}{z}
+\boxed{x} \fbox{y} \rule{1cm}{2pt} \phantom{x}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 88)</p>
+<p>Unknown LaTeX command &quot;\color&quot;.</p>
+</aside>
+<p>Symbols:</p>
+<pre class="math problematic">
+\to \Rightarrow \mapsto \iff \ldots \cdots \infty \partial
+\nabla \forall \exists \emptyset \hbar \ell \aleph a \cdot b
+\times c \pm d \otimes e \&amp; \% \# \_ \{ \}
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 94)</p>
+<p>Unknown LaTeX command &quot;\iff&quot;.</p>
+</aside>
+<p>Unicode input: <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>α</mi>
+  <mo>≤</mo>
+  <mi>β</mi>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∑</mo>
+  <mi>x</mi>
+  <mn>²</mn>
+</math>, <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>é</mi>
+  <mo>×</mo>
+  <mi>ñ</mi>
+</math>.</p>
+<p>Problems are reported by math2html on stderr only:</p>
+<pre class="math problematic">
+\unknowncommand + \foo{bar} + \Upgamma + \begin{unknownenv} a &amp; b
+\end{unknownenv} + { a
+</pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/math_html_constructs.rst</span>, line 102)</p>
+<p>Unknown LaTeX command &quot;\unknowncommand&quot;.</p>
+</aside>
+</main>
+</body>
+</html>

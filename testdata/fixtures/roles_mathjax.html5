@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>roles_mathjax.rst</title>
+<script type="text/javascript" src="https://cdn.example.org/mathjax.js?config=TeX-AMS_CHTML"></script>
+
+</head>
+<body>
+<main>
+
+
+<p><span class="red">red text</span>, <strong class="huge fancy">big</strong>, <a href="#system-message-1"><span class="problematic" id="problematic-1">:py:`print(1)`</span></a>, <span class="tex"><i>raw</i></span>, <del>deleted</del>,
+<kbd class="docutils literal"><span class="pre">Ctrl-C</span></kbd>.</p>
+<aside class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/roles_mathjax.rst</span>, line 12); <em><a href="#problematic-1">backlink</a></em></p>
+<p>Cannot analyze code. Pygments package not found.</p>
+</aside>
+<p><em>default emphasis</em></p>
+<p><cite>back to title ref</cite></p>
+<ins class="docutils container">
+<p>Inserted block.</p>
+</ins>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/roles_mathjax.rst</span>, line 26)</p>
+<p>Cannot analyze code. Pygments package not found.</p>
+<pre class="literal-block">.. code:: python
+   :number-lines: 7
+   :class: extra
+   :name: listing
+
+   a = 1
+
+   b = 2
+</pre>
+</aside>
+<div class="math">
+\begin{equation*}
+a = b
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+c = d
+\end{equation*}
+</div>
+</main>
+</body>
+</html>

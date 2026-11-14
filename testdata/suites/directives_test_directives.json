@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_test_directives.py",
+ "cases": [
+  {
+   "name": "test_directives/0",
+   "input": ".. reStructuredText-test-directive::\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/1",
+   "input": ".. reStructuredText-test-directive ::\n\nAn optional space before the \"::\".\n"
+  },
+  {
+   "name": "test_directives/2",
+   "input": ".. reStructuredText-test-directive:: argument\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/3",
+   "input": ".. reStructuredText-test-directive:: argument\n   :option: value\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/4",
+   "input": ".. reStructuredText-test-directive:: :option: value\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/5",
+   "input": ".. reStructuredText-test-directive:: :option:\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/6",
+   "input": ".. reStructuredText-test-directive::\n\n   Directive block contains one paragraph, with a blank line before.\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/7",
+   "input": ".. reStructuredText-test-directive::\n\n\n   Directive block contains one paragraph, with two blank lines before.\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/8",
+   "input": ".. reStructuredText-test-directive::\n   Directive block contains one paragraph, no blank line before.\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/9",
+   "input": ".. reStructuredText-test-directive::\n   block\nno blank line.\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/10",
+   "input": ".. reStructuredText-test-directive:: argument\n   :option: * value1\n            * value2\n\nParagraph.\n"
+  },
+  {
+   "name": "test_directives/11",
+   "input": ".. reStructuredText-test-directive::\n\n   Directive \\block \\*contains* \\\\backslashes.\n"
+  }
+ ]
+}

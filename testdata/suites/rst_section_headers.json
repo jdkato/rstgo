@@ -1,0 +1,153 @@
+{
+ "origin": "test/test_parsers/test_rst/test_section_headers.py",
+ "cases": [
+  {
+   "name": "section_headers/0",
+   "input": "Title\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/1",
+   "input": "Title\n=====\nParagraph (no blank line).\n"
+  },
+  {
+   "name": "section_headers/2",
+   "input": "Paragraph.\n\nTitle\n=====\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/3",
+   "input": "Test unexpected section titles.\n\n    Title\n    =====\n    Paragraph.\n\n    -----\n    Title\n    -----\n    Paragraph.\n"
+  },
+  {
+   "name": "section_headers/4",
+   "input": "Title\n====\n\nTest short underline.\n"
+  },
+  {
+   "name": "section_headers/5",
+   "input": "à with combining varia\n======================\n\nDo not count combining chars in title column width.\n"
+  },
+  {
+   "name": "section_headers/6",
+   "input": "=====\nTitle\n=====\n\nTest overline title.\n"
+  },
+  {
+   "name": "section_headers/7",
+   "input": "=======\n Title\n=======\n\nTest overline title with inset.\n"
+  },
+  {
+   "name": "section_headers/8",
+   "input": "========================\n Test Missing Underline\n"
+  },
+  {
+   "name": "section_headers/9",
+   "input": "========================\n Test Missing Underline\n\n"
+  },
+  {
+   "name": "section_headers/10",
+   "input": "=======\n Title\n\nTest missing underline, with paragraph.\n"
+  },
+  {
+   "name": "section_headers/11",
+   "input": "=======\n Long    Title\n=======\n\nTest long title and space normalization.\n"
+  },
+  {
+   "name": "section_headers/12",
+   "input": "=======\n Title\n-------\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/13",
+   "input": "========================\n\n========================\n\nTest missing titles; blank line in-between.\n\n========================\n\n========================\n"
+  },
+  {
+   "name": "section_headers/14",
+   "input": "========================\n========================\n\nTest missing titles; nothing in-between.\n\n========================\n========================\n"
+  },
+  {
+   "name": "section_headers/15",
+   "input": ".. Test return to existing, highest-level section (Title 3).\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n=======\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_headers/16",
+   "input": "Test return to existing, highest-level section (Title 3, with overlines).\n\n=======\nTitle 1\n=======\nParagraph 1.\n\n-------\nTitle 2\n-------\nParagraph 2.\n\n=======\nTitle 3\n=======\nParagraph 3.\n\n-------\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_headers/17",
+   "input": "Test return to existing, higher-level section (Title 4).\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_headers/18",
+   "input": "Test bad subsection order (Title 4).\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n=======\nParagraph 3.\n\nTitle 4\n```````\nParagraph 4.\n"
+  },
+  {
+   "name": "section_headers/19",
+   "input": "Test bad subsection order (Title 4, with overlines).\n\n=======\nTitle 1\n=======\nParagraph 1.\n\n-------\nTitle 2\n-------\nParagraph 2.\n\n=======\nTitle 3\n=======\nParagraph 3.\n\n```````\nTitle 4\n```````\nParagraph 4.\n"
+  },
+  {
+   "name": "section_headers/20",
+   "input": "Title containing *inline* ``markup``\n====================================\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/21",
+   "input": "1. Numbered Title\n=================\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/22",
+   "input": "1. Item 1.\n2. Item 2.\n3. Numbered Title\n=================\n\nParagraph.\n"
+  },
+  {
+   "name": "section_headers/23",
+   "input": "ABC\n===\n\nShort title.\n"
+  },
+  {
+   "name": "section_headers/24",
+   "input": "ABC\n==\n\nUnderline too short.\n"
+  },
+  {
+   "name": "section_headers/25",
+   "input": "==\nABC\n==\n\nOver & underline too short.\n"
+  },
+  {
+   "name": "section_headers/26",
+   "input": "==\nABC\n\nOverline too short, no underline.\n"
+  },
+  {
+   "name": "section_headers/27",
+   "input": "==\nABC\n"
+  },
+  {
+   "name": "section_headers/28",
+   "input": "==\n  Not a title: a definition list item.\n"
+  },
+  {
+   "name": "section_headers/29",
+   "input": "==\n  Not a title: a definition list item.\n--\n  Another definition list item.  It's in a different list,\n  but that's an acceptable limitation given that this will\n  probably never happen in real life.\n\n  The next line will trigger a warning:\n==\n"
+  },
+  {
+   "name": "section_headers/30",
+   "input": "Paragraph\n\n    ==\n    ABC\n    ==\n\n    Over & underline too short.\n"
+  },
+  {
+   "name": "section_headers/31",
+   "input": "Paragraph\n\n    ABC\n    ==\n\n    Underline too short.\n"
+  },
+  {
+   "name": "section_headers/32",
+   "input": "...\n...\n\n...\n---\n\n...\n...\n...\n"
+  },
+  {
+   "name": "section_headers/33",
+   "input": "..\nHi\n..\n\n...\nYo\n...\n\nHo\n"
+  },
+  {
+   "name": "section_headers/34",
+   "input": "Empty Section\n=============\n"
+  },
+  {
+   "name": "section_headers/35",
+   "input": "===\nOne\n===\n\nThe bubble-up parser strategy conflicts with short titles\n(<= 3 char-long over- & underlines).\n\n===\nTwo\n===\n\nThe parser currently contains a work-around kludge.\nWithout it, the parser ends up in an infinite loop.\n"
+  },
+  {
+   "name": "section_headers/36",
+   "input": ""
+  }
+ ]
+}

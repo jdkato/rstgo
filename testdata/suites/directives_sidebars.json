@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_sidebars.py",
+ "cases": [
+  {
+   "name": "sidebars/0",
+   "input": ".. sidebar:: Outer\n\n   .. sidebar:: Nested\n\n      Body.\n"
+  },
+  {
+   "name": "sidebars/1",
+   "input": ".. sidebar:: Margin Notes\n   :subtitle: with options\n   :class: margin\n   :name: note:Options\n\n   Body.\n"
+  },
+  {
+   "name": "sidebars/2",
+   "input": ".. sidebar::\n\n   The title is optional.\n"
+  },
+  {
+   "name": "sidebars/3",
+   "input": ".. sidebar:: Outer\n\n   .. topic:: Topic\n\n      .. sidebar:: Inner\n\n         text\n"
+  }
+ ]
+}

@@ -1,0 +1,2 @@
+# Corpus cases whose output is known to differ from Docutils.
+# Format: <case id> <kind>.  Regenerate with RSTGO_UPDATE_KNOWN=1 go test -run TestCorpus

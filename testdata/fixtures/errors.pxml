@@ -1,0 +1,239 @@
+<document source="testdata/fixtures/errors.rst">
+    <section ids="title" names="title">
+        <title>
+            Title
+        <system_message level="2" line="2" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Title underline too short.
+            <literal_block xml:space="preserve">
+                Title
+                ====
+        <paragraph>
+            Short underline above.
+        <system_message level="3" line="6" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown directive type "unknown-directive".
+            <literal_block xml:space="preserve">
+                .. unknown-directive:: argument
+                   :option: value
+                
+                   content
+        <paragraph>
+            Unknown role 
+            <problematic ids="problematic-1" refid="system-message-1">
+                :foo:`bar`
+             and undefined 
+            <problematic ids="problematic-6" refid="system-message-6">
+                ref_
+             and 
+            <problematic ids="problematic-4" refid="system-message-4">
+                |undefined|
+             subst.
+        <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="11" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown interpreted text role "foo".
+        <paragraph>
+            <problematic ids="problematic-2" refid="system-message-2">
+                *
+            unterminated emphasis and 
+            <problematic ids="problematic-3" refid="system-message-3">
+                ``
+            unterminated literal
+        <system_message backrefs="problematic-2" ids="system-message-2" level="2" line="13" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Inline emphasis start-string without end-string.
+        <system_message backrefs="problematic-3" ids="system-message-3" level="2" line="13" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Inline literal start-string without end-string.
+        <paragraph>
+            Footnote ref 
+            <problematic ids="footnote-reference-1" refid="system-message-7">
+                [5]_
+             missing, auto 
+            <footnote_reference auto="1" ids="footnote-reference-2" refid="footnote-1">
+                1
+             missing, 
+            <problematic ids="problematic-5" refid="system-message-5">
+                anon__
+             missing.
+        <target dupnames="dup" ids="dup" refuri="http://a/">
+        <system_message level="2" line="18" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "dup".
+        <target dupnames="dup" ids="dup-1" refuri="http://b/">
+        <paragraph>
+            <problematic ids="problematic-7" refid="system-message-8">
+                dup_
+        <block_quote>
+            <paragraph>
+                Unexpected indentation
+        <system_message level="2" line="23" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Block quote ends without a blank line; unexpected unindent.
+        <definition_list>
+            <definition_list_item>
+                <term>
+                    after block quote
+                <definition>
+                    <paragraph>
+                        again.
+        <bullet_list bullet="-">
+            <list_item>
+                <paragraph>
+                    list
+        <system_message level="2" line="27" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Bullet list ends without a blank line; unexpected unindent.
+        <paragraph>
+            without blank line
+        <paragraph>
+            1. enumerated
+            text
+        <system_message level="3" line="32" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Content block expected for the "note" directive; none found.
+            <literal_block xml:space="preserve">
+                .. note::
+        <system_message level="3" line="34" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Error in "image" directive:
+                1 argument(s) required, 0 supplied.
+            <literal_block xml:space="preserve">
+                .. image::
+        <system_message level="3" line="36" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Error in "figure" directive:
+                invalid option value: (option: "scale"; value: 'abc')
+                invalid literal for int() with base 10: 'abc'.
+            <literal_block xml:space="preserve">
+                .. figure:: x.png
+                   :scale: abc
+        <system_message level="3" line="39" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Problems with "include" directive path:
+                InputError: [Errno 2] No such file or directory: 'testdata/fixtures/does-not-exist.rst'.
+            <literal_block xml:space="preserve">
+                .. include:: does-not-exist.rst
+        <system_message level="3" line="41" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                5 header row(s) specified but only 1 row(s) of data supplied ("csv-table" directive).
+            <literal_block xml:space="preserve">
+                .. csv-table:: bad
+                   :header-rows: 5
+                
+                   a,b
+        <system_message level="3" line="48" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Malformed table.
+                Bottom border missing or corrupt.
+            <literal_block xml:space="preserve">
+                +-----+
+                | bad |
+                +----
+        <system_message level="3" line="52" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Malformed table.
+                Bottom border or header rule does not match top border.
+            <literal_block xml:space="preserve">
+                =====  ====
+                bad table
+                =====
+        <section ids="section" names="section">
+            <title>
+                Section
+            <section ids="level-skip" names="level\ skip">
+                <title>
+                    Level skip
+    <section ids="another" names="another">
+        <title>
+            Another
+        <system_message level="3" line="63" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Inconsistent title style: skip from level 1 to 3.
+            <literal_block xml:space="preserve">
+                Bad
+                ~~~
+            <paragraph>
+                Established title styles: = - ~
+        <system_message level="3" line="66" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Content block expected for the "replace" directive; none found.
+            <literal_block xml:space="preserve">
+                replace::
+        <system_message level="2" line="66" source="testdata/fixtures/errors.rst" type="WARNING">
+            <paragraph>
+                Substitution definition "empty" empty or invalid.
+            <literal_block xml:space="preserve">
+                .. |empty| replace::
+        <footnote auto="1" backrefs="footnote-reference-2" ids="footnote-1" names="1">
+            <label>
+                1
+            <paragraph>
+                Unreferenced footnote
+        <target refid="unused-target">
+        <paragraph ids="unused-target" names="unused\ target">
+            <problematic ids="problematic-8" refid="system-message-9">
+                `embedded <http://x`_
+             and 
+            <problematic ids="problematic-9" refid="system-message-10">
+                `bad <uri> ref`_
+            .
+        <literal_block xml:space="preserve">
+            .. class::
+        <system_message level="3" line="78" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown interpreted text role "nonexistent".
+            <literal_block xml:space="preserve">
+                .. role:: custom(nonexistent)
+        <system_message level="3" line="80" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown interpreted text role "nonexistent".
+            <literal_block xml:space="preserve">
+                .. default-role:: nonexistent
+        <system_message level="3" line="82" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Error parsing content block for the "table" directive: exactly one table expected.
+            <literal_block xml:space="preserve">
+                .. table::
+                
+                   not a table
+        <system_message level="3" line="86" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Error parsing content block for the "list-table" directive: uniform two-level bullet list expected, but row 2 does not contain the same number of items as row 1 (2 vs 1).
+            <literal_block xml:space="preserve">
+                .. list-table::
+                
+                   * - a
+                   * - b
+                     - c
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="problematic-4" ids="system-message-4" level="3" line="11" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Undefined substitution referenced: "undefined".
+        <system_message backrefs="problematic-5" ids="system-message-5" level="3" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Anonymous hyperlink mismatch: 1 references but 0 targets.
+                See "backrefs" attribute for IDs.
+        <system_message backrefs="problematic-6" ids="system-message-6" level="3" line="11" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown target name: "ref".
+        <system_message backrefs="footnote-reference-1" ids="system-message-7" level="3" line="15" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown target name: "5".
+        <system_message backrefs="problematic-7" ids="system-message-8" level="3" line="20" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Duplicate target name, cannot be used as a unique reference: "dup".
+        <system_message backrefs="problematic-8" ids="system-message-9" level="3" line="72" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown target name: "embedded <http://x".
+            <paragraph>
+                Did you want to embed a URI or alias?
+                Closing bracket missing.
+        <system_message backrefs="problematic-9" ids="system-message-10" level="3" line="72" source="testdata/fixtures/errors.rst" type="ERROR">
+            <paragraph>
+                Unknown target name: "bad <uri> ref".
+            <paragraph>
+                Did you want to embed a URI or alias?
+                The embedded reference must be the last text before the end string.

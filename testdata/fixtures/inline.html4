@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>Inline markup corner cases</title>
+
+</head>
+<body>
+<div class="document" id="inline-markup-corner-cases">
+<h1 class="title">Inline markup corner cases</h1>
+
+<p><em>a</em> <strong>b</strong> <tt class="docutils literal">c</tt> <cite>d</cite> <em>E</em> text <a href="#system-message-4"><span class="problematic" id="problematic-6">f_</span></a> <a href="#system-message-3"><span class="problematic" id="problematic-3">g__</span></a> <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a> <a class="footnote-reference" href="#footnote-4" id="footnote-reference-2">[4]</a> <a class="footnote-reference" href="#footnote-5" id="footnote-reference-3">[*]</a> <a href="#system-message-5"><span class="problematic" id="citation-reference-1">[x]_</span></a> <span class="target" id="h">h</span></p>
+<p>&quot;<em>quoted</em>&quot; '<em>quoted</em>' (<em>paren</em>) [<em>bracket</em>] {<em>brace</em>} &lt;<em>angle</em>&gt;
+<em>not emphasis * and * not either</em>, 2*3*4, a*b, <em>a*b, a*b</em>c.</p>
+<p><strong>strong**text and text**strong</strong>, <tt class="docutils literal"><span class="pre">lit``eral,</span> <span class="pre">x``lit</span></tt>.</p>
+<p>Escapes: *not emphasis*, \backslash, `not interpreted`, ab, C:\dir.</p>
+<p><a class="reference external" href="http://phrase.example.org">phrase reference</a>, <a class="reference external" href="http://example.org/ab">phrase</a>, <a class="reference external" href="http://bare.example.org">http://bare.example.org</a>,
+<a class="reference external" href="http://phrase.example.org">alias</a>, <a class="reference external" href="http://x.org">anon embedded</a>, <a class="reference external" href="http://esc.example.org">with &lt;escaped&gt;</a>.</p>
+<p><em>role</em>, <strong>suffix role</strong>, <tt class="docutils literal">lit\eral</tt>, <code>x = 1</code>,
+<tt class="math">a^2</tt>, <a class="reference external" href="https://peps.python.org/pep-0008">PEP 8</a>, <a class="reference external" href="https://peps.python.org/pep-0287">PEP 287</a>, <a class="reference external" href="https://tools.ietf.org/html/rfc2822.html">RFC 2822</a>, <a class="reference external" href="https://tools.ietf.org/html/rfc2822.html#section-3">RFC 2822</a>, <cite>T</cite>,
+<abbr>abbr</abbr>, <acronym>ACR</acronym>, <sub>s</sub>, <sup>s</sup>, <a href="#system-message-1"><span class="problematic" id="problematic-1">:pep:`x`</span></a>, <a href="#system-message-2"><span class="problematic" id="problematic-2">:rfc:`0`</span></a>.</p>
+<div class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/inline.rst</tt>, line 19); <em><a href="#problematic-1">backlink</a></em></p>
+PEP number must be a number from 0 to 9999; &quot;x&quot; is invalid.</div>
+<div class="system-message" id="system-message-2">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/inline.rst</tt>, line 19); <em><a href="#problematic-2">backlink</a></em></p>
+RFC number must be a number greater than or equal to 1; &quot;0&quot; is invalid.</div>
+<p>URIs: <a class="reference external" href="http://www.example.org">http://www.example.org</a>, &lt;<a class="reference external" href="http://example.org/path">http://example.org/path</a>&gt;, (<a class="reference external" href="https://example.org/">https://example.org/</a>),
+<a class="reference external" href="ftp://ftp.example.org/file.txt">ftp://ftp.example.org/file.txt</a>; <a class="reference external" href="news:comp.lang.python">news:comp.lang.python</a>, <a class="reference external" href="urn:isbn:0-486-27557-4">urn:isbn:0-486-27557-4</a>,
+<a class="reference external" href="http://example.org/a_(b">http://example.org/a_(b</a>), <a class="reference external" href="http://example.org/x">http://example.org/x</a>., foo:bar, user&#64;example.org,
+mailto:user&#64;example.org?subject=hi, http://example.org/*escaped, www.example.org.</p>
+<p>Footnote refs: text <a class="footnote-reference" href="#footnote-1" id="footnote-reference-4">[1]</a> and[2]_ and <a class="footnote-reference" href="#footnote-3" id="footnote-reference-5">[3]</a>.</p>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#footnote-reference-1">1</a>, <a class="fn-backref" href="#footnote-reference-4">2</a>)</em> one</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>two</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-5">[3]</a></td><td>three</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[4]</a></td><td>auto</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-3">[*]</a></td><td>sym</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="x" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[x]</td><td>cit</td></tr>
+</tbody>
+</table>
+<p>Substitutions: <em>E</em> text, <a class="reference external" href="http://e.example.org"><em>E</em> text</a>, <a href="#system-message-3"><span class="problematic" id="problematic-4">|e|__</span></a>, <img alt="the image" src="i.png" />, 2024 and©.</p>
+<p>Unicode: «<em>guillemets</em>» „<em>quotes</em>“ ‘<em>single</em>’ —<em>dash</em>— ¿<em>que</em>? 日本語*強調*テキスト,
+日本語 <em>強調</em> テキスト, naïve café <a class="reference external" href="http://unicode.example.org">ref with ünïcode</a>.</p>
+<p>Interpreted <cite>default role</cite>, <tt class="docutils literal">literal with `backquote` inside</tt>, <tt class="docutils literal">`triple`</tt>,
+`` ` <tt class="docutils literal">, <span class="pre">**\***,</span> <span class="pre">*\**,</span> ``\</tt>.</p>
+<p><span class="target" id="inline-target">inline target</span> and <a class="reference internal" href="#inline-target">inline target</a> reference. <span class="target" id="multi-word-target">multi word target</span>.</p>
+<p>Long: aaaaaaaaaa*bbbbbbbbbb, __init__, snake_case_name, <a class="reference external" href="http://ab.example.org">a_b</a>, _private, <a href="#system-message-3"><span class="problematic" id="problematic-5">x__</span></a>, <a class="reference external" href="http://y.example.org">y</a>.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/inline.rst</tt>, line 61)</p>
+Duplicate explicit target name: &quot;x&quot;.</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="system-message-3">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/inline.rst</tt>); <em>backlinks: <a href="#problematic-3">1</a>, <a href="#problematic-4">2</a>, <a href="#problematic-5">3</a></em></p>
+Anonymous hyperlink mismatch: 3 references but 2 targets.
+See &quot;backrefs&quot; attribute for IDs.</div>
+<div class="system-message" id="system-message-4">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/inline.rst</tt>, line 4); <em><a href="#problematic-6">backlink</a></em></p>
+Unknown target name: &quot;f&quot;.</div>
+<div class="system-message" id="system-message-5">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/inline.rst</tt>, line 4); <em><a href="#citation-reference-1">backlink</a></em></p>
+Duplicate target name, cannot be used as a unique reference: &quot;x&quot;.</div>
+</div>
+</div>
+</body>
+</html>

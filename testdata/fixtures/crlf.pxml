@@ -1,0 +1,13 @@
+<document source="testdata/fixtures/crlf.rst">
+    <paragraph>
+        CRLF line one
+        line two
+    <paragraph>
+        Para
+        with CR
+    <system_message level="3" line="6" source="testdata/fixtures/crlf.rst" type="ERROR">
+        <paragraph>
+            Unexpected indentation.
+    <block_quote>
+        <paragraph>
+            tab vt ff

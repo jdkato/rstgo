@@ -1,0 +1,69 @@
+{
+ "origin": "test/test_parsers/test_rst/test_definition_lists.py",
+ "cases": [
+  {
+   "name": "definition_lists/0",
+   "input": "term\n  definition\n"
+  },
+  {
+   "name": "definition_lists/1",
+   "input": "term\n  definition\n\nparagraph\n"
+  },
+  {
+   "name": "definition_lists/2",
+   "input": "term\n  definition\nno blank line\n"
+  },
+  {
+   "name": "definition_lists/3",
+   "input": "A paragraph::\n    A literal block without a blank line first?\n"
+  },
+  {
+   "name": "definition_lists/4",
+   "input": "this is not a term;\na term may only be one line long\n  this is not a definition\n"
+  },
+  {
+   "name": "definition_lists/5",
+   "input": "term 1\n  definition 1\n\nterm 2\n  definition 2\n"
+  },
+  {
+   "name": "definition_lists/6",
+   "input": "term 1\n  definition 1 (no blank line below)\nterm 2\n  definition 2\n"
+  },
+  {
+   "name": "definition_lists/7",
+   "input": "term 1\n  definition 1 (no blank line below)\nterm 2\n  definition 2\nNo blank line after the definition list.\n"
+  },
+  {
+   "name": "definition_lists/8",
+   "input": "term 1\n  definition 1\n\n  term 1a\n    definition 1a\n\n  term 1b\n    definition 1b\n\nterm 2\n  definition 2\n\nparagraph\n"
+  },
+  {
+   "name": "definition_lists/9",
+   "input": "Term : classifier\n    The ' : ' indicates a classifier in\n    definition list item terms only.\n"
+  },
+  {
+   "name": "definition_lists/10",
+   "input": "Term: not a classifier\n    Because there's no space before the colon.\nTerm :not a classifier\n    Because there's no space after the colon.\nTerm \\: not a classifier\n    Because the colon is escaped.\n"
+  },
+  {
+   "name": "definition_lists/11",
+   "input": "``Term : not a classifier``\n    Because the ' : ' is inside an inline literal.\n"
+  },
+  {
+   "name": "definition_lists/12",
+   "input": "Term `with *inline ``text **errors : classifier `with *errors ``too\n    Definition `with *inline ``text **markup errors.\n"
+  },
+  {
+   "name": "definition_lists/13",
+   "input": "Term : `reference`_\n    classifier starting with a reference crashes from release 8197 to ...\n"
+  },
+  {
+   "name": "definition_lists/14",
+   "input": "Term : a `reference`_ in text : second\n    classifier with reference crashes from release 8197 to ...\n"
+  },
+  {
+   "name": "definition_lists/15",
+   "input": "Term : classifier one  :  classifier two\n    Definition\n"
+  }
+ ]
+}

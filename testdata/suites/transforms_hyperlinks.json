@@ -1,0 +1,213 @@
+{
+ "origin": "test/test_transforms/test_hyperlinks.py",
+ "cases": [
+  {
+   "name": "exhaustive_hyperlinks/0",
+   "input": "direct_ external\n\n.. _direct: http://direct\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/1",
+   "input": "indirect_ external\n\n.. _indirect: xtarget_\n.. _xtarget: http://indirect\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/2",
+   "input": ".. _direct:\n\ndirect_ internal\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/3",
+   "input": ".. _ztarget:\n\nindirect_ internal\n\n.. _indirect2: ztarget_\n.. _indirect: indirect2_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/4",
+   "input": "Implicit\n--------\n\nindirect_ internal\n\n.. _indirect: implicit_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/5",
+   "input": "Implicit\n--------\n\n`multiply-indirect`_ internal\n\n.. _multiply-indirect: indirect_\n.. _indirect: implicit_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/6",
+   "input": "circular_ indirect reference\n\n.. _circular: indirect_\n.. _indirect: circular_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/7",
+   "input": "Implicit\n--------\n\nDuplicate implicit targets.\n\nImplicit\n--------\n\nindirect_ internal\n\n.. _indirect: implicit_\n\nDirect internal reference: Implicit_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/8",
+   "input": "`direct external`__\n\n__ http://direct\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/9",
+   "input": "`indirect external`__\n\n__ xtarget_\n.. _xtarget: http://indirect\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/10",
+   "input": "__\n\n`direct internal`__\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/11",
+   "input": ".. _ztarget:\n\n`indirect internal`__\n\n__ ztarget_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/12",
+   "input": ".. _ztarget:\n\nFirst\n\n.. _ztarget:\n\nSecond\n\n`indirect internal`__\n\n__ ztarget_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/13",
+   "input": "The next anonymous hyperlink reference is parsed (and discarded) at\nsome point, but nonetheless anonymous hyperlink references and targets\nmatch in this snippet.\n\n.. |invalid| replace:: anonymous__\n\nhyperlink__\n\n__ URL\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/14",
+   "input": "An `embedded uri <http://direct>`_.\n\nAnother reference to the same `embedded URI`_.\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/15",
+   "input": "An `anonymous embedded uri <http://direct>`__.\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/16",
+   "input": "An `embedded alias <alias_>`_.\n\nAnother reference to the same `embedded alias`_.\n\n.. _alias: ham.py\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/17",
+   "input": "An `anonymous embedded alias <redirect_>`__.\n\n.. _redirect: spam.py\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/18",
+   "input": "An `embedded alias <alias_>`_ with unknown reference.\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/19",
+   "input": "An embedded URI with trailing underline:\n`__init__ <http:example.py.html#__init__>`__.\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/20",
+   "input": "`link <address >`_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/21",
+   "input": "`link < address>`_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/22",
+   "input": "`link <address> e`_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/23",
+   "input": "`link<address>`_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/24",
+   "input": "`link <address`_\n`link address>`_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/25",
+   "input": "Hyperlinks with angle-bracketed text need escaping.\n\nSee `Element \\<a>`_, `Element <b\\>`_, and `Element <c>\\ `_.\n\n.. _`Element <a>`:\n.. _`Element <b>`:\n.. _`Element <c>`: elements.rst\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/26",
+   "input": ".. _target:\n\n.. [1] Footnote; target_\n"
+  },
+  {
+   "name": "exhaustive_hyperlinks/27",
+   "input": ".. _target:\n\n.. [cit] Citation; target_\n"
+  },
+  {
+   "name": "hyperlinks legacy/0",
+   "input": ".. _internal hyperlink:\n\nThis paragraph referenced.\n\nBy this `internal hyperlink`_ reference.\n"
+  },
+  {
+   "name": "hyperlinks legacy/1",
+   "input": ".. _chained:\n.. _internal hyperlink:\n\nThis paragraph referenced.\n\nBy this `internal hyperlink`_ reference\nas well as by this chained_ reference.\n\nThe results of the transform are not visible at the XML level.\n"
+  },
+  {
+   "name": "hyperlinks legacy/2",
+   "input": ".. _chained:\n__ http://anonymous\n\nAnonymous__ and chained_ both refer to the same URI.\n"
+  },
+  {
+   "name": "hyperlinks legacy/3",
+   "input": ".. _a:\n.. _b:\n\nx\n"
+  },
+  {
+   "name": "hyperlinks legacy/4",
+   "input": ".. _a:\n.. _b:\n\na_\n"
+  },
+  {
+   "name": "hyperlinks legacy/5",
+   "input": ".. _a:\n.. _b:\n\nb_\n"
+  },
+  {
+   "name": "hyperlinks legacy/6",
+   "input": ".. _a:\n.. _b:\n\na_\\ b_\n"
+  },
+  {
+   "name": "hyperlinks legacy/7",
+   "input": ".. _external hyperlink: http://uri\n\n`External hyperlink`_ reference.\n"
+  },
+  {
+   "name": "hyperlinks legacy/8",
+   "input": ".. _external hyperlink: http://uri\n.. _indirect target: `external hyperlink`_\n"
+  },
+  {
+   "name": "hyperlinks legacy/9",
+   "input": ".. _chained:\n.. _external hyperlink: http://uri\n\n`External hyperlink`_ reference\nand a chained_ reference too.\n"
+  },
+  {
+   "name": "hyperlinks legacy/10",
+   "input": ".. _external hyperlink: http://uri\n.. _indirect hyperlink: `external hyperlink`_\n\n`Indirect hyperlink`_ reference.\n"
+  },
+  {
+   "name": "hyperlinks legacy/11",
+   "input": ".. _external hyperlink: http://uri\n.. _chained:\n.. _indirect hyperlink: `external hyperlink`_\n\nChained_ `indirect hyperlink`_ reference.\n"
+  },
+  {
+   "name": "hyperlinks legacy/12",
+   "input": ".. __: http://full\n__\n__ http://simplified\n.. _external: http://indirect.external\n__ external_\n__\n\n`Full syntax anonymous external hyperlink reference`__,\n`chained anonymous external reference`__,\n`simplified syntax anonymous external hyperlink reference`__,\n`indirect anonymous hyperlink reference`__,\n`internal anonymous hyperlink reference`__.\n"
+  },
+  {
+   "name": "hyperlinks legacy/13",
+   "input": "Duplicate external target_'s (different URIs):\n\n.. _target: first\n\n.. _target: second\n"
+  },
+  {
+   "name": "hyperlinks legacy/14",
+   "input": "Duplicate external targets (different URIs) without reference:\n\n.. _target: first\n\n.. _target: second\n"
+  },
+  {
+   "name": "hyperlinks legacy/15",
+   "input": "Several__ anonymous__ hyperlinks__, but not enough targets.\n\n__ http://example.org\n"
+  },
+  {
+   "name": "hyperlinks legacy/16",
+   "input": ".. _external: http://uri\n.. _indirect: external_\n.. _internal:\n\n.. image:: picture.png\n   :target: external_\n\n.. image:: picture.png\n   :target: indirect_\n\n.. image:: picture.png\n   :target: internal_\n"
+  },
+  {
+   "name": "hyperlinks legacy/17",
+   "input": ".. contents:: Table of Contents\n.. _indirect reference to the table of contents: `table of contents`_\n\nSection\n=======\n\nTesting an `indirect reference to the table of contents`_.\n"
+  },
+  {
+   "name": "hyperlinks legacy/18",
+   "input": ".. _explicit target:\n\nTitle\n-----\n\nLet's reference it (`explicit target`_) to avoid an irrelevant error.\n"
+  },
+  {
+   "name": "hyperlinks legacy/19",
+   "input": "target1_ should refer to target2_, not the Title.\n\n.. _target1:\n.. _target2: URI\n\nTitle\n=====\n"
+  },
+  {
+   "name": "hyperlinks legacy/20",
+   "input": "Unknown reference_.\n"
+  },
+  {
+   "name": "hyperlinks legacy/21",
+   "input": "Duplicate manual footnote labels, with reference ([1]_):\n\n.. [1] Footnote.\n\n.. [1] Footnote.\n"
+  },
+  {
+   "name": "hyperlinks legacy/22",
+   "input": "An explicit target _`foo` overrides a homonymous implicit target.\n\nfoo\n---\n\nThe reference foo_ points to the explicit target.\n"
+  },
+  {
+   "name": "hyperlinks legacy/23",
+   "input": "foo\n---\n\nIf an implicit target precedes a homonymous explicit target _`foo`,\nthe explicit target takes over the reference name but not the identifier.\n\nThe reference foo_ points to the explicit target. However, referencing from\nan external document requires the non-obvious fragment identifier \"#foo-1\".\n"
+  }
+ ]
+}

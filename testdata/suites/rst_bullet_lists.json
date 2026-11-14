@@ -1,0 +1,45 @@
+{
+ "origin": "test/test_parsers/test_rst/test_bullet_lists.py",
+ "cases": [
+  {
+   "name": "bullet_lists/0",
+   "input": "- item\n"
+  },
+  {
+   "name": "bullet_lists/1",
+   "input": "* item 1\n\n* item 2\n"
+  },
+  {
+   "name": "bullet_lists/2",
+   "input": "No blank line between:\n\n+ item 1\n+ item 2\n"
+  },
+  {
+   "name": "bullet_lists/3",
+   "input": "- item 1, para 1.\n\n  item 1, para 2.\n\n- item 2\n"
+  },
+  {
+   "name": "bullet_lists/4",
+   "input": "- item 1, line 1\n  item 1, line 2\n- item 2\n"
+  },
+  {
+   "name": "bullet_lists/5",
+   "input": "Different bullets:\n\n- item 1\n\n+ item 1\n\n* item 1\n- item 1\n"
+  },
+  {
+   "name": "bullet_lists/6",
+   "input": "- item\nno blank line\n"
+  },
+  {
+   "name": "bullet_lists/7",
+   "input": "-\n\nempty item above\n"
+  },
+  {
+   "name": "bullet_lists/8",
+   "input": "-\nempty item above, no blank line\n"
+  },
+  {
+   "name": "bullet_lists/9",
+   "input": "Unicode bullets:\n\n• BULLET\n\n‣ TRIANGULAR BULLET\n\n⁃ HYPHEN BULLET\n"
+  }
+ ]
+}

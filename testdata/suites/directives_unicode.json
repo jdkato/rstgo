@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_unicode.py",
+ "cases": [
+  {
+   "name": "unicode/0",
+   "input": "\nInsert an em-dash (|mdash|), a copyright symbol (|copy|), a non-breaking\nspace (|nbsp|), a backwards-not-equals (|bne|), and a captial omega (|Omega|).\n\n.. |mdash| unicode:: 0x02014\n.. |copy| unicode:: \\u00A9\n.. |nbsp| unicode:: &#x000A0;\n.. |bne| unicode:: U0003D U020E5\n.. |Omega| unicode:: U+003A9\n"
+  },
+  {
+   "name": "unicode/1",
+   "input": "\nBad input:\n\n.. |empty| unicode::\n.. |empty too| unicode:: .. comment doesn't count as content\n.. |not hex| unicode:: 0xHEX\n.. |not all hex| unicode:: UABCX\n.. unicode:: not in a substitution definition\n"
+  },
+  {
+   "name": "unicode/2",
+   "input": "\nTesting comments and extra text.\n\nCopyright |copy| 2003, |BogusMegaCorp (TM)|.\n\n.. |copy| unicode:: 0xA9 .. copyright sign\n.. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122\n   .. with trademark sign\n"
+  },
+  {
+   "name": "unicode/3",
+   "input": "\n.. |too big for int| unicode:: 0x111111111111111111\n.. |too big for unicode| unicode:: 0x11111111\n"
+  }
+ ]
+}

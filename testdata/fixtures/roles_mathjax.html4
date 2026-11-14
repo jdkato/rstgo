@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>roles_mathjax.rst</title>
+<script type="text/javascript" src="https://cdn.example.org/mathjax.js?config=TeX-AMS_CHTML"></script>
+
+</head>
+<body>
+<div class="document">
+
+
+<p><span class="red">red text</span>, <strong class="huge fancy">big</strong>, <a href="#system-message-1"><span class="problematic" id="problematic-1">:py:`print(1)`</span></a>, <span class="tex"><i>raw</i></span>, <span class="del">deleted</span>,
+<tt class="kbd docutils literal"><span class="pre">Ctrl-C</span></tt>.</p>
+<div class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/roles_mathjax.rst</tt>, line 12); <em><a href="#problematic-1">backlink</a></em></p>
+Cannot analyze code. Pygments package not found.</div>
+<p><em>default emphasis</em></p>
+<p><cite>back to title ref</cite></p>
+<div class="ins docutils container">
+Inserted block.</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/roles_mathjax.rst</tt>, line 26)</p>
+<p>Cannot analyze code. Pygments package not found.</p>
+<pre class="literal-block">
+.. code:: python
+   :number-lines: 7
+   :class: extra
+   :name: listing
+
+   a = 1
+
+   b = 2
+
+</pre>
+</div>
+<div class="math">
+\begin{equation*}
+a = b
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+c = d
+\end{equation*}
+</div>
+</div>
+</body>
+</html>

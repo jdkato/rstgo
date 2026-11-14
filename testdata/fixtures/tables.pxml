@@ -1,0 +1,265 @@
+<document ids="tables" names="tables" source="testdata/fixtures/tables.rst" title="Tables">
+    <title>
+        Tables
+    <table align="center" classes="colwidths-given" ids="tbl" names="tbl" width="80%">
+        <title>
+            Titled table
+        <tgroup cols="3">
+            <colspec colwidth="10">
+            <colspec colwidth="20">
+            <colspec colwidth="30">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            a
+                    <entry>
+                        <paragraph>
+                            b
+                    <entry>
+                        <paragraph>
+                            c
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            1
+                    <entry>
+                        <paragraph>
+                            2
+                    <entry>
+                        <paragraph>
+                            3
+    <table classes="colwidths-auto">
+        <tgroup cols="2">
+            <colspec colwidth="3">
+            <colspec colwidth="3">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            a
+                    <entry>
+                        <paragraph>
+                            b
+    <table classes="colwidths-given">
+        <title>
+            CSV
+        <tgroup cols="3">
+            <colspec colwidth="15" stub="1">
+            <colspec colwidth="10">
+            <colspec colwidth="30">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Name
+                    <entry>
+                        <paragraph>
+                            Value, with comma
+                    <entry>
+                        <paragraph>
+                            Note
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Alpha
+                    <entry>
+                        <paragraph>
+                            1
+                    <entry>
+                        <paragraph>
+                            multi
+                            line
+                <row>
+                    <entry>
+                        <paragraph>
+                            Beta
+                    <entry>
+                        <paragraph>
+                            2
+                    <entry>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Quote "inside"
+                    <entry>
+                        <paragraph>
+                            3
+                    <entry>
+                        <paragraph>
+                            <emphasis>
+                                markup
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            h1
+                    <entry>
+                        <paragraph>
+                            h2
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            a;b
+                    <entry>
+                        <paragraph>
+                            c
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            col1
+                    <entry>
+                        <paragraph>
+                            col2
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            x
+                    <entry>
+                        <paragraph>
+                            y, z
+    <table classes="colwidths-given">
+        <title>
+            List table
+        <tgroup cols="3">
+            <colspec colwidth="1" stub="1">
+            <colspec colwidth="2">
+            <colspec colwidth="3">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            h1
+                    <entry>
+                        <paragraph>
+                            h2
+                    <entry>
+                        <paragraph>
+                            h3
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            a
+                    <entry>
+                        <paragraph>
+                            b
+                        <paragraph>
+                            two paragraphs
+                    <entry>
+                        <bullet_list bullet="*">
+                            <list_item>
+                                <paragraph>
+                                    nested
+                            <list_item>
+                                <paragraph>
+                                    list
+    <paragraph>
+        Simple table with spans and multi-line cells:
+    <system_message level="3" line="69" source="testdata/fixtures/tables.rst" type="ERROR">
+        <paragraph>
+            Malformed table.
+            Bottom border or header rule does not match top border.
+        <literal_block xml:space="preserve">
+            =====  =====  =======
+            A      B      A and B
+            -----  -----  -------
+            first  second third
+                   line
+            -----  ------------
+            x      spanning
+            =====  ============
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="4">
+            <colspec colwidth="4">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            日本
+                    <entry>
+                        <paragraph>
+                            語語
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            ｆｕ
+                    <entry>
+                        <paragraph>
+                            ll
+    <table>
+        <tgroup cols="3">
+            <colspec colwidth="12">
+            <colspec colwidth="12">
+            <colspec colwidth="11">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Header 1
+                    <entry>
+                        <paragraph>
+                            Header 2
+                    <entry>
+                        <paragraph>
+                            Header 3
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 1
+                    <entry>
+                        <paragraph>
+                            column 2
+                    <entry>
+                        <paragraph>
+                            column 3
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 2
+                    <entry morecols="1">
+                        <paragraph>
+                            Cells may span columns.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 3
+                    <entry morerows="1">
+                        <paragraph>
+                            Cells may
+                            span rows.
+                    <entry morerows="1">
+                        <bullet_list bullet="-">
+                            <list_item>
+                                <paragraph>
+                                    Cells
+                            <list_item>
+                                <paragraph>
+                                    contain
+                            <list_item>
+                                <paragraph>
+                                    blocks.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 4
+    <paragraph>
+        +--+
+        |  |
+        +--+

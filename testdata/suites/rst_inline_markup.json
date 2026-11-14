@@ -1,0 +1,425 @@
+{
+ "origin": "test/test_parsers/test_rst/test_inline_markup.py",
+ "cases": [
+  {
+   "name": "emphasis/0",
+   "input": "*emphasis*\n"
+  },
+  {
+   "name": "emphasis/1",
+   "input": "l'*emphasis* with the *emphasis*' apostrophe.\nl’*emphasis* with the *emphasis*’ apostrophe.\n"
+  },
+  {
+   "name": "emphasis/2",
+   "input": "*emphasized sentence\nacross lines*\n"
+  },
+  {
+   "name": "emphasis/3",
+   "input": "*emphasis without closing asterisk\n"
+  },
+  {
+   "name": "emphasis/4",
+   "input": "some punctuation is allowed around inline markup, e.g.\n/*emphasis*/, -*emphasis*-, and :*emphasis*: (delimiters),\n(*emphasis*), [*emphasis*], <*emphasis*>, {*emphasis*} (open/close pairs)\n*emphasis*., *emphasis*,, *emphasis*!, and *emphasis*\\ (closing delimiters),\n\nbut not\n)*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),\n(*), [*], '*' or '\"*\"' (\"quoted\" start-string),\nx*2* or 2*x* (alphanumeric char before),\n\\*args or * (escaped, whitespace behind start-string),\nor *the\\* *stars\\* *inside* (escaped, whitespace before end-string).\n\nHowever, '*args' will trigger a warning and may be problematic.\n\nwhat about *this**?\n"
+  },
+  {
+   "name": "emphasis/5",
+   "input": "Quotes around inline markup:\n\n'*emphasis*' \"*emphasis*\" Straight,\n‘*emphasis*’ “*emphasis*” English, ...,\n« *emphasis* » ‹ *emphasis* › « *emphasis* » ‹ *emphasis* ›\n« *emphasis* » ‹ *emphasis* › French,\n„*emphasis*“ ‚*emphasis*‘ »*emphasis*« ›*emphasis*‹ German, Czech, ...,\n„*emphasis*” «*emphasis*» Romanian,\n“*emphasis*„ ‘*emphasis*‚ Greek,\n「*emphasis*」 『*emphasis*』traditional Chinese,\n”*emphasis*” ’*emphasis*’ »*emphasis*» ›*emphasis*› Swedish, Finnish,\n„*emphasis*” ‚*emphasis*’ Polish,\n„*emphasis*” »*emphasis*« ’*emphasis*’ Hungarian,\n"
+  },
+  {
+   "name": "emphasis/6",
+   "input": "\nEmphasized asterisk: *\\**\n\nEmphasized double asterisk: *\\***\n"
+  },
+  {
+   "name": "strong/0",
+   "input": "**strong**\n"
+  },
+  {
+   "name": "strong/1",
+   "input": "l'**strong** and l’**strong** with apostrophe\n"
+  },
+  {
+   "name": "strong/2",
+   "input": "quoted '**strong**', quoted \"**strong**\",\nquoted ‘**strong**’, quoted “**strong**”,\nquoted «**strong**»\n"
+  },
+  {
+   "name": "strong/3",
+   "input": "\n(**strong**) but not (**) or '(** ' or x**2 or \\**kwargs or **\n\n(however, '**kwargs' will trigger a warning and may be problematic)\n"
+  },
+  {
+   "name": "strong/4",
+   "input": "Strong asterisk: *****\n\nStrong double asterisk: ******\n"
+  },
+  {
+   "name": "strong/5",
+   "input": "**strong without closing asterisks\n"
+  },
+  {
+   "name": "literal/0",
+   "input": "``literal``\n"
+  },
+  {
+   "name": "literal/1",
+   "input": "\n``\\literal``\n"
+  },
+  {
+   "name": "literal/2",
+   "input": "\n``lite\\ral``\n"
+  },
+  {
+   "name": "literal/3",
+   "input": "\n``literal\\``\n"
+  },
+  {
+   "name": "literal/4",
+   "input": "l'``literal`` and l’``literal`` with apostrophe\n"
+  },
+  {
+   "name": "literal/5",
+   "input": "quoted '``literal``', quoted \"``literal``\",\nquoted ‘``literal``’, quoted “``literal``”,\nquoted «``literal``»\n"
+  },
+  {
+   "name": "literal/6",
+   "input": "``'literal'`` with quotes, ``\"literal\"`` with quotes,\n``‘literal’`` with quotes, ``“literal”`` with quotes,\n``«literal»`` with quotes\n"
+  },
+  {
+   "name": "literal/7",
+   "input": "\n``literal ``TeX quotes'' & \\backslash`` but not \"``\" or ``\n\n(however, ``standalone TeX quotes'' will trigger a warning\nand may be problematic)\n"
+  },
+  {
+   "name": "literal/8",
+   "input": "Find the ```interpreted text``` in this paragraph!\n"
+  },
+  {
+   "name": "literal/9",
+   "input": "``literal without closing backquotes\n"
+  },
+  {
+   "name": "literal/10",
+   "input": "\nPython ``list``\\s use square bracket syntax.\n"
+  },
+  {
+   "name": "literal/11",
+   "input": "\nBlank after opening `` not allowed.\n"
+  },
+  {
+   "name": "literal/12",
+   "input": "\nno blank ``after closing``continues`` literal.\n"
+  },
+  {
+   "name": "literal/13",
+   "input": "\ndot ``after closing``. is possible.\n"
+  },
+  {
+   "name": "references/0",
+   "input": "ref_\n"
+  },
+  {
+   "name": "references/1",
+   "input": "l'ref_ and l’ref_ with apostrophe\n"
+  },
+  {
+   "name": "references/2",
+   "input": "quoted 'ref_', quoted \"ref_\",\nquoted ‘ref_’, quoted “ref_”,\nquoted «ref_»,\nbut not 'ref ref'_, \"ref ref\"_, ‘ref ref’_,\n“ref ref”_, or «ref ref»_\n"
+  },
+  {
+   "name": "references/3",
+   "input": "ref__\n"
+  },
+  {
+   "name": "references/4",
+   "input": "l'ref__ and l’ref__ with apostrophe\n"
+  },
+  {
+   "name": "references/5",
+   "input": "quoted 'ref__', quoted \"ref__\",\nquoted ‘ref__’, quoted “ref__”,\nquoted «ref__»,\nbut not 'ref ref'__, \"ref ref\"__, ‘ref ref’__,\n“ref ref”__, or «ref ref»__\n"
+  },
+  {
+   "name": "references/6",
+   "input": "ref_, r_, r_e-f_, -ref_, and anonymousref__,\nbut not _ref_ or __attr__ or object.__attr__\n"
+  },
+  {
+   "name": "phrase_references/0",
+   "input": "`phrase reference`_\n"
+  },
+  {
+   "name": "phrase_references/1",
+   "input": "l'`phrase reference`_ and l’`phrase reference`_ with apostrophe\n"
+  },
+  {
+   "name": "phrase_references/2",
+   "input": "quoted '`phrase reference`_', quoted \"`phrase reference`_\",\nquoted ‘`phrase reference`_’,\nquoted “`phrase reference`_”,\nquoted «`phrase reference`_»\n"
+  },
+  {
+   "name": "phrase_references/3",
+   "input": "`'phrase reference'`_ with quotes, `\"phrase reference\"`_ with quotes,\n`‘phrase reference’`_ with quotes,\n`“phrase reference”`_ with quotes,\n`«phrase reference»`_ with quotes\n"
+  },
+  {
+   "name": "phrase_references/4",
+   "input": "`anonymous reference`__\n"
+  },
+  {
+   "name": "phrase_references/5",
+   "input": "l'`anonymous reference`__ and l’`anonymous reference`__ with apostrophe\n"
+  },
+  {
+   "name": "phrase_references/6",
+   "input": "quoted '`anonymous reference`__', quoted \"`anonymous reference`__\",\nquoted ‘`anonymous reference`__’,\nquoted “`anonymous reference`__”,\nquoted «`anonymous reference`__»\n"
+  },
+  {
+   "name": "phrase_references/7",
+   "input": "`'anonymous reference'`__ with quotes, `\"anonymous reference\"`__ with quotes,\n`‘anonymous reference’`__ with quotes,\n`“anonymous reference”`__ with quotes,\n`«anonymous reference»`__ with quotes\n"
+  },
+  {
+   "name": "phrase_references/8",
+   "input": "`phrase reference\nacross lines`_\n"
+  },
+  {
+   "name": "phrase_references/9",
+   "input": "`phrase\\`_ reference`_\n"
+  },
+  {
+   "name": "phrase_references/10",
+   "input": "Invalid phrase reference:\n\n:role:`phrase reference`_\n"
+  },
+  {
+   "name": "phrase_references/11",
+   "input": "Invalid phrase reference:\n\n`phrase reference`:role:_\n"
+  },
+  {
+   "name": "phrase_references/12",
+   "input": "`phrase reference_ without closing backquote\n"
+  },
+  {
+   "name": "phrase_references/13",
+   "input": "`anonymous phrase reference__ without closing backquote\n"
+  },
+  {
+   "name": "embedded_uris/0",
+   "input": "`phrase reference <http://example.com>`_\n"
+  },
+  {
+   "name": "embedded_uris/1",
+   "input": "`anonymous reference <http://example.com>`__\n"
+  },
+  {
+   "name": "embedded_uris/2",
+   "input": "`embedded URI on next line\n<http://example.com>`__\n"
+  },
+  {
+   "name": "embedded_uris/3",
+   "input": "`embedded URI across lines <http://example.com/\nlong/path>`__\n"
+  },
+  {
+   "name": "embedded_uris/4",
+   "input": "`embedded URI with whitespace <http://example.com/\nlong/path /and  /whitespace>`__\n"
+  },
+  {
+   "name": "embedded_uris/5",
+   "input": "\n`embedded URI with escaped whitespace <http://example.com/a\\\nlong/path\\ and/some\\ escaped\\ whitespace>`__\n\n`<omitted\\ reference\\ text\\ with\\ escaped\\ whitespace>`__\n"
+  },
+  {
+   "name": "embedded_uris/6",
+   "input": "`embedded email address <jdoe@example.com>`__\n\n`embedded email address broken across lines <jdoe\n@example.com>`__\n"
+  },
+  {
+   "name": "embedded_uris/7",
+   "input": "\n`embedded URI with too much whitespace < http://example.com/\nlong/path /and  /whitespace >`__\n\n`embedded URI with too much whitespace at end <http://example.com/\nlong/path /and  /whitespace >`__\n\n`embedded URI with no preceding whitespace<http://example.com>`__\n\n`escaped URI \\<http://example.com>`__\n\nSee `HTML Anchors: \\<a>`_.\n"
+  },
+  {
+   "name": "embedded_uris/8",
+   "input": "Relative URIs' reference text can be omitted:\n\n`<reference>`_\n\n`<anonymous>`__\n"
+  },
+  {
+   "name": "embedded_uris/9",
+   "input": "\nEscape trailing low-line char in URIs:\n\n`<reference\\_>`_\n\n`<anonymous\\_>`__\n"
+  },
+  {
+   "name": "embedded_uris/10",
+   "input": "Escape other char in URIs:\n\n`<reference\\:1>`_\n\n`<anonymous\\call>`__\n"
+  },
+  {
+   "name": "embedded_uris/11",
+   "input": "Report duplicate refname.\n\nExplicit targets: _`file.txt`, _`file.html`.\n\nEmbedded URI: named `<file.txt>`_ and anonymous `<file.html>`__.\n"
+  },
+  {
+   "name": "embedded_aliases/0",
+   "input": "`phrase reference <alias_>`_\n"
+  },
+  {
+   "name": "embedded_aliases/1",
+   "input": "`anonymous reference <alias_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/2",
+   "input": "`embedded alias on next line\n<alias_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/3",
+   "input": "`embedded alias across lines <alias\nphrase_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/4",
+   "input": "`embedded alias with whitespace <alias\nlong  phrase_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/5",
+   "input": "`<embedded alias with whitespace_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/6",
+   "input": "\n`no embedded alias (whitespace inside bracket) < alias_ >`__\n\n`no embedded alias (no preceding whitespace)<alias_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/7",
+   "input": "\n`anonymous reference <alias\\ with\\\\ escaped \\:characters_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/8",
+   "input": "\n`anonymous reference <alias\\ with\\\\ escaped \\:characters_>`__\n"
+  },
+  {
+   "name": "embedded_aliases/9",
+   "input": "Duplicate refnames in references with embedded alias.\n\nExplicit targets: _`tg1` and _`tg2`.\n\nReferences with embedded alias: `link <tg1_>`_ and `link <tg2_>`_.\n\nNo clash with anonymous reference `link <tg1_>`__.\n"
+  },
+  {
+   "name": "inline_targets/0",
+   "input": "_`target`\n\nHere is _`another target` in some text. And _`yet\nanother target`, spanning lines.\n\n_`Here is  a    TaRgeT` with case and spacial difficulties.\n"
+  },
+  {
+   "name": "inline_targets/1",
+   "input": "l'_`target1` and l’_`target2` with apostrophe\n"
+  },
+  {
+   "name": "inline_targets/2",
+   "input": "quoted '_`target1`', quoted \"_`target2`\",\nquoted ‘_`target3`’, quoted “_`target4`”,\nquoted «_`target5`»\n"
+  },
+  {
+   "name": "inline_targets/3",
+   "input": "_`'target1'` with quotes, _`\"target2\"` with quotes,\n_`‘target3’` with quotes, _`“target4”` with quotes,\n_`«target5»` with quotes\n"
+  },
+  {
+   "name": "inline_targets/4",
+   "input": "But this isn't a _target; targets require backquotes.\n\nAnd _`this`_ is just plain confusing.\n"
+  },
+  {
+   "name": "inline_targets/5",
+   "input": "_`inline target without closing backquote\n"
+  },
+  {
+   "name": "footnote_reference/0",
+   "input": "[1]_\n"
+  },
+  {
+   "name": "footnote_reference/1",
+   "input": "[#]_\n"
+  },
+  {
+   "name": "footnote_reference/2",
+   "input": "[#label]_\n"
+  },
+  {
+   "name": "footnote_reference/3",
+   "input": "[*]_\n"
+  },
+  {
+   "name": "footnote_reference/4",
+   "input": "Adjacent footnote refs are not possible: [*]_[#label]_ [#]_[2]_ [1]_[*]_\n"
+  },
+  {
+   "name": "citation_reference/0",
+   "input": "[citation]_\n"
+  },
+  {
+   "name": "citation_reference/1",
+   "input": "[citation]_ and [cit-ation]_ and [cit.ation]_ and [CIT1]_ but not [CIT 1]_\n"
+  },
+  {
+   "name": "citation_reference/2",
+   "input": "Adjacent citation refs are not possible: [citation]_[CIT1]_\n"
+  },
+  {
+   "name": "substitution_references/0",
+   "input": "|subref|\n"
+  },
+  {
+   "name": "substitution_references/1",
+   "input": "|subref|_ and |subref|__\n"
+  },
+  {
+   "name": "substitution_references/2",
+   "input": "|substitution reference|\n"
+  },
+  {
+   "name": "substitution_references/3",
+   "input": "|substitution\nreference|\n"
+  },
+  {
+   "name": "substitution_references/4",
+   "input": "|substitution reference without closing verbar\n"
+  },
+  {
+   "name": "substitution_references/5",
+   "input": "first | then || and finally |||\n"
+  },
+  {
+   "name": "substitution_references/6",
+   "input": "Substitution reference with |mix|.\n\n.. |mix| replace:: text and hyperlink-reference_\n"
+  },
+  {
+   "name": "standalone_hyperlink/0",
+   "input": "http://www.standalone.hyperlink.com\n\nhttp:/one-slash-only.absolute.path\n\n[http://example.com]\n\n(http://example.com)\n\n<http://example.com>\n\nhttp://[1080:0:0:0:8:800:200C:417A]/IPv6address.html\n\nhttp://[3ffe:2a00:100:7031::1] (the final \"]\" is ambiguous in text)\n\nhttp://[3ffe:2a00:100:7031::1]/\n\nmailto:someone@somewhere.com\n\nnews:comp.lang.python\n\nAn email address in a sentence: someone@somewhere.com.\n\nftp://ends.with.a.period.\n\n(a.question.mark@end?)\n"
+  },
+  {
+   "name": "standalone_hyperlink/1",
+   "input": "\nValid URLs with escaped markup characters:\n\nhttp://example.com/\\*content\\*/whatever\n\nhttp://example.com/\\*content*/whatever\n"
+  },
+  {
+   "name": "standalone_hyperlink/2",
+   "input": "Valid URLs may end with punctuation inside \"<>\":\n\n<http://example.org/ends-with-dot.>\n"
+  },
+  {
+   "name": "standalone_hyperlink/3",
+   "input": "Valid URLs with interesting endings:\n\nhttp://example.org/ends-with-pluses++\n"
+  },
+  {
+   "name": "standalone_hyperlink/4",
+   "input": "None of these are standalone hyperlinks (their \"schemes\"\nare not recognized): signal:noise, a:b.\n"
+  },
+  {
+   "name": "standalone_hyperlink/5",
+   "input": "Escaped email addresses are not recognized: test\\@example.org\n"
+  },
+  {
+   "name": "markup_recognition_rules/0",
+   "input": "__This__ should be left alone.\n"
+  },
+  {
+   "name": "markup_recognition_rules/1",
+   "input": "\nCharacter-level m\\ *a*\\ **r**\\ ``k``\\ `u`:title:\\p\nwith backslash-escaped whitespace, including new\\\nlines.\n"
+  },
+  {
+   "name": "markup_recognition_rules/2",
+   "input": "text-*separated*‐*by*‑*various*‒*dashes*–*and*—*hyphens*.\n¿*punctuation*? ¡*examples*! *no-break-space* .\n"
+  },
+  {
+   "name": "markup_recognition_rules/3",
+   "input": "text separated by\n*newline*\nor *space* or one of\n *NO-BREAK SPACE* ,\n *OGHAM SPACE MARK* ,\n *EN QUAD* ,\n *EM QUAD* ,\n *EN SPACE* ,\n *EM SPACE* ,\n *THREE-PER-EM SPACE* ,\n *FOUR-PER-EM SPACE* ,\n *SIX-PER-EM SPACE* ,\n *FIGURE SPACE* ,\n *PUNCTUATION SPACE* ,\n *THIN SPACE* ,\n *HAIR SPACE* ,\n *NARROW NO-BREAK SPACE* ,\n *MEDIUM MATHEMATICAL SPACE* ,\n　*IDEOGRAPHIC SPACE*　,\n *LINE SEPARATOR* \n"
+  },
+  {
+   "name": "markup_recognition_rules/4",
+   "input": "inline markup separated by non-ASCII whitespace\n **NO-BREAK SPACE** ,  ``NO-BREAK SPACE`` ,  `NO-BREAK SPACE` ,\n **EN QUAD** ,  ``EN QUAD`` ,  `EN QUAD` ,\n **NARROW NBSP** ,  ``NARROW NBSP`` ,  `NARROW NBSP` ,\n"
+  },
+  {
+   "name": "markup_recognition_rules/5",
+   "input": "no inline markup due to whitespace inside and behind: *\nnewline\n*\n* space * or one of\n* NO-BREAK SPACE *\n* OGHAM SPACE MARK *\n* EN QUAD *\n* EM QUAD *\n* EN SPACE *\n* EM SPACE *\n* THREE-PER-EM SPACE *\n* FOUR-PER-EM SPACE *\n* SIX-PER-EM SPACE *\n* FIGURE SPACE *\n* PUNCTUATION SPACE *\n* THIN SPACE *\n* HAIR SPACE *\n* NARROW NO-BREAK SPACE *\n* MEDIUM MATHEMATICAL SPACE *\n*　IDEOGRAPHIC SPACE　*\n* LINE SEPARATOR *\n"
+  },
+  {
+   "name": "markup_recognition_rules/6",
+   "input": "no inline markup because of non-ASCII whitespace following /preceding the markup\n** NO-BREAK SPACE ** `` NO-BREAK SPACE `` ` NO-BREAK SPACE `\n** EN QUAD ** `` EN QUAD `` ` EN QUAD `\n** NARROW NBSP ** `` NARROW NBSP `` ` NARROW NBSP `\n"
+  },
+  {
+   "name": "markup_recognition_rules/7",
+   "input": "\"Quoted\" markup start-string (matched openers & closers) -> no markup:\n\n'*' \"*\" (*) <*> [*] {*}\n⁅*⁆\n\nSome international quoting styles:\n‘*’ “*” English, ...,\n„*“ ‚*‘ »*« ›*‹ German, Czech, ...,\n„*” «*» Romanian,\n“*„ ‘*‚ Greek,\n「*」 『*』traditional Chinese,\n”*” ’*’ »*» ›*› Swedish, Finnish,\n„*” ‚*’ Polish,\n„*” »*« ’*’ Hungarian,\n\nBut this is „*’ emphasized »*‹.\n"
+  }
+ ]
+}

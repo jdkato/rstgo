@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tables</title>
+
+</head>
+<body>
+<main id="tables">
+<h1 class="title">Tables</h1>
+
+<table class="align-center" id="tbl" style="width: 80%;">
+<caption>Titled table</caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 33.3%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr><th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+<th class="head"><p>c</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<tbody>
+<tr><td><p>a</p></td>
+<td><p>b</p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>CSV</caption>
+<colgroup>
+<col style="width: 27.3%" />
+<col style="width: 18.2%" />
+<col style="width: 54.5%" />
+</colgroup>
+<thead>
+<tr><th class="head stub"><p>Name</p></th>
+<th class="head"><p>Value, with comma</p></th>
+<th class="head"><p>Note</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"><p>Alpha</p></th>
+<td><p>1</p></td>
+<td><p>multi
+line</p></td>
+</tr>
+<tr><th class="stub"><p>Beta</p></th>
+<td><p>2</p></td>
+<td></td>
+</tr>
+<tr><th class="stub"><p>Quote &quot;inside&quot;</p></th>
+<td><p>3</p></td>
+<td><p><em>markup</em></p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th class="head"><p>h1</p></th>
+<th class="head"><p>h2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>a;b</p></td>
+<td><p>c</p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th class="head"><p>col1</p></th>
+<th class="head"><p>col2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>x</p></td>
+<td><p>y, z</p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>List table</caption>
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 33.3%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr><th class="head stub"><p>h1</p></th>
+<th class="head"><p>h2</p></th>
+<th class="head"><p>h3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><th class="stub"><p>a</p></th>
+<td><p>b</p>
+<p>two paragraphs</p>
+</td>
+<td><ul class="simple">
+<li><p>nested</p></li>
+<li><p>list</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Simple table with spans and multi-line cells:</p>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/tables.rst</span>, line 69)</p>
+<p>Malformed table.
+Bottom border or header rule does not match top border.</p>
+<pre class="literal-block">=====  =====  =======
+A      B      A and B
+-----  -----  -------
+first  second third
+       line
+-----  ------------
+x      spanning
+=====  ============</pre>
+</aside>
+<table>
+<thead>
+<tr><th class="head"><p>日本</p></th>
+<th class="head"><p>語語</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>ｆｕ</p></td>
+<td><p>ll</p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th class="head"><p>Header 1</p></th>
+<th class="head"><p>Header 2</p></th>
+<th class="head"><p>Header 3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>body row 1</p></td>
+<td><p>column 2</p></td>
+<td><p>column 3</p></td>
+</tr>
+<tr><td><p>body row 2</p></td>
+<td colspan="2"><p>Cells may span columns.</p></td>
+</tr>
+<tr><td><p>body row 3</p></td>
+<td rowspan="2"><p>Cells may
+span rows.</p></td>
+<td rowspan="2"><ul class="simple">
+<li><p>Cells</p></li>
+<li><p>contain</p></li>
+<li><p>blocks.</p></li>
+</ul>
+</td>
+</tr>
+<tr><td><p>body row 4</p></td>
+</tr>
+</tbody>
+</table>
+<p>+--+
+|  |
++--+</p>
+</main>
+</body>
+</html>

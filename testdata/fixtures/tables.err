@@ -1,0 +1,11 @@
+testdata/fixtures/tables.rst:69: (ERROR/3) Malformed table.
+Bottom border or header rule does not match top border.
+
+=====  =====  =======
+A      B      A and B
+-----  -----  -------
+first  second third
+       line
+-----  ------------
+x      spanning
+=====  ============

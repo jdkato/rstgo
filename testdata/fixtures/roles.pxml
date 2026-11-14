@@ -1,0 +1,48 @@
+<document source="testdata/fixtures/roles.rst">
+    <paragraph>
+        <inline classes="red">
+            red text
+        , 
+        <strong classes="huge fancy">
+            big
+        , 
+        <problematic ids="problematic-1" refid="system-message-1">
+            :py:`print(1)`
+        , 
+        <raw classes="tex" format="latex html" xml:space="preserve">
+            <i>raw</i>
+        , 
+        <inline classes="del">
+            deleted
+        ,
+        <literal classes="kbd">
+            Ctrl-C
+        .
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="12" source="testdata/fixtures/roles.rst" type="WARNING">
+        <paragraph>
+            Cannot analyze code. Pygments package not found.
+    <paragraph>
+        <emphasis>
+            default emphasis
+    <paragraph>
+        <title_reference>
+            back to title ref
+    <container classes="ins">
+        <paragraph>
+            Inserted block.
+    <system_message level="2" line="26" source="testdata/fixtures/roles.rst" type="WARNING">
+        <paragraph>
+            Cannot analyze code. Pygments package not found.
+        <literal_block xml:space="preserve">
+            .. code:: python
+               :number-lines: 7
+               :class: extra
+               :name: listing
+            
+               a = 1
+            
+               b = 2
+    <math_block xml:space="preserve">
+        a = b
+    <math_block xml:space="preserve">
+        c = d

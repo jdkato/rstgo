@@ -1,0 +1,73 @@
+<document source="testdata/fixtures/errors_quiet.rst">
+    <section ids="title" names="title">
+        <title>
+            Title
+        <paragraph>
+            Short underline above.
+        <paragraph>
+            Unknown role 
+            :foo:`bar`
+             and undefined 
+            ref_
+             and 
+            |undefined|
+             subst.
+        <paragraph>
+            *
+            unterminated emphasis and 
+            ``
+            unterminated literal
+        <paragraph>
+            Footnote ref 
+            [5]_
+             missing, auto 
+            <footnote_reference auto="1" ids="footnote-reference-2" refid="footnote-1">
+                1
+             missing, 
+            anon__
+             missing.
+        <target dupnames="dup" ids="dup" refuri="http://a/">
+        <target dupnames="dup" ids="dup-1" refuri="http://b/">
+        <paragraph>
+            dup_
+        <block_quote>
+            <paragraph>
+                Unexpected indentation
+        <definition_list>
+            <definition_list_item>
+                <term>
+                    after block quote
+                <definition>
+                    <paragraph>
+                        again.
+        <bullet_list bullet="-">
+            <list_item>
+                <paragraph>
+                    list
+        <paragraph>
+            without blank line
+        <paragraph>
+            1. enumerated
+            text
+        <section ids="section" names="section">
+            <title>
+                Section
+            <section ids="level-skip" names="level\ skip">
+                <title>
+                    Level skip
+    <section ids="another" names="another">
+        <title>
+            Another
+        <footnote auto="1" backrefs="footnote-reference-2" ids="footnote-1" names="1">
+            <label>
+                1
+            <paragraph>
+                Unreferenced footnote
+        <target refid="unused-target">
+        <paragraph ids="unused-target" names="unused\ target">
+            `embedded <http://x`_
+             and 
+            `bad <uri> ref`_
+            .
+        <literal_block xml:space="preserve">
+            .. class::

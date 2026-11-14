@@ -1,0 +1,19 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "sectnum/0",
+   "pxml": "<document source=\"<stdin>\">\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta charset=\"utf-8\" />\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "sectnum/1",
+   "pxml": "<document source=\"<stdin>\">\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta charset=\"utf-8\" />\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

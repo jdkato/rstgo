@@ -1,0 +1,12 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "strip_spam/0",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        not classy\n    <paragraph classes=\"spam\">\n        this is spam\n    <paragraph classes=\"ham noise\">\n        this is ham\n    <literal_block classes=\"code spam\" xml:space=\"preserve\">\n        print(\"spam\")\n    <image classes=\"spam\" uri=\"spam.jpg\">\n    <paragraph>\n        this is not ham\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p>not classy</p>\n<p class=\"spam\">this is spam</p>\n<p class=\"ham noise\">this is ham</p>\n<pre class=\"code spam literal-block\">\nprint(&quot;spam&quot;)\n</pre>\n<img alt=\"spam.jpg\" class=\"spam\" src=\"spam.jpg\" />\n<p>this is not ham</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta charset=\"utf-8\" />\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p>not classy</p>\n<p class=\"spam\">this is spam</p>\n<p class=\"ham noise\">this is ham</p>\n<pre class=\"code spam literal-block\"><code>print(&quot;spam&quot;)</code></pre>\n<img alt=\"spam.jpg\" class=\"spam\" src=\"spam.jpg\" />\n<p>this is not ham</p>\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

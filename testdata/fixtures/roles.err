@@ -1,0 +1,2 @@
+testdata/fixtures/roles.rst:12: (WARNING/2) Cannot analyze code. Pygments package not found.
+testdata/fixtures/roles.rst:26: (WARNING/2) Cannot analyze code. Pygments package not found.
