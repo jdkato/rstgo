@@ -8,7 +8,7 @@ import (
 	"unicode/utf8"
 )
 
-type implicitFn func(inl *inliner, text string, lineno int) (before string, nodes []*Node, after string, found, ok bool)
+type implicitFn func(inl *inliner, text string, lineno int) (before string, node *Node, after string, found, ok bool)
 
 type inliner struct {
 	scan             inlineScanner
@@ -17,6 +17,7 @@ type inliner struct {
 	reporter         *reporter
 	parent           *Node
 	memo             *memo
+	scratch          [2]*Node // backing array of short-lived result lists
 }
 
 func newInliner(st *settings) *inliner {
@@ -29,6 +30,18 @@ func newInliner(st *settings) *inliner {
 		inl.implicitDispatch = append(inl.implicitDispatch, (*inliner).rfcReference)
 	}
 	return inl
+}
+
+// nodes1 and nodes2 return short result lists that are only valid until
+// the next call (the caller appends them to its own list right away).
+func (inl *inliner) nodes1(a *Node) []*Node {
+	inl.scratch[0] = a
+	return inl.scratch[:1:1]
+}
+
+func (inl *inliner) nodes2(a, b *Node) []*Node {
+	inl.scratch[0], inl.scratch[1] = a, b
+	return inl.scratch[:2:2]
 }
 
 func (inl *inliner) parse(text string, lineno int, m *memo, parent *Node) ([]*Node, []*Node) {
@@ -149,7 +162,7 @@ func (inl *inliner) inlineObj(s string, match initialMatch, lineno int, tag stri
 		}
 		rawsource := unescape(s[matchstart:endE], true)
 		node := newTextElem(tag, rawsource, text)
-		return s[:matchstart], []*Node{node}, s[endE:], nil, s[endS:endE]
+		return s[:matchstart], inl.nodes1(node), s[endE:], nil, s[endS:endE]
 	}
 	msg := inl.reporter.warning("Inline "+tag+" start-string without end-string.", nil, atLine(lineno))
 	text := unescape(s[matchstart:matchend], true)
@@ -236,11 +249,15 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 			target.setAttr("refname", alias)
 		} else {
 			aliastype = "uri"
-			aliasParts := splitEscapedWhitespace(aliastext)
-			for i, part := range aliasParts {
-				aliasParts[i] = strings.Join(pySplit(part), "")
+			if strings.IndexByte(aliastext, 0) < 0 && strings.IndexFunc(aliastext, isPySpace) < 0 {
+				alias = aliastext
+			} else {
+				aliasParts := splitEscapedWhitespace(aliastext)
+				for i, part := range aliasParts {
+					aliasParts[i] = strings.Join(pySplit(part), "")
+				}
+				alias = strings.Join(aliasParts, " ")
 			}
-			alias = strings.Join(aliasParts, " ")
 			alias = inl.adjustURI(unescape(alias, false))
 			if strings.HasSuffix(alias, `\_`) {
 				alias = alias[:len(alias)-2] + "_"
@@ -265,7 +282,7 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 	if len(reference.Children) > 0 {
 		reference.Children[0].Rawsource = rawtext
 	}
-	nodeList := []*Node{reference}
+	nodeList := inl.nodes1(reference)
 	if strings.HasSuffix(rawsource, "__") {
 		if target != nil && aliastype == "name" {
 			reference.setAttr("refname", alias)
@@ -286,7 +303,7 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 				reference.setAttr("refuri", alias)
 			}
 			inl.document.noteImplicitTarget(target, inl.parent)
-			nodeList = append(nodeList, target)
+			nodeList = inl.nodes2(reference, target)
 		} else {
 			reference.setAttr("refname", refname)
 			inl.document.noteRefname(reference)
@@ -378,7 +395,7 @@ func (inl *inliner) footnoteReference(s string, match initialMatch, lineno int) 
 			before = pyRstrip(before)
 		}
 	}
-	return before, []*Node{refnode}, remaining, nil
+	return before, inl.nodes1(refnode), remaining, nil
 }
 
 func (inl *inliner) reference(s string, match initialMatch, lineno int, anonymous bool) (string, []*Node, string, []*Node) {
@@ -393,14 +410,14 @@ func (inl *inliner) reference(s string, match initialMatch, lineno int, anonymou
 		referencenode.setAttr("refname", refname)
 		inl.document.noteRefname(referencenode)
 	}
-	return s[:match.start], []*Node{referencenode}, s[match.end:], nil
+	return s[:match.start], inl.nodes1(referencenode), s[match.end:], nil
 }
 
 // The implicit-markup functions search text for one pattern.  found is
 // false if the pattern does not occur; ok is false for a match that is
 // rejected (Docutils: MarkupMismatch).
 
-func (inl *inliner) standaloneURI(text string, lineno int) (string, []*Node, string, bool, bool) {
+func (inl *inliner) standaloneURI(text string, lineno int) (string, *Node, string, bool, bool) {
 	m, found := inl.scan.searchURI(text)
 	if !found {
 		return "", nil, "", false, false
@@ -416,10 +433,10 @@ func (inl *inliner) standaloneURI(text string, lineno int) (string, []*Node, str
 	whole := text[m.start:m.end]
 	reference := newTextElem("reference", unescape(whole, true), whole)
 	reference.setAttr("refuri", addscheme+unescape(whole, false))
-	return text[:m.start], []*Node{reference}, text[m.end:], true, true
+	return text[:m.start], reference, text[m.end:], true, true
 }
 
-func (inl *inliner) pepReference(text string, lineno int) (string, []*Node, string, bool, bool) {
+func (inl *inliner) pepReference(text string, lineno int) (string, *Node, string, bool, bool) {
 	start, end, num, found := inl.scan.searchPEP(text)
 	if !found {
 		return "", nil, "", false, false
@@ -429,10 +446,10 @@ func (inl *inliner) pepReference(text string, lineno int) (string, []*Node, stri
 	st := inl.document.settings
 	n := newTextElem("reference", unescape(whole, true), whole)
 	n.setAttr("refuri", st.pepBaseURL+fmt.Sprintf(st.pepFileURLTemplate, pepnum))
-	return text[:start], []*Node{n}, text[end:], true, true
+	return text[:start], n, text[end:], true, true
 }
 
-func (inl *inliner) rfcReference(text string, lineno int) (string, []*Node, string, bool, bool) {
+func (inl *inliner) rfcReference(text string, lineno int) (string, *Node, string, bool, bool) {
 	start, end, num, found := inl.scan.searchRFC(text)
 	if !found {
 		return "", nil, "", false, false
@@ -441,7 +458,7 @@ func (inl *inliner) rfcReference(text string, lineno int) (string, []*Node, stri
 	rfcnum := atoi(unescape(num, false))
 	n := newTextElem("reference", unescape(whole, true), whole)
 	n.setAttr("refuri", inl.document.settings.rfcBaseURL+fmt.Sprintf("rfc%d.html", rfcnum))
-	return text[:start], []*Node{n}, text[end:], true, true
+	return text[:start], n, text[end:], true, true
 }
 
 // implicitInline mirrors Inliner.implicit_inline, appending to out.
@@ -450,12 +467,12 @@ func (inl *inliner) implicitInline(out []*Node, text string, lineno int) []*Node
 		return out
 	}
 	for _, f := range inl.implicitDispatch {
-		before, nodes, after, found, ok := f(inl, text, lineno)
+		before, node, after, found, ok := f(inl, text, lineno)
 		if !found || !ok {
 			continue
 		}
 		out = inl.implicitInline(out, before, lineno)
-		out = append(out, nodes...)
+		out = append(out, node)
 		return inl.implicitInline(out, after, lineno)
 	}
 	return append(out, newText(text))

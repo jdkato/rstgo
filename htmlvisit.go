@@ -524,8 +524,9 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		}
 		return actSkipNode
 	case "reference":
-		classes := []string{"reference"}
-		atts := A{}
+		var cbuf [4]string
+		classes := append(cbuf[:0], "reference")
+		var abuf [4]tagAttr
 		suffix := ""
 		if node.has("refuri") {
 			href := node.str("refuri")
@@ -533,10 +534,10 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				href = strings.ReplaceAll(href, "@", "%40")
 				t.inMailto = true
 			}
-			atts["href"] = href
+			abuf[0] = tagAttr{"href", href}
 			classes = append(classes, "external")
 		} else {
-			atts["href"] = "#" + node.str("refid")
+			abuf[0] = tagAttr{"href", "#" + node.str("refid")}
 			classes = append(classes, "internal")
 		}
 		if len(node.Children) == 1 && node.Children[0].Tag == "image" {
@@ -545,8 +546,8 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		if !textElementTags[node.Parent.Tag] {
 			suffix = "\n"
 		}
-		atts["classes"] = classes
-		t.outTag(node, "a", suffix, atts)
+		t.last = len(t.body)
+		t.body = t.appendTagCore(t.body, node, "a", suffix, false, classes, "", nil, nil, nil, abuf[:1])
 	case "revision":
 		t.visitDocinfoItem(node, "revision", false)
 	case "row":
@@ -1254,12 +1255,22 @@ func (t *htmlTranslator) shouldBeCompactParagraph(node *Node) bool {
 	if node.Parent.is("document", "compound") {
 		return false
 	}
-	for _, key := range node.attlist() {
-		if key == "classes" {
-			c := node.list("classes")
-			s := strings.Join(c, " ")
-			if s == "first" || s == "last" || s == "first last" {
+	for key, v := range node.Attrs {
+		if l, ok := v.([]string); ok {
+			if len(l) == 0 && isListAttr(key) {
 				continue
+			}
+			if key == "classes" {
+				switch len(l) {
+				case 1:
+					if l[0] == "first" || l[0] == "last" {
+						continue
+					}
+				case 2:
+					if l[0] == "first" && l[1] == "last" {
+						continue
+					}
+				}
 			}
 		}
 		return false
@@ -1302,7 +1313,9 @@ func (t *htmlTranslator) visitLiteral(node *Node) visitAction {
 		}
 		t.outTag(node, "tt", "", A{"class": "docutils literal"})
 		text := node.astext()
-		for _, token := range wordsAndSpacesTokens(text) {
+		for i, j := 0, 0; i < len(text); i = j {
+			j = wordOrSpaceEnd(text, i)
+			token := text[i:j]
 			if pyStrip(token) != "" {
 				if hasWordWrapPoint(token) {
 					t.out(`<span class="pre">` + t.encode(token) + `</span>`)
@@ -1336,7 +1349,9 @@ func (t *htmlTranslator) visitLiteral(node *Node) visitAction {
 	if node.Parent.Tag != "literal_block" {
 		text = strings.ReplaceAll(text, "\n", " ")
 	}
-	for _, token := range wordsAndSpacesTokens(text) {
+	for i, j := 0, 0; i < len(text); i = j {
+		j = wordOrSpaceEnd(text, i)
+		token := text[i:j]
 		if pyStrip(token) != "" && hasWordWrapPoint(token) {
 			t.out(`<span class="pre">` + t.encode(token) + `</span>`)
 		} else {

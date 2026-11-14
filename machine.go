@@ -49,6 +49,7 @@ type stateMachine struct {
 	node               *Node
 	sectionLevelOffset int
 	parentSM           *stateMachine
+	ctxBuf             [1]string
 }
 
 func newStateMachine(initialState string, parent *stateMachine) *stateMachine {
@@ -355,4 +356,11 @@ func (sm *stateMachine) runNested(inputLines *stringList, inputOffset int, m *me
 	sm.reporter = m.document.reporter
 	sm.node = node
 	sm.run(inputLines, inputOffset)
+}
+
+// context1 returns a one-line context.  The backing array belongs to the
+// state machine; contexts are consumed before the next line is read.
+func (sm *stateMachine) context1(line string) []string {
+	sm.ctxBuf[0] = line
+	return sm.ctxBuf[:1:1]
 }

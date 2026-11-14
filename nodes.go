@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 // Node is an element or text node of the document tree.  The element names
@@ -75,15 +76,68 @@ type pendingInfo struct {
 
 const textTag = "#text"
 
-func newText(s string) *Node { return &Node{Tag: textTag, Text: s} }
+// Nodes and small child lists are carved from pooled slabs: a document
+// consists of many small nodes, and allocating them one by one dominates
+// the cost of building the tree.
+type nodeSlab struct {
+	nodes [64]Node
+	n     int
+}
+
+type childSlab struct {
+	ptrs [256]*Node
+	n    int
+}
+
+var (
+	nodeSlabs  sync.Pool
+	childSlabs sync.Pool
+)
+
+func allocNode() *Node {
+	s, _ := nodeSlabs.Get().(*nodeSlab)
+	if s == nil {
+		s = new(nodeSlab)
+	}
+	n := &s.nodes[s.n]
+	s.n++
+	if s.n < len(s.nodes) {
+		nodeSlabs.Put(s)
+	}
+	return n
+}
+
+// allocChildren returns an empty child list with capacity k.
+func allocChildren(k int) []*Node {
+	if k > 32 {
+		return make([]*Node, 0, k)
+	}
+	s, _ := childSlabs.Get().(*childSlab)
+	if s == nil || s.n+k > len(s.ptrs) {
+		s = new(childSlab)
+	}
+	l := s.ptrs[s.n : s.n : s.n+k]
+	s.n += k
+	if s.n < len(s.ptrs) {
+		childSlabs.Put(s)
+	}
+	return l
+}
+
+func newText(s string) *Node {
+	n := allocNode()
+	n.Tag, n.Text = textTag, s
+	return n
+}
 
 func newElem(tag string, rawsource string, children ...*Node) *Node {
-	n := &Node{Tag: tag, Rawsource: rawsource}
+	n := allocNode()
+	n.Tag, n.Rawsource = tag, rawsource
 	if fixedTextElements[tag] {
 		n.Attrs = map[string]any{"xml:space": "preserve"}
 	}
 	if len(children) > 0 {
-		n.Children = make([]*Node, 0, len(children))
+		n.Children = allocChildren(len(children))
 	}
 	for _, c := range children {
 		n.append(c)
@@ -99,7 +153,7 @@ func newTextElem(tag, rawsource, text string, children ...*Node) *Node {
 		k++
 	}
 	if k > 0 {
-		n.Children = make([]*Node, 0, k)
+		n.Children = allocChildren(k)
 	}
 	if text != "" {
 		n.append(newText(text))
@@ -203,6 +257,9 @@ func (n *Node) append(c *Node) {
 		return
 	}
 	n.setupChild(c)
+	if cap(n.Children) == 0 {
+		n.Children = allocChildren(4)
+	}
 	n.Children = append(n.Children, c)
 }
 
@@ -323,11 +380,33 @@ func (n *Node) list(key string) []string {
 	return l
 }
 
+// Shared values for the class lists that the HTML writers add to very many
+// nodes.  (Attribute lists are never modified in place.)
+var (
+	classesFirst     any = []string{"first"}
+	classesLast      any = []string{"last"}
+	classesFirstLast any = []string{"first", "last"}
+)
+
 func (n *Node) appendTo(key string, vals ...string) {
 	if n.Attrs == nil {
 		n.Attrs = make(map[string]any, 2)
 	}
-	n.Attrs[key] = append(n.list(key), vals...)
+	old := n.list(key)
+	if key == "classes" && len(vals) == 1 {
+		switch {
+		case len(old) == 0 && vals[0] == "first":
+			n.Attrs[key] = classesFirst
+			return
+		case len(old) == 0 && vals[0] == "last":
+			n.Attrs[key] = classesLast
+			return
+		case len(old) == 1 && old[0] == "first" && vals[0] == "last":
+			n.Attrs[key] = classesFirstLast
+			return
+		}
+	}
+	n.Attrs[key] = append(old[:len(old):len(old)], vals...)
 }
 
 func (n *Node) removeFrom(key, val string) {
@@ -523,7 +602,8 @@ func (n *Node) copyNode() *Node {
 	if n.IsText() {
 		return newText(n.Text)
 	}
-	c := &Node{Tag: n.Tag, Rawsource: n.Rawsource}
+	c := allocNode()
+	c.Tag, c.Rawsource = n.Tag, n.Rawsource
 	if len(n.Attrs) > 0 {
 		c.Attrs = make(map[string]any, len(n.Attrs))
 	}

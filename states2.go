@@ -623,7 +623,7 @@ func (s *rstState) anonymousTarget(m lineMatch) ([]*Node, bool) {
 
 func bodyLine(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
 	if s.sm.matchTitles {
-		return []string{m.s}, "Line"
+		return s.sm.context1(m.s), "Line"
 	} else if pyStrip(m.s) == "::" {
 		panic(&transitionCorrection{"text"})
 	} else if len(pyStrip(m.s)) < 4 {
@@ -640,7 +640,7 @@ func bodyLine(s *rstState, m lineMatch, context []string, nextState string) ([]s
 }
 
 func bodyText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
-	return []string{m.s}, "Text"
+	return s.sm.context1(m.s), "Text"
 }
 
 // ---------------------------------------------------------------- specialized
@@ -657,7 +657,7 @@ func bulletListBullet(s *rstState, m lineMatch, context []string, nextState stri
 }
 
 func definitionListText(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
-	return []string{m.s}, "Definition"
+	return s.sm.context1(m.s), "Definition"
 }
 
 func enumeratedListEnumerator(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
@@ -736,8 +736,9 @@ func substText(s *rstState, m lineMatch, context []string, nextState string) ([]
 // ---------------------------------------------------------------- Text
 
 func textBlank(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
-	paragraph, literalnext := s.paragraph(context, s.sm.absLineNumber()-1)
-	s.parent().extend(paragraph)
+	paragraph, messages, literalnext := s.paragraph(context, s.sm.absLineNumber()-1)
+	s.parent().append(paragraph)
+	s.parent().extend(messages)
 	if literalnext {
 		s.parent().extend(s.literalBlock())
 	}
@@ -806,8 +807,9 @@ func textText(s *rstState, m lineMatch, context []string, nextState string) ([]s
 			atSrcLine(uerr.info.source, uerr.info.hasSource, uerr.line, true))
 	}
 	lines := append(append([]string{}, context...), block.data...)
-	paragraph, literalnext := s.paragraph(lines, startline)
-	s.parent().extend(paragraph)
+	paragraph, messages, literalnext := s.paragraph(lines, startline)
+	s.parent().append(paragraph)
+	s.parent().extend(messages)
 	s.parent().append(msg)
 	if literalnext {
 		s.sm.nextLine(1)

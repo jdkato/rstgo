@@ -234,7 +234,7 @@ func (s *rstState) newSubsection(title string, lineno int, messages []*Node) {
 	s.setParent(sectionNode)
 }
 
-func (s *rstState) paragraph(lines []string, lineno int) ([]*Node, bool) {
+func (s *rstState) paragraph(lines []string, lineno int) (*Node, []*Node, bool) {
 	data := pyRstrip(strings.Join(lines, "\n"))
 	var text string
 	literalnext := false
@@ -242,7 +242,7 @@ func (s *rstState) paragraph(lines []string, lineno int) ([]*Node, bool) {
 	// final "::"; checking that first avoids scanning every paragraph
 	if strings.HasSuffix(data, "::") && endsWithLiteralMarker(data) {
 		if len(data) == 2 {
-			return nil, true
+			return nil, nil, true
 		} else if c := data[len(data)-3]; c == ' ' || c == '\n' {
 			text = pyRstrip(data[:len(data)-3])
 		} else {
@@ -255,7 +255,7 @@ func (s *rstState) paragraph(lines []string, lineno int) ([]*Node, bool) {
 	textnodes, messages := s.inlineText(text, lineno)
 	p := newTextElem("paragraph", data, "", textnodes...)
 	p.setSrcLine(s.sm.getSourceAndLine(lineno, true))
-	return append([]*Node{p}, messages...), literalnext
+	return p, messages, literalnext
 }
 
 func (s *rstState) inlineText(text string, lineno int) ([]*Node, []*Node) {

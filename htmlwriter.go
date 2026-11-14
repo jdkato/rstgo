@@ -310,7 +310,6 @@ type tagAttr struct{ name, value string }
 
 // appendTag appends the tag to dst.  It must not retain attributes.
 func (t *htmlTranslator) appendTag(dst []byte, node *Node, tagname, suffix string, empty bool, attributes A) []byte {
-	tagname = strings.ToLower(tagname)
 	var cbuf [8]string
 	classes := cbuf[:0]
 	var classStr string
@@ -364,6 +363,15 @@ func (t *htmlTranslator) appendTag(dst []byte, node *Node, tagname, suffix strin
 	} else if classesPtr != nil {
 		classes = append(classes[:0], *classesPtr...)
 	}
+	return t.appendTagCore(dst, node, tagname, suffix, empty, classes, classStr, classesOf, classesPtr, extraIDs, atts)
+}
+
+// appendTagCore is the body of HTMLTranslator.starttag: classes holds the
+// class values passed by the caller (it is extended), atts the other
+// attributes.
+func (t *htmlTranslator) appendTagCore(dst []byte, node *Node, tagname, suffix string, empty bool,
+	classes []string, classStr string, classesOf *Node, classesPtr *[]string, extraIDs []string, atts []tagAttr) []byte {
+	tagname = strings.ToLower(tagname)
 	lang := ""
 	addClass := func(cls string) {
 		if strings.HasPrefix(cls, "language-") {
@@ -561,14 +569,24 @@ func (t *htmlTranslator) walkabout(n *Node) {
 func checkSimpleList(node *Node) bool {
 	var walk func(n *Node) bool // false: NodeFound
 	listItemOK := func(n *Node, withFieldList bool) bool {
-		children := visibleChildren(n)
-		if len(children) > 0 && children[0].Tag == "paragraph" {
-			last := children[len(children)-1]
-			if last.is("bullet_list", "enumerated_list") || (withFieldList && last.Tag == "field_list") {
-				children = children[:len(children)-1]
+		var first, last *Node
+		count := 0
+		for _, c := range n.Children {
+			if invisibleTags[c.Tag] {
+				continue
+			}
+			if first == nil {
+				first = c
+			}
+			last = c
+			count++
+		}
+		if count > 0 && first.Tag == "paragraph" {
+			if last.Tag == "bullet_list" || last.Tag == "enumerated_list" || (withFieldList && last.Tag == "field_list") {
+				count--
 			}
 		}
-		return len(children) <= 1
+		return count <= 1
 	}
 	walk = func(n *Node) bool {
 		if n.IsText() {

@@ -314,25 +314,31 @@ func isNumOnly(s string) bool {
 	return i > 0 && atDollar(s, i)
 }
 
+// wordOrSpaceEnd returns the end of the token of
+// re.findall(r'[^ \n]+| +|\n', s) that starts at i.
+func wordOrSpaceEnd(s string, i int) int {
+	j := i
+	switch s[i] {
+	case '\n':
+		j++
+	case ' ':
+		for j < len(s) && s[j] == ' ' {
+			j++
+		}
+	default:
+		for j < len(s) && s[j] != ' ' && s[j] != '\n' {
+			j++
+		}
+	}
+	return j
+}
+
 // wordsAndSpacesTokens is re.findall(r'[^ \n]+| +|\n', s).
 func wordsAndSpacesTokens(s string) []string {
 	var out []string
-	for i := 0; i < len(s); {
-		j := i
-		switch s[i] {
-		case '\n':
-			j++
-		case ' ':
-			for j < len(s) && s[j] == ' ' {
-				j++
-			}
-		default:
-			for j < len(s) && s[j] != ' ' && s[j] != '\n' {
-				j++
-			}
-		}
+	for i, j := 0, 0; i < len(s); i = j {
+		j = wordOrSpaceEnd(s, i)
 		out = append(out, s[i:j])
-		i = j
 	}
 	return out
 }
