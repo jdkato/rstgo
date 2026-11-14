@@ -1,0 +1,41 @@
+{
+ "origin": "test/test_transforms/test_smartquotes.py",
+ "cases": [
+  {
+   "name": "smartquotes/0",
+   "input": "Test \"smart quotes\", 'secondary smart quotes',\n\"'nested' smart\" quotes\n-- and ---also long--- dashes.\n"
+  },
+  {
+   "name": "smartquotes/1",
+   "input": "Escaped \\\"ASCII quotes\\\" and \\'secondary ASCII quotes\\'.\n"
+  },
+  {
+   "name": "smartquotes/2",
+   "input": "Do not \"educate\" quotes ``inside \"literal\" text`` and ::\n\n  \"literal\" blocks.\n\n.. role:: python(code)\n\nKeep quotes straight in code and math:\n:code:`print \"hello\"` :python:`print(\"hello\")` :math:`1' 12\"`.\n\n.. code::\n\n   print(\"hello\")\n\n.. math::\n\n   f'(x) = df(x)/dx\n\n"
+  },
+  {
+   "name": "smartquotes/3",
+   "input": "Closing quotes, if preceded by\nwor\"d char's\nor punctuation:\"a\",'a';'a' (TODO: opening quotes if followed by word-char?).\n\nOpening quotes after\nnormal space \"a\" 'a',\nthin space \"a\" 'a',\nem space \"a\" 'a',\nNBSP \"a\" 'a',\nZWSP​\"a\" and​'a',\nZWNJ‌\"a\" and‌'a',\nescaped space\\ \"a\" and\\ 'a',\n\nhyphen -\"a\", -'a'\nen dash –\"a\"–'a',\nem dash —\"a\"—'a'.\n\nopening brackets (\"a\") ('a') [\"a\"] ['a'] {\"a\"} {'a'}\n\nBut not if followed by (optional punctuation and) whitespace:\n\"-\", \"–\", \"—\", \"(\", \"a[\", \"{\"\n'-', '–', '—', '((', '[', '{'\n"
+  },
+  {
+   "name": "smartquotes/4",
+   "input": "Quotes and inline-elements:\n\n* Around \"_`targets`\", \"*emphasized*\" or \"``literal``\" text\n  and links to \"targets_\".\n\n* Inside *\"emphasized\"* or other `inline \"roles\"`\n\nDo not drop characters from intra-word inline markup like\n*re*\\ ``Structured``\\ *Text*.\n"
+  },
+  {
+   "name": "smartquotes/5",
+   "input": "Do not convert context-character at inline-tag boundaries\n(in French, smart quotes expand to two characters).\n\n.. class:: language-fr-ch-x-altquot\n\n  Around \"_`targets`\", \"*emphasized*\" or \"``literal``\" text\n  and links to \"targets_\".\n\n  Inside *\"emphasized\"* or other `inline \"roles\"`:\n  (``\"string\"``), (``'string'``), *\"betont\"*, \"*betont*\".\n\n  Do not drop characters from intra-word inline markup like\n  *re*\\ ``Structured``\\ *Text*.\n"
+  },
+  {
+   "name": "smartquotes/6",
+   "input": "\nDocutils escape mechanism uses the backslash:\n\n\\Remove \\non-escaped \\backslashes\\:\n\\item \\newline \\tab \\\" \\' \\*.\n\n\\ Remove-\\ escaped-\\ white\\ space-\\\nincluding-\\ newlines.\n\n\\\\Keep\\\\escaped\\\\backslashes\\\\\n(but\\\\only\\\\one).\n\n\\\\ Keep \\\\ space\\\\ around  \\\\ backslashes.\n\nKeep backslashes ``\\in\\ literal``, :math:`in \\mathrm{math}`,\nand :code:`in\\ code`.\n\nTest around inline elements:\\ [*]_\n\n*emphasized*, H\\ :sub:`2`\\ O and :math:`x^2`\n\n*emphasized*, H\\ :sub:`2`\\ O and :math:`x^2`\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n.. [*] and footnotes\n"
+  },
+  {
+   "name": "smartquotes/7",
+   "input": "\nCharacter-level m\\ *a*\\ **r**\\ ``k``\\ `u`:title:\\p\nwith backslash-escaped whitespace, including new\\\nlines.\n"
+  },
+  {
+   "name": "smartquotes/8",
+   "input": ".. class:: language-de\n\nGerman \"smart quotes\" and 'secondary smart quotes'.\n\n.. class:: language-en-UK-x-altquot\n\nBritish \"primary quotes\" use single and\n'secondary quotes' double quote signs.\n\n.. class:: language-foo\n\n\"Quoting style\" for unknown languages is 'ASCII'.\n\n.. class:: language-de-x-altquot\n\nAlternative German \"smart quotes\" and 'secondary smart quotes'.\n"
+  }
+ ]
+}

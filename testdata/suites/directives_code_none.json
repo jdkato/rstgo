@@ -1,0 +1,17 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_code_none.py",
+ "cases": [
+  {
+   "name": "code_parsing_none/0",
+   "input": ".. code::\n\n   This is a code block.\n"
+  },
+  {
+   "name": "code_parsing_none/1",
+   "input": ".. code:: python\n  :number-lines: 7\n\n  def my_function():\n      '''Test the lexer.\n      '''\n\n      # and now for something completely different\n      print(8/2)\n"
+  },
+  {
+   "name": "code_parsing_none/2",
+   "input": ".. code:: latex\n\n  hello \\emph{world} % emphasize\n"
+  }
+ ]
+}

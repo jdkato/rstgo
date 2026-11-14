@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_meta.py",
+ "cases": [
+  {
+   "name": "meta/0",
+   "input": ".. meta::\n   :description: The reStructuredText plaintext markup language\n   :keywords: plaintext,markup language\n"
+  },
+  {
+   "name": "meta/1",
+   "input": ".. meta::\n   :description lang=en: An amusing story\n   :description lang=fr: Un histoire amusant\n"
+  },
+  {
+   "name": "meta/2",
+   "input": ".. meta::\n   :http-equiv=Content-Type: text/html; charset=ISO-8859-1\n"
+  },
+  {
+   "name": "meta/3",
+   "input": ".. meta::\n   :name: content\n     over multiple lines\n"
+  },
+  {
+   "name": "meta/4",
+   "input": "Paragraph\n\n.. meta::\n   :name: content\n"
+  },
+  {
+   "name": "meta/5",
+   "input": ".. meta::\n"
+  },
+  {
+   "name": "meta/6",
+   "input": ".. meta::\n   :empty:\n"
+  },
+  {
+   "name": "meta/7",
+   "input": ".. meta::\n   not a field list\n"
+  },
+  {
+   "name": "meta/8",
+   "input": ".. meta::\n   :name: content\n   not a field\n   :name: content\n"
+  },
+  {
+   "name": "meta/9",
+   "input": ".. meta::\n   :name: content\n   :name: content\n   not a field\n"
+  },
+  {
+   "name": "meta/10",
+   "input": ".. meta::\n   :name notattval: content\n"
+  },
+  {
+   "name": "meta/11",
+   "input": "\n.. meta::\n   :name\\:with\\:colons: escaped line\\\n                        break\n   :unescaped:embedded:colons: content\n"
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+ "origin": "test/test_parsers/test_rst/test_option_lists.py",
+ "cases": [
+  {
+   "name": "option_lists/0",
+   "input": "Short options:\n\n-a       option -a\n\n-b file  option -b\n\n-c name  option -c\n"
+  },
+  {
+   "name": "option_lists/1",
+   "input": "Long options:\n\n--aaaa       option --aaaa\n--bbbb=file  option --bbbb\n--cccc name  option --cccc\n--d-e-f-g    option --d-e-f-g\n--h_i_j_k    option --h_i_j_k\n"
+  },
+  {
+   "name": "option_lists/2",
+   "input": "Old GNU-style options:\n\n+a       option +a\n\n+b file  option +b\n\n+c name  option +c\n"
+  },
+  {
+   "name": "option_lists/3",
+   "input": "VMS/DOS-style options:\n\n/A        option /A\n/B file   option /B\n/CCC      option /CCC\n/DDD string  option /DDD\n/EEE=int  option /EEE\n"
+  },
+  {
+   "name": "option_lists/4",
+   "input": "Mixed short, long, and VMS/DOS options:\n\n-a           option -a\n--bbbb=file  option -bbbb\n/C           option /C\n--dddd name  option --dddd\n-e string    option -e\n/F file      option /F\n"
+  },
+  {
+   "name": "option_lists/5",
+   "input": "Aliased options:\n\n-a, --aaaa, /A                 option -a, --aaaa, /A\n-b file, --bbbb=file, /B file  option -b, --bbbb, /B\n"
+  },
+  {
+   "name": "option_lists/6",
+   "input": "Multiple lines in descriptions, aligned:\n\n-a       option -a, line 1\n         line 2\n-b file  option -b, line 1\n         line 2\n"
+  },
+  {
+   "name": "option_lists/7",
+   "input": "Multiple lines in descriptions, not aligned:\n\n-a  option -a, line 1\n    line 2\n-b file  option -b, line 1\n    line 2\n"
+  },
+  {
+   "name": "option_lists/8",
+   "input": "Descriptions begin on next line:\n\n-a\n    option -a, line 1\n    line 2\n-b file\n    option -b, line 1\n    line 2\n"
+  },
+  {
+   "name": "option_lists/9",
+   "input": "Multiple body elements in descriptions:\n\n-a  option -a, para 1\n\n    para 2\n-b file\n    option -b, para 1\n\n    para 2\n"
+  },
+  {
+   "name": "option_lists/10",
+   "input": "--option\nempty item above, no blank line\n"
+  },
+  {
+   "name": "option_lists/11",
+   "input": "An option list using equals:\n\n--long1=arg1  Description 1\n--long2=arg2  Description 2\n\nAn option list using spaces:\n\n--long1 arg1  Description 1\n--long2 arg2  Description 2\n\nAn option list using mixed delimiters:\n\n--long1=arg1  Description 1\n--long2 arg2  Description 2\n\nAn option list using mixed delimiters in one line:\n\n--long1=arg1, --long2 arg2  Description\n"
+  },
+  {
+   "name": "option_lists/12",
+   "input": "Some edge cases:\n\n--option=arg arg  too many arguments\n\n--option=arg,arg  not supported (yet?)\n\n--option=arg=arg  too many arguments\n\n--option arg arg  too many arguments\n\n-a letter arg2    too many arguments\n\n/A letter arg2    too many arguments\n\n--option=         argument missing\n\n--=argument       option missing\n\n--                everything missing\n\n-                 this should be a bullet list item\n\nThese next ones should be simple paragraphs:\n\n-1\n\n--option\n\n--1\n\n-1 and this one too.\n"
+  },
+  {
+   "name": "option_lists/13",
+   "input": "Complex optargs:\n\n--source-url=<URL>      Use the supplied <URL> verbatim.\n--output-encoding=<name[:handler]>, -o<name[:handler]>\n                        Specify the text encoding for output.\n--af=<filter1[=parameter1:parameter2:...],filter2,...>\n                        Setup a chain of audio filters.\n                        Option argument containing delimiter ``=``.\n-f <[path]filename>     Send output to file.\n-d <src dest>           Use diff from <src> to <dest>.\n--point=<x y z>         3D coordinates.\n--vector <\"x, y, z\">    Another option expecting 3 arguments.\n--cvs=<'a[, b[, ...]]]'>\n                        Comma separated arguments.\n-g <a, , c>             Complex arg with empty list element.\n"
+  },
+  {
+   "name": "option_lists/14",
+   "input": "Incorrect option syntax → no option list.\n\n-f, , --force   Empty synonym.\n-f <a, , b      Unbalanced angle bracket.\n-f a, , b>      Unbalanced angle bracket.\n"
+  }
+ ]
+}

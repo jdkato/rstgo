@@ -1,0 +1,17 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_compound.py",
+ "cases": [
+  {
+   "name": "compound/0",
+   "input": ".. compound::\n\n   Compound paragraphs are single logical paragraphs\n   which contain embedded\n\n   * lists\n   * tables\n   * literal blocks\n   * and other body elements\n\n   and are split into multiple physical paragraphs.\n"
+  },
+  {
+   "name": "compound/1",
+   "input": ".. compound::\n   :name: interesting\n   :class: log\n\n   This is an extremely interesting compound paragraph containing a\n   simple paragraph, a literal block with some useless log messages::\n\n       Connecting... OK\n       Transmitting data... OK\n       Disconnecting... OK\n\n   and another simple paragraph which is actually just a continuation\n   of the first simple paragraph, with the literal block in between.\n"
+  },
+  {
+   "name": "compound/2",
+   "input": ".. compound:: content may start on same line\n\n   second paragraph\n"
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "origin": "test/test_parsers/test_rst/test_enumerated_lists.py",
+ "cases": [
+  {
+   "name": "enumerated_lists/0",
+   "input": "1. Item one.\n\n2. Item two.\n\n3. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/1",
+   "input": "No blank lines betwen items:\n\n1. Item one.\n2. Item two.\n3. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/2",
+   "input": "1.\nempty item above, no blank line\n"
+  },
+  {
+   "name": "enumerated_lists/3",
+   "input": "Scrambled:\n\n3. Item three.\n\n2. Item two.\n\n1. Item one.\n\n3. Item three.\n2. Item two.\n1. Item one.\n"
+  },
+  {
+   "name": "enumerated_lists/4",
+   "input": "Skipping item 3:\n\n1. Item 1.\n2. Item 2.\n4. Item 4.\n"
+  },
+  {
+   "name": "enumerated_lists/5",
+   "input": "Start with non-ordinal-1:\n\n0. Item zero.\n1. Item one.\n2. Item two.\n3. Item three.\n\nAnd again:\n\n2. Item two.\n3. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/6",
+   "input": "1. Item one: line 1,\n   line 2.\n2. Item two: line 1,\n   line 2.\n3. Item three: paragraph 1, line 1,\n   line 2.\n\n   Paragraph 2.\n"
+  },
+  {
+   "name": "enumerated_lists/7",
+   "input": "Different enumeration sequences:\n\n1. Item 1.\n2. Item 2.\n3. Item 3.\n\nA. Item A.\nB. Item B.\nC. Item C.\n\na. Item a.\nb. Item b.\nc. Item c.\n\nI. Item I.\nII. Item II.\nIII. Item III.\n\ni. Item i.\nii. Item ii.\niii. Item iii.\n"
+  },
+  {
+   "name": "enumerated_lists/8",
+   "input": "Bad Roman numerals:\n\ni. i\n\nii. ii\n\niii. iii\n\niiii. iiii\n      second line\n\n(LCD) is an acronym made up of Roman numerals\n\n(livid) is a word made up of Roman numerals\n\n(CIVIL) is another such word\n\n(I) I\n\n(IVXLCDM) IVXLCDM\n"
+  },
+  {
+   "name": "enumerated_lists/9",
+   "input": "Potentially ambiguous cases:\n\nA. Item A.\nB. Item B.\nC. Item C.\n\nI. Item I.\nII. Item II.\nIII. Item III.\n\na. Item a.\nb. Item b.\nc. Item c.\n\ni. Item i.\nii. Item ii.\niii. Item iii.\n\nPhew! Safe!\n"
+  },
+  {
+   "name": "enumerated_lists/10",
+   "input": "Definitely ambiguous:\n\nA. Item A.\nB. Item B.\nC. Item C.\nD. Item D.\nE. Item E.\nF. Item F.\nG. Item G.\nH. Item H.\nI. Item I.\nII. Item II.\nIII. Item III.\n\na. Item a.\nb. Item b.\nc. Item c.\nd. Item d.\ne. Item e.\nf. Item f.\ng. Item g.\nh. Item h.\ni. Item i.\nii. Item ii.\niii. Item iii.\n"
+  },
+  {
+   "name": "enumerated_lists/11",
+   "input": "Different enumeration formats:\n\n1. Item 1.\n2. Item 2.\n3. Item 3.\n\n1) Item 1).\n2) Item 2).\n3) Item 3).\n\n(1) Item (1).\n(2) Item (2).\n(3) Item (3).\n"
+  },
+  {
+   "name": "enumerated_lists/12",
+   "input": "Nested enumerated lists:\n\n1. Item 1.\n\n   A) Item A).\n   B) Item B).\n   C) Item C).\n\n2. Item 2.\n\n   (a) Item (a).\n\n       I) Item I).\n       II) Item II).\n       III) Item III).\n\n   (b) Item (b).\n\n   (c) Item (c).\n\n       (i) Item (i).\n       (ii) Item (ii).\n       (iii) Item (iii).\n\n3. Item 3.\n"
+  },
+  {
+   "name": "enumerated_lists/13",
+   "input": "A. Einstein was a great influence on\nB. Physicist, who was a colleague of\nC. Chemist.  They all worked in\nPrinceton, NJ.\n\nUsing a non-breaking space as a workaround:\n\nA. Einstein was a great influence on\nB. Physicist, who was a colleague of\nC. Chemist.  They all worked in\nPrinceton, NJ.\n"
+  },
+  {
+   "name": "enumerated_lists/14",
+   "input": "1. Item one: line 1,\n   line 2.\n2. Item two: line 1,\n  line 2.\n3. Item three: paragraph 1, line 1,\n line 2.\n\n   Paragraph 2.\n"
+  },
+  {
+   "name": "enumerated_lists/15",
+   "input": "1. Item one.\n\n#. Item two.\n\n#. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/16",
+   "input": "a. Item one.\n#. Item two.\n#. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/17",
+   "input": "i. Item one.\nii. Item two.\n#. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/18",
+   "input": "#. Item one.\n#. Item two.\n#. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/19",
+   "input": "1. Item one.\n#. Item two.\n3. Item three.\n"
+  },
+  {
+   "name": "enumerated_lists/20",
+   "input": "z.\nx\n"
+  },
+  {
+   "name": "enumerated_lists/21",
+   "input": "3-space indent, with a trailing space:\n\n1. \n   foo\n\n3-space indent, no trailing space:\n\n1.\n   foo\n\n2-space indent:\n\n1.\n  foo\n\n1-space indent:\n\n1.\n foo\n\n0-space indent, not a list item:\n\n1.\nfoo\n\nNo item content:\n\n1.\n"
+  }
+ ]
+}

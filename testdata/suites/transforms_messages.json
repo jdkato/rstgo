@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_messages.py",
+ "cases": [
+  {
+   "name": "system_message_sections/0",
+   "input": "This |unknown substitution| will generate a system message, thanks to\nthe ``Substitutions`` transform. The ``Messages`` transform will\ngenerate a \"System Messages\" section.\n\n(A second copy of the system message is tacked on to the end of the\ndocument by the test framework.)\n"
+  }
+ ]
+}

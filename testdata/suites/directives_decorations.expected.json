@@ -1,0 +1,40 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "headers/0",
+   "pxml": "<document source=\"<stdin>\">\n    <decoration>\n        <header>\n            <paragraph>\n                a paragraph for the header\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"header\">\na paragraph for the header\n<hr class=\"header\"/>\n</div>\n<div class=\"document\">\n\n\n\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<header>\n<p>a paragraph for the header</p>\n</header>\n<main>\n\n\n\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "headers/1",
+   "pxml": "<document source=\"<stdin>\">\n    <system_message level=\"3\" line=\"1\" source=\"<stdin>\" type=\"ERROR\">\n        <paragraph>\n            Content block expected for the \"header\" directive; none found.\n        <literal_block xml:space=\"preserve\">\n            .. header::\n",
+   "err": "<stdin>:1: (ERROR/3) Content block expected for the \"header\" directive; none found.\n",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<tt class=\"docutils\">&lt;stdin&gt;</tt>, line 1)</p>\n<p>Content block expected for the &quot;header&quot; directive; none found.</p>\n<pre class=\"literal-block\">\n.. header::\n</pre>\n</div>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<aside class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<span class=\"docutils literal\">&lt;stdin&gt;</span>, line 1)</p>\n<p>Content block expected for the &quot;header&quot; directive; none found.</p>\n<pre class=\"literal-block\">.. header::</pre>\n</aside>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "headers/2",
+   "pxml": "<document source=\"<stdin>\">\n    <decoration>\n        <header>\n            <paragraph>\n                first part of the header\n            <paragraph>\n                second part of the header\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"header\">\n<p>first part of the header</p>\n<p>second part of the header</p>\n\n<hr class=\"header\"/>\n</div>\n<div class=\"document\">\n\n\n\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<header>\n<p>first part of the header</p>\n<p>second part of the header</p>\n</header>\n<main>\n\n\n\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "footers/0",
+   "pxml": "<document source=\"<stdin>\">\n    <decoration>\n        <footer>\n            <paragraph>\n                a paragraph for the footer\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n\n</div>\n<div class=\"footer\">\n<hr class=\"footer\" />\na paragraph for the footer\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n\n</main>\n<footer>\n<p>a paragraph for the footer</p>\n</footer>\n</body>\n</html>\n"
+  },
+  {
+   "name": "footers/1",
+   "pxml": "<document source=\"<stdin>\">\n    <decoration>\n        <header>\n            <paragraph>\n                the header appears first\n        <footer>\n            <paragraph>\n                even if a footer is declared first\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"header\">\nthe header appears first\n<hr class=\"header\"/>\n</div>\n<div class=\"document\">\n\n\n\n</div>\n<div class=\"footer\">\n<hr class=\"footer\" />\neven if a footer is declared first\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<header>\n<p>the header appears first</p>\n</header>\n<main>\n\n\n\n</main>\n<footer>\n<p>even if a footer is declared first</p>\n</footer>\n</body>\n</html>\n"
+  }
+ ]
+}

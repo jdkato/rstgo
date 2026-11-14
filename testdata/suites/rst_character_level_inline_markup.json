@@ -1,0 +1,85 @@
+{
+ "origin": "test/test_parsers/test_rst/test_character_level_inline_markup.py",
+ "cases": [
+  {
+   "name": "emphasis/0",
+   "input": "some punctuation is allowed around inline markup, e.g.\n/*emphasis*/, -*emphasis*-, and :*emphasis*: (delimiters),\n(*emphasis*), [*emphasis*], <*emphasis*>, {*emphasis*} (open/close pairs)\n*emphasis*., *emphasis*,, *emphasis*!, and *emphasis*\\ (closing delimiters),\n\nWith simple-inline-markup also\n)*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs),\nx*2* or 2*x* (alphanumeric char before),\n\nbut not\n(*), [*], '*' or '\"*\"' (\"quoted\" start-string),\n\\*args or * (escaped; whitespace behind start-string),\nor *the\\* *stars\\* *inside* (escaped; whitespace before end-string).\n\nHowever, '*args' triggers a warning.\n\nAlso *this**.\n"
+  },
+  {
+   "name": "emphasis/1",
+   "input": "\nEmphasized asterisk: *\\**\n\nEmphasized double asterisk: *\\*\\** (requires two escape chars).\n"
+  },
+  {
+   "name": "strong/0",
+   "input": "\n(**strong**) but not (**) or '(** '\n\nHowever, '**kwargs' and x**2 are recognized as strong markup\nand \\**kwargs or ** as emphasized.\n"
+  },
+  {
+   "name": "strong/1",
+   "input": "Strong asterisk: **\\***\nand\nstrong double asterisk: **\\*\\***\nrequire escaping with simple-inline-markup.\n"
+  },
+  {
+   "name": "literal/0",
+   "input": "With simple-inline-markup, this is ```interpreted text``` in backquotes!\n"
+  },
+  {
+   "name": "literal/1",
+   "input": "``literal without closing backquotes\n"
+  },
+  {
+   "name": "literal/2",
+   "input": "\nPython ``list``s use square bracket syntax.\n"
+  },
+  {
+   "name": "references/0",
+   "input": "ref_, r_, r_e-f_, -ref_, and anonymousref__,\nbeware of _ref_ or __attr__ or object.__attr__\n"
+  },
+  {
+   "name": "embedded_uris/0",
+   "input": "\nEscape chars in URIs:\n\n`<reference\\:1>`_\n\n`<anonymous\\\\call>`__\n\n`<anonymous\\_call>`__\n"
+  },
+  {
+   "name": "inline_targets/0",
+   "input": "This isn't a _target; targets require backquotes.\n\nWith simple-inline-markup, _`this`_ is a a target followed by an\nunderscore.\n"
+  },
+  {
+   "name": "footnote_reference/0",
+   "input": "Adjacent footnote refs are possible with simple-inline-markup:\n[*]_[#label]_ [#]_[2]_ [1]_[*]_\n\n.. [#] test1\n.. [*] test2\n"
+  },
+  {
+   "name": "citation_reference/0",
+   "input": "Adjacent citation refs are possible with simple-inline-markup:\n[citation]_[CIT1]_\n"
+  },
+  {
+   "name": "substitution_references/0",
+   "input": "|sub|ref\n"
+  },
+  {
+   "name": "standalone_hyperlink/0",
+   "input": "\nValid URLs with escaped markup characters:\n\nhttp://example.com/\\*content\\*/whatever\n\nInvalid with the simple-inline-markup setting:\n\nhttp://example.com/\\*content*/whatever\nhttp://example.com/rST_for_all.html\n"
+  },
+  {
+   "name": "markup_recognition_rules/0",
+   "input": "__This__ is an anonymous reference with simple-inline-markup.\n"
+  },
+  {
+   "name": "markup_recognition_rules/1",
+   "input": "\nCharacter-level m*a***r**``k``\\ `u`:title:\\p\nwith backslash-escaped whitespace, including new\\\nlines.\n"
+  },
+  {
+   "name": "markup_recognition_rules/2",
+   "input": "text-*separated*‐*by*‑*various*‒*dashes*–*and*—*hyphens*.\n¿*punctuation*? ¡*examples*! *no-break-space* .\n"
+  },
+  {
+   "name": "markup_recognition_rules/3",
+   "input": "inline markup surrounded by various whitespace characters:\n*newline*\nor *space* or one of\n *NO-BREAK SPACE* ,\n *OGHAM SPACE MARK* ,\n᠎*MONGOLIAN VOWEL SEPARATOR*᠎,\n *EN QUAD* ,\n *EM QUAD* ,\n *EN SPACE* ,\n *EM SPACE* ,\n *THREE-PER-EM SPACE* ,\n *FOUR-PER-EM SPACE* ,\n *SIX-PER-EM SPACE* ,\n *FIGURE SPACE* ,\n *PUNCTUATION SPACE* ,\n *THIN SPACE* ,\n *HAIR SPACE* ,\n *NARROW NO-BREAK SPACE* ,\n *MEDIUM MATHEMATICAL SPACE* ,\n　*IDEOGRAPHIC SPACE*　,\n *LINE SEPARATOR* \n"
+  },
+  {
+   "name": "markup_recognition_rules/4",
+   "input": "no inline markup due to whitespace inside and behind: *\nnewline\n*\n* space * or one of\n* NO-BREAK SPACE *\n* OGHAM SPACE MARK *\n* EN QUAD *\n* EM QUAD *\n* EN SPACE *\n* EM SPACE *\n* THREE-PER-EM SPACE *\n* FOUR-PER-EM SPACE *\n* SIX-PER-EM SPACE *\n* FIGURE SPACE *\n* PUNCTUATION SPACE *\n* THIN SPACE *\n* HAIR SPACE *\n* NARROW NO-BREAK SPACE *\n* MEDIUM MATHEMATICAL SPACE *\n*　IDEOGRAPHIC SPACE　*\n* LINE SEPARATOR *\n"
+  },
+  {
+   "name": "markup_recognition_rules/5",
+   "input": "\"Quoted\" markup start-string (matched openers & closers) -> no markup:\n\n'*' \"*\" (*) <*> [*] {*}\n⁅*⁆\n\nSome international quoting styles:\n‘*’ “*” English, ...,\n„*“ ‚*‘ »*« ›*‹ German, Czech, ...,\n„*” «*» Romanian,\n“*„ ‘*‚ Greek,\n「*」 『*』traditional Chinese,\n”*” ’*’ »*» ›*› Swedish, Finnish,\n„*” ‚*’ Polish,\n„*” »*« ’*’ Hungarian,\n\nBut this is „*’ emphasized »*‹.\n"
+  }
+ ]
+}

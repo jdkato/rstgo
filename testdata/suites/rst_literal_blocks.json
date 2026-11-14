@@ -1,0 +1,89 @@
+{
+ "origin": "test/test_parsers/test_rst/test_literal_blocks.py",
+ "cases": [
+  {
+   "name": "indented_literal_blocks/0",
+   "input": "A paragraph::\n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/1",
+   "input": "A paragraph with a space after the colons:: \n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/2",
+   "input": "A paragraph::\n\n    A literal block.\n\nAnother paragraph::\n\n    Another literal block.\n    With two blank lines following.\n\n\nA final paragraph.\n"
+  },
+  {
+   "name": "indented_literal_blocks/3",
+   "input": "A paragraph\non more than\none line::\n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/4",
+   "input": "A paragraph\non more than\none line::\n    A literal block\n    with no blank line above.\n"
+  },
+  {
+   "name": "indented_literal_blocks/5",
+   "input": "A paragraph::\n\n    A literal block.\nno blank line\n"
+  },
+  {
+   "name": "indented_literal_blocks/6",
+   "input": "\nA paragraph\\\\::\n\n    A literal block.\n\nA paragraph\\::\n\n    Not a literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/7",
+   "input": "\n\\\\::\n\n    A literal block.\n\n\\::\n\n    Not a literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/8",
+   "input": "A paragraph: ::\n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/9",
+   "input": "A paragraph:\n\n::\n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/10",
+   "input": "A paragraph:\n::\n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/11",
+   "input": "A paragraph:\n\n::\n\n    A literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/12",
+   "input": "A paragraph::\n\nNot a literal block.\n"
+  },
+  {
+   "name": "indented_literal_blocks/13",
+   "input": "A paragraph::\n\n    A wonky literal block.\n  Literal line 2.\n\n    Literal line 3.\n"
+  },
+  {
+   "name": "indented_literal_blocks/14",
+   "input": "EOF, even though a literal block is indicated::\n"
+  },
+  {
+   "name": "quoted_literal_blocks/0",
+   "input": "A paragraph::\n\n> A literal block.\n"
+  },
+  {
+   "name": "quoted_literal_blocks/1",
+   "input": "A paragraph::\n\n\n> A literal block.\n"
+  },
+  {
+   "name": "quoted_literal_blocks/2",
+   "input": "A paragraph::\n\n> A literal block.\n> Line 2.\n"
+  },
+  {
+   "name": "quoted_literal_blocks/3",
+   "input": "A paragraph::\n\n> A literal block.\n  Indented line.\n"
+  },
+  {
+   "name": "quoted_literal_blocks/4",
+   "input": "A paragraph::\n\n> A literal block.\nText.\n"
+  },
+  {
+   "name": "quoted_literal_blocks/5",
+   "input": "A paragraph::\n\n> A literal block.\n$ Inconsistent line.\n"
+  }
+ ]
+}

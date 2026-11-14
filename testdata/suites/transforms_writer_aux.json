@@ -1,0 +1,13 @@
+{
+ "origin": "test/test_transforms/test_writer_aux.py",
+ "cases": [
+  {
+   "name": "admonitions/0",
+   "input": ".. note::\n\n   These are the note contents.\n\n   Another paragraph.\n"
+  },
+  {
+   "name": "admonitions/1",
+   "input": ".. admonition:: Generic\n\n   Admonitions contents...\n"
+  }
+ ]
+}

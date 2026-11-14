@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_unknown.py",
+ "cases": [
+  {
+   "name": "unknown/0",
+   "input": ".. reStructuredText-unknown-directive::\n\n.. reStructuredText-unknown-directive:: argument\n\n.. reStructuredText-unknown-directive::\n   block\n"
+  }
+ ]
+}

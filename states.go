@@ -351,13 +351,17 @@ func nop(s *rstState, m *pyMatch, context []string, nextState string) ([]string,
 	return context, nextState
 }
 
-var bodyMethods = map[string]transFn{
-	"blank": nop, "indent": bodyIndent, "bullet": bodyBullet,
-	"enumerator": bodyEnumerator, "field_marker": bodyFieldMarker,
-	"option_marker": bodyOptionMarker, "doctest": bodyDoctest,
-	"line_block": bodyLineBlock, "grid_table_top": bodyGridTableTop,
-	"simple_table_top": bodySimpleTableTop, "explicit_markup": bodyExplicitMarkup,
-	"anonymous": bodyAnonymous, "line": bodyLine, "text": bodyText,
+var bodyMethods map[string]transFn
+
+func init() {
+	bodyMethods = map[string]transFn{
+		"blank": nop, "indent": bodyIndent, "bullet": bodyBullet,
+		"enumerator": bodyEnumerator, "field_marker": bodyFieldMarker,
+		"option_marker": bodyOptionMarker, "doctest": bodyDoctest,
+		"line_block": bodyLineBlock, "grid_table_top": bodyGridTableTop,
+		"simple_table_top": bodySimpleTableTop, "explicit_markup": bodyExplicitMarkup,
+		"anonymous": bodyAnonymous, "line": bodyLine, "text": bodyText,
+	}
 }
 
 func newRSTState(kind string, sm *stateMachine) *rstState {
@@ -394,6 +398,8 @@ func newRSTState(kind string, sm *stateMachine) *rstState {
 		specialized(map[string]transFn{"enumerator": enumeratedListEnumerator})
 	case "FieldList", "ExtensionOptions":
 		specialized(map[string]transFn{"field_marker": fieldListFieldMarker})
+	case "MetaBody":
+		specialized(map[string]transFn{"field_marker": metaFieldMarker})
 	case "OptionList":
 		specialized(map[string]transFn{"option_marker": optionListOptionMarker})
 	case "LineBlock":

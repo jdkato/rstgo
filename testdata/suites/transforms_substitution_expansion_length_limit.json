@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_substitution_expansion_length_limit.py",
+ "cases": [
+  {
+   "name": "substitutions/0",
+   "input": "The billion laughs attack for ReStructuredText:\n\n.. |a| replace:: lol\n.. |b| replace:: 10^1 |a| |a| |a| |a| |a| |a| |a| |a| |a| |a|\n.. |c| replace:: 10^2 |b| |b| |b| |b| |b| |b| |b| |b| |b| |b|\n.. ...\n\n|a| |c| continuation text\n"
+  }
+ ]
+}

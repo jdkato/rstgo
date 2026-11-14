@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_include.py",
+ "cases": [
+  {
+   "name": "include/0",
+   "input": "Include Test\n============\n\n.. include:: nonexistent.rst\n\nA paragraph.\n"
+  },
+  {
+   "name": "include/1",
+   "input": "cyrillic filename:\n\n.. include:: мир.rst\n"
+  },
+  {
+   "name": "include/2",
+   "input": "Standard include data file:\n\n.. include:: <isogrk4.txt>\n"
+  },
+  {
+   "name": "include/3",
+   "input": "Nonexistent standard include data file:\n\n.. include:: <nonexistent>\n"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "origin": "test/test_transforms/test_filter_messages.py",
+ "cases": [
+  {
+   "name": "system_message_sections/0",
+   "input": ".. unknown-directive:: block markup is filtered without trace.\n"
+  },
+  {
+   "name": "system_message_sections/1",
+   "input": "Invalid *inline markup is restored to text.\n"
+  },
+  {
+   "name": "system_message_sections/2",
+   "input": "This |unknown substitution| will generate a system message, thanks to\nthe \"Substitutions\" transform. The \"Messages\" transform will\ngenerate a \"System Messages\" section and the \"FilterMessages\" transform\nwill remove it.\n"
+  }
+ ]
+}

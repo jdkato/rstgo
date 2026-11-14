@@ -47,7 +47,6 @@ type Document struct {
 	includeLog        []includeEntry
 	decoration        *Node
 	serial            int
-	extraTransforms   []transformEntry
 }
 
 type includeEntry struct {
@@ -72,7 +71,7 @@ func newDocument(sourcePath string, st *settings, stderr io.Writer) *Document {
 		idCounter:         map[string]int{},
 	}
 	d.reporter = &reporter{source: sourcePath, reportLevel: st.reportLevel,
-		haltLevel: st.haltLevel, stream: stderr}
+		haltLevel: st.haltLevel, stream: stderr, maxLevel: -1}
 	d.Root = newElem("document", "")
 	d.Root.Attrs["source"] = sourcePath
 	d.Root.doc = d

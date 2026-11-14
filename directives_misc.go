@@ -132,7 +132,7 @@ func decodeInput(data []byte, encoding string) (string, error) {
 		return string(rs), nil
 	}
 	s := string(data)
-	s = strings.TrimPrefix(s, "﻿")
+	s = strings.TrimPrefix(s, "\xef\xbb\xbf")
 	if !utf8.ValidString(s) {
 		return "", fmt.Errorf("UnicodeDecodeError: 'utf-8' codec can't decode bytes")
 	}
@@ -140,21 +140,6 @@ func decodeInput(data []byte, encoding string) (string, error) {
 	s = strings.ReplaceAll(s, "\r\n", "\n")
 	s = strings.ReplaceAll(s, "\r", "\n")
 	return s, nil
-}
-
-func (d *directive) readFile(path string, encodingOpt string) (string, error) {
-	if strings.HasPrefix(path, standardIncludePrefix) {
-		data, err := standardIncludes.ReadFile("include/" + strings.TrimPrefix(path, standardIncludePrefix))
-		if err != nil {
-			return "", err
-		}
-		return decodeInput(data, "utf-8")
-	}
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return "", err
-	}
-	return string(data), nil
 }
 
 func runInclude(d *directive) []*Node {

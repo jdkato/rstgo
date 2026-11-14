@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_transforms/test_expose_internals.py",
+ "cases": [
+  {
+   "name": "transitions/0",
+   "input": "This is a test.\n"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "origin": "test/test_transforms/test_sectnum.py",
+ "cases": [
+  {
+   "name": "section_numbers/0",
+   "input": ".. sectnum::\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_numbers/1",
+   "input": ".. sectnum::\n\n**Bold Title**\n==============\nParagraph 1.\n"
+  },
+  {
+   "name": "section_numbers/2",
+   "input": ".. sectnum:: :depth: 2\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_numbers/3",
+   "input": ".. contents::\n.. sectnum:: :depth: 2\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_numbers/4",
+   "input": ".. sectnum::\n   :prefix: Arbitrary-\n\nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_numbers/5",
+   "input": ".. sectnum::\n   :start: 3\n   \nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  },
+  {
+   "name": "section_numbers/6",
+   "input": ".. sectnum::\n   :prefix: (5.9.\n   :suffix: )\n   :start: 3\n   \nTitle 1\n=======\nParagraph 1.\n\nTitle 2\n-------\nParagraph 2.\n\nTitle 3\n```````\nParagraph 3.\n\nTitle 4\n-------\nParagraph 4.\n"
+  }
+ ]
+}

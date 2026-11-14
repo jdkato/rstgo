@@ -1,0 +1,12 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "hyperlinks/0",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        <reference name=\"Target\" refid=\"target\">\n            Target\n         should propagate past the system_message to set \"id\" on note.\n    <target refid=\"target\">\n    <note ids=\"mynote target\" names=\"mynote target\">\n        <paragraph>\n            Kurznotiz\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p><a class=\"reference internal\" href=\"#target\">Target</a> should propagate past the system_message to set &quot;id&quot; on note.</p>\n<div class=\"admonition note\" id=\"mynote\">\n<span id=\"target\"></span><p class=\"first admonition-title\">Note</p>\n<p class=\"last\">Kurznotiz</p>\n</div>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p><a class=\"reference internal\" href=\"#target\">Target</a> should propagate past the system_message to set &quot;id&quot; on note.</p>\n<aside class=\"admonition note\" id=\"mynote\">\n<span id=\"target\"></span><p class=\"admonition-title\">Note</p>\n<p>Kurznotiz</p>\n</aside>\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

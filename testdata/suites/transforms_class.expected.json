@@ -1,0 +1,82 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "class/0",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph classes=\"one\">\n        paragraph\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p class=\"one\">paragraph</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p class=\"one\">paragraph</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/1",
+   "pxml": "<document source=\"<stdin>\">\n    <comment xml:space=\"preserve\">\n    <block_quote classes=\"two\">\n        <paragraph>\n            Block quote\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<!--  -->\n<blockquote class=\"two\">\nBlock quote</blockquote>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<!--  -->\n<blockquote class=\"two\">\n<p>Block quote</p>\n</blockquote>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/2",
+   "pxml": "<document source=\"<stdin>\">\n    <block_quote>\n        <paragraph>\n            Block quote\n    <paragraph classes=\"three\">\n        Paragraph\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<blockquote>\nBlock quote</blockquote>\n<p class=\"three\">Paragraph</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<blockquote>\n<p>Block quote</p>\n</blockquote>\n<p class=\"three\">Paragraph</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/3",
+   "pxml": "<document classes=\"four\" ids=\"section-title\" names=\"section\\ title\" source=\"<stdin>\" title=\"Section Title\">\n    <title>\n        Section Title\n    <paragraph>\n        Paragraph\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>Section Title</title>\n\n</head>\n<body>\n<div class=\"four document\" id=\"section-title\">\n<h1 class=\"title\">Section Title</h1>\n\n<p>Paragraph</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>Section Title</title>\n\n</head>\n<body>\n<main class=\"four\" id=\"section-title\">\n<h1 class=\"title\">Section Title</h1>\n\n<p>Paragraph</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/4",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph classes=\"multiple\">\n        paragraph 1\n    <paragraph classes=\"multiple\">\n        paragraph 2\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p class=\"multiple\">paragraph 1</p>\n<p class=\"multiple\">paragraph 2</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p class=\"multiple\">paragraph 1</p>\n<p class=\"multiple\">paragraph 2</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/5",
+   "pxml": "<document source=\"<stdin>\">\n    <comment classes=\"multiple\" xml:space=\"preserve\">\n        Just a comment.  It's silly, but possible\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<!-- Just a comment.  It's silly, but possible -->\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<!-- Just a comment.  It's silly, but possible -->\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/6",
+   "pxml": "<document source=\"<stdin>\">\n    <system_message level=\"3\" line=\"1\" source=\"<stdin>\" type=\"ERROR\">\n        <paragraph>\n            Error in \"class\" directive:\n            1 argument(s) required, 0 supplied.\n        <literal_block xml:space=\"preserve\">\n            .. class::\n    <system_message level=\"3\" line=\"3\" source=\"<stdin>\" type=\"ERROR\">\n        <paragraph>\n            Invalid class attribute value for \"class\" directive: \"99\".\n        <literal_block xml:space=\"preserve\">\n            .. class:: 99\n",
+   "err": "<stdin>:1: (ERROR/3) Error in \"class\" directive:\n1 argument(s) required, 0 supplied.\n\n.. class::\n\n<stdin>:3: (ERROR/3) Invalid class attribute value for \"class\" directive: \"99\".\n",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<tt class=\"docutils\">&lt;stdin&gt;</tt>, line 1)</p>\n<p>Error in &quot;class&quot; directive:\n1 argument(s) required, 0 supplied.</p>\n<pre class=\"literal-block\">\n.. class::\n\n</pre>\n</div>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<tt class=\"docutils\">&lt;stdin&gt;</tt>, line 3)</p>\n<p>Invalid class attribute value for &quot;class&quot; directive: &quot;99&quot;.</p>\n<pre class=\"literal-block\">\n.. class:: 99\n</pre>\n</div>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<aside class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<span class=\"docutils literal\">&lt;stdin&gt;</span>, line 1)</p>\n<p>Error in &quot;class&quot; directive:\n1 argument(s) required, 0 supplied.</p>\n<pre class=\"literal-block\">.. class::\n</pre>\n</aside>\n<aside class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<span class=\"docutils literal\">&lt;stdin&gt;</span>, line 3)</p>\n<p>Invalid class attribute value for &quot;class&quot; directive: &quot;99&quot;.</p>\n<pre class=\"literal-block\">.. class:: 99</pre>\n</aside>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/7",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph classes=\"one two\">\n        multiple class values may be assigned to one element\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p class=\"one two\">multiple class values may be assigned to one element</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p class=\"one two\">multiple class values may be assigned to one element</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/8",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph classes=\"one two\">\n        multiple class values may be assigned to one element\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p class=\"one two\">multiple class values may be assigned to one element</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p class=\"one two\">multiple class values may be assigned to one element</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/9",
+   "pxml": "<document source=\"<stdin>\">\n    <enumerated_list classes=\"fancy\" enumtype=\"arabic\" prefix=\"\" start=\"2\" suffix=\".\">\n        <list_item>\n            <paragraph>\n                List starts at 2.\n        <list_item>\n            <paragraph>\n                Class should apply to list, not to system message.\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<ol class=\"fancy arabic simple\" start=\"2\">\n<li>List starts at 2.</li>\n<li>Class should apply to list, not to system message.</li>\n</ol>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<ol class=\"arabic simple fancy\" start=\"2\">\n<li><p>List starts at 2.</p></li>\n<li><p>Class should apply to list, not to system message.</p></li>\n</ol>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "class/10",
+   "pxml": "<document source=\"<stdin>\">\n    <enumerated_list enumtype=\"arabic\" prefix=\"\" start=\"2\" suffix=\".\">\n        <list_item>\n            <paragraph>\n                List starts at 2.\n        <list_item>\n            <paragraph>\n                Class should apply to next paragraph, not to system message.\n    <paragraph classes=\"fancy\">\n        A paragraph.\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<ol class=\"arabic simple\" start=\"2\">\n<li>List starts at 2.</li>\n<li>Class should apply to next paragraph, not to system message.</li>\n</ol>\n<p class=\"fancy\">A paragraph.</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<ol class=\"arabic simple\" start=\"2\">\n<li><p>List starts at 2.</p></li>\n<li><p>Class should apply to next paragraph, not to system message.</p></li>\n</ol>\n<p class=\"fancy\">A paragraph.</p>\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

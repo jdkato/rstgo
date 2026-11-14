@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_figures.py",
+ "cases": [
+  {
+   "name": "figures/0",
+   "input": ".. figure:: picture.png\n"
+  },
+  {
+   "name": "figures/1",
+   "input": ".. figure:: picture.png\n\n   A picture with a caption.\n"
+  },
+  {
+   "name": "figures/2",
+   "input": ".. figure:: picture.png\n\n   - A picture with an invalid caption.\n"
+  },
+  {
+   "name": "figures/3",
+   "input": ".. figure:: picture.png\n\n   ..\n\n   A picture with a legend but no caption.\n"
+  },
+  {
+   "name": "figures/4",
+   "input": ".. figure:: picture.png\n\n   .. The comment replacing the caption must be empty.\n\n   This should be a legend.\n"
+  },
+  {
+   "name": "figures/5",
+   "input": ".. Figure:: picture.png\n   :height: 100\n   :width: 200\n   :scale: 50\n   :loading: embed\n\n   .. class:: custom\n   .. _figure:caption:\n\n   A picture with image options and a caption with class value and target.\n"
+  },
+  {
+   "name": "figures/6",
+   "input": ".. Figure:: picture.png\n   :alt: alternate text\n   :name: img:picture\n   :height: 100\n   :width: 200\n   :scale: 50\n   :loading: lazy\n   :class: image-class\n   :figwidth: 300\n   :figclass: class1 class2\n   :figname: Fig:  pix\n\n   A figure with options and this caption.\n"
+  },
+  {
+   "name": "figures/7",
+   "input": ".. figure:: picture.png\n   :align: center\n\n   A figure with explicit alignment.\n"
+  },
+  {
+   "name": "figures/8",
+   "input": ".. figure:: picture.png\n   :align: top\n\n   A figure with wrong alignment.\n"
+  },
+  {
+   "name": "figures/9",
+   "input": ".. figure:: picture.png\n\n   A picture with a caption and a legend.\n\n   +-----------------------+-----------------------+\n   | Symbol                | Meaning               |\n   +=======================+=======================+\n   | .. image:: tent.png   | Campground            |\n   +-----------------------+-----------------------+\n   | .. image:: waves.png  | Lake                  |\n   +-----------------------+-----------------------+\n   | .. image:: peak.png   | Mountain              |\n   +-----------------------+-----------------------+\n"
+  },
+  {
+   "name": "figures/10",
+   "input": ".. figure:: picture.png\n\n   ..\n\n   A picture with a legend but no caption.\n   (The empty comment replaces the caption, which must\n   be a single paragraph.)\n"
+  },
+  {
+   "name": "figures/11",
+   "input": "Testing for line-leaks:\n\n.. figure:: picture.png\n\n   A picture with a caption.\n.. figure:: picture.png\n\n   A picture with a caption.\n.. figure:: picture.png\n\n   A picture with a caption.\n.. figure:: picture.png\n.. figure:: picture.png\n.. figure:: picture.png\n.. figure:: picture.png\n\n   A picture with a caption.\n\n.. figure:: picture.png\n\n.. figure:: picture.png\n\n   A picture with a caption.\n\n.. figure:: picture.png\n"
+  }
+ ]
+}

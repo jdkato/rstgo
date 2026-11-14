@@ -1,0 +1,13 @@
+{
+ "origin": "test/test_transforms/test_target_notes.py",
+ "cases": [
+  {
+   "name": "tables_of_contents/0",
+   "input": ".. _target: http://example.org\n\nA reference to a target_.\n\n.. target-notes::\n"
+  },
+  {
+   "name": "tables_of_contents/1",
+   "input": ".. _target: http://example.org\n\nA reference to a target_.\n\n.. target-notes:: :class: custom\n"
+  }
+ ]
+}

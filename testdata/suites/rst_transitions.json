@@ -1,0 +1,57 @@
+{
+ "origin": "test/test_parsers/test_rst/test_transitions.py",
+ "cases": [
+  {
+   "name": "transitions/0",
+   "input": "Test transition markers.\n\n--------\n\nParagraph\n"
+  },
+  {
+   "name": "transitions/1",
+   "input": "Section 1\n=========\nFirst text division of section 1.\n\n--------\n\nSecond text division of section 1.\n\nSection 2\n---------\nParagraph 2 in section 2.\n"
+  },
+  {
+   "name": "transitions/2",
+   "input": "--------\n\nAccording to the DTD, a section or document may not begin with a transition.\n\nNote: There is currently no warning, but in future these\nDTD violations should be prevented or at least trigger a warning.\nAlternatively, the DTD may be relaxed to accomodate for more use cases.\n\nThe DTD specifies that two transitions may not\nbe adjacent:\n\n--------\n\n--------\n\n--------\n\nThe DTD also specifies that a section or document\nmay not end with a transition.\n\n--------\n"
+  },
+  {
+   "name": "transitions/3",
+   "input": "Test unexpected transition markers.\n\n    Block quote.\n\n    --------\n\n    Paragraph.\n"
+  },
+  {
+   "name": "transitions/4",
+   "input": "Short transition marker.\n\n---\n\nParagraph\n"
+  },
+  {
+   "name": "transitions/5",
+   "input": "Sections with transitions at beginning and end.\n\nSection 1\n=========\n\n----------\n\nThe next transition is legal:\n\n----------\n\nSection 2\n=========\n\n----------\n"
+  },
+  {
+   "name": "transitions/6",
+   "input": "A paragraph, two transitions, and a blank line.\n\n----------\n\n----------\n\n"
+  },
+  {
+   "name": "transitions/7",
+   "input": "A paragraph and two transitions.\n\n----------\n\n----------\n"
+  },
+  {
+   "name": "transitions/8",
+   "input": "----------\n\nDocument beginning with a transition.\n"
+  },
+  {
+   "name": "transitions/9",
+   "input": "Section 1\n=========\n\nSubsection 1\n------------\n\nSome text.\n\n----------\n\nSection 2\n=========\n\nSome text.\n"
+  },
+  {
+   "name": "transitions/10",
+   "input": "Section 1\n=========\n\n----------\n\n----------\n\n----------\n\nSection 2\n=========\n\nSome text.\n"
+  },
+  {
+   "name": "transitions/11",
+   "input": "----------\n\n----------\n\n----------\n"
+  },
+  {
+   "name": "transitions/12",
+   "input": "A paragraph.\n\n----------\n\n"
+  }
+ ]
+}

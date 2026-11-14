@@ -1,0 +1,173 @@
+{
+ "origin": "test/test_parsers/test_rst/test_tables.py",
+ "cases": [
+  {
+   "name": "grid_tables/0",
+   "input": "+-------------------------------------+\n| A table with one cell and one line. |\n+-------------------------------------+\n"
+  },
+  {
+   "name": "grid_tables/1",
+   "input": "+-----------------------+\n| A table with one cell |\n| and two lines.        |\n+-----------------------+\n"
+  },
+  {
+   "name": "grid_tables/2",
+   "input": "+-----------------------+\n| A misaligned table. |\n+-----------------------+\n\n+-----------------------+\n| Right border missing.\n+-----------------------+\n"
+  },
+  {
+   "name": "grid_tables/3",
+   "input": "+-------------------------+\n| A table with one cell   |\n| and missing bottom.     |\n"
+  },
+  {
+   "name": "grid_tables/4",
+   "input": "+-------------------------+\n| A table with one cell   |\n| and corrupt bottom.     |\n+------------------------ +\n"
+  },
+  {
+   "name": "grid_tables/5",
+   "input": "+-------------------------+\n| A table with one cell   |\n| and corrupt bottom.     |\n--------------------------+\n"
+  },
+  {
+   "name": "grid_tables/6",
+   "input": "+------------------------+\n| A well-formed | table. |\n+------------------------+\n\n+------------------------+\n| This +----------+ too! |\n+------------------------+\n"
+  },
+  {
+   "name": "grid_tables/7",
+   "input": "+--------------+--------------+\n| A table with | two columns. |\n+--------------+--------------+\n"
+  },
+  {
+   "name": "grid_tables/8",
+   "input": "+--------------+\n| A table with |\n+--------------+\n| two rows.    |\n+--------------+\n"
+  },
+  {
+   "name": "grid_tables/9",
+   "input": "+--------------+-------------+\n| A table with | two columns |\n+--------------+-------------+\n| and          | two rows.   |\n+--------------+-------------+\n"
+  },
+  {
+   "name": "grid_tables/10",
+   "input": "+--------------+---------------+\n| A table with | two columns,  |\n+--------------+---------------+\n| two rows, and a column span. |\n+------------------------------+\n"
+  },
+  {
+   "name": "grid_tables/11",
+   "input": "+--------------------------+\n| A table with three rows, |\n+------------+-------------+\n| and two    | columns.    |\n+------------+-------------+\n| First and last rows      |\n| contains column spans.   |\n+--------------------------+\n"
+  },
+  {
+   "name": "grid_tables/12",
+   "input": "+--------------+--------------+\n| A table with | two columns, |\n+--------------+ and a row    |\n| two rows,    | span.        |\n+--------------+--------------+\n"
+  },
+  {
+   "name": "grid_tables/13",
+   "input": "+------------+-------------+---------------+\n| A table    | two rows in | and row spans |\n| with three +-------------+ to left and   |\n| columns,   | the middle, | right.        |\n+------------+-------------+---------------+\n"
+  },
+  {
+   "name": "grid_tables/14",
+   "input": "Complex spanning pattern (no edge knows all rows/cols):\n\n+-----------+-------------------------+\n| W/NW cell | N/NE cell               |\n|           +-------------+-----------+\n|           | Middle cell | E/SE cell |\n+-----------+-------------+           |\n| S/SE cell               |           |\n+-------------------------+-----------+\n"
+  },
+  {
+   "name": "grid_tables/15",
+   "input": "+------------------------+------------+----------+----------+\n| Header row, column 1   | Header 2   | Header 3 | Header 4 |\n+========================+============+==========+==========+\n| body row 1, column 1   | column 2   | column 3 | column 4 |\n+------------------------+------------+----------+----------+\n| body row 2             | Cells may span columns.          |\n+------------------------+------------+---------------------+\n| body row 3             | Cells may  | - Table cells       |\n+------------------------+ span rows. | - contain           |\n| body row 4             |            | - body elements.    |\n+------------------------+------------+---------------------+\n"
+  },
+  {
+   "name": "grid_tables/16",
+   "input": "+-----------------+--------+\n| A simple table  | cell 2 |\n+-----------------+--------+\n| cell 3          | cell 4 |\n+-----------------+--------+\nNo blank line after table.\n"
+  },
+  {
+   "name": "grid_tables/17",
+   "input": "+-----------------+--------+\n| A simple table  | cell 2 |\n+-----------------+--------+\n| cell 3          | cell 4 |\n+-----------------+--------+\n    Unexpected indent and no blank line after table.\n"
+  },
+  {
+   "name": "grid_tables/18",
+   "input": "+--------------+-------------+\n| A bad table. |             |\n+--------------+             |\n| Cells must be rectangles.  |\n+----------------------------+\n"
+  },
+  {
+   "name": "grid_tables/19",
+   "input": "+------------------------------+\n| This table contains another. |\n|                              |\n| +-------------------------+  |\n| | A table within a table. |  |\n| +-------------------------+  |\n+------------------------------+\n"
+  },
+  {
+   "name": "grid_tables/20",
+   "input": "+------------------+--------+\n| A simple table   |        |\n+------------------+--------+\n| with empty cells |        |\n+------------------+--------+\n"
+  },
+  {
+   "name": "simple_tables/0",
+   "input": "============  ============\nA table with  two columns.\n============  ============\n\nParagraph.\n"
+  },
+  {
+   "name": "simple_tables/1",
+   "input": "=================================  ========\nThe ERROR should point to line 2.  .. tip::\n=================================  ========\n"
+  },
+  {
+   "name": "simple_tables/2",
+   "input": "============  ============\nA table with  two columns\nand           two rows.\n============  ============\n"
+  },
+  {
+   "name": "simple_tables/3",
+   "input": "============  ==============\nA table with  two columns,\ntwo rows, and a column span.\n============================\n"
+  },
+  {
+   "name": "simple_tables/4",
+   "input": "==  ===========  ===========\n1   A table with three rows,\n--  ------------------------\n2   and three    columns.\n3   First and third rows\n    contain column spans.\n\n    This row is a multi-line row, and overflows to the right.\n--  ------------------------\n4   One last     row.\n==  ===========  ===========\n"
+  },
+  {
+   "name": "simple_tables/5",
+   "input": "=======  =========  ========\nA table with three  columns.\n==================  ========\n"
+  },
+  {
+   "name": "simple_tables/6",
+   "input": "==============  ======\nA simple table  this text extends to the right\ncell 3          as does this text\n==============  ======\n"
+  },
+  {
+   "name": "simple_tables/7",
+   "input": "==============  ======\nA simple table  this text extends to the right\n                continuation of cell 2\n==============  ======\n"
+  },
+  {
+   "name": "simple_tables/8",
+   "input": "==============  ======\nA simple table  with\nno bottom       border\n"
+  },
+  {
+   "name": "simple_tables/9",
+   "input": "==============  ======\nA simple table  cell 2\n==============  ======\nthis could be   cell content\nor text after   the table\n"
+  },
+  {
+   "name": "simple_tables/10",
+   "input": "==============  ======\nA simple table  cell 2\n==============  ======\ncell 3          cell 4\n==============  ======\nNo blank line after table.\n"
+  },
+  {
+   "name": "simple_tables/11",
+   "input": "==============  ======\nA simple table  cell 2\ncell 3          cell 4\n==============  ======\n    Unexpected indent and no blank line after table.\n"
+  },
+  {
+   "name": "simple_tables/12",
+   "input": "==============  ======\nA bad table     cell 2\ncell 3          cell 4\n============  ========\n"
+  },
+  {
+   "name": "simple_tables/13",
+   "input": "========  =========\nA bad table  cell 2\ncell 3       cell 4\n========  =========\n"
+  },
+  {
+   "name": "simple_tables/14",
+   "input": "==  ============================\n1   This table contains another.\n2   =======  ======  ========\n    A table  within  a table.\n    =======  ======  ========\n\n    The outer table does have to\n    have at least two columns\n    though.\n==  ============================\n"
+  },
+  {
+   "name": "simple_tables/15",
+   "input": "================  ======\nA simple table\nwith empty cells\n================  ======\n"
+  },
+  {
+   "name": "simple_tables/16",
+   "input": "==============  ========\n   A table        with\n==============  ========\n   centered      cells.\n\n==============  ========\n"
+  },
+  {
+   "name": "simple_tables/17",
+   "input": "==============  ======\nA simple table  this text extends to the right\ncell 3          the bottom border below is too long\n==============  ========\n"
+  },
+  {
+   "name": "simple_tables/18",
+   "input": "============  =================\nA table with  row separators.\n------------  -----------------\n\nBlank line    before.\n------------  -----------------\n\nBlank lines   before and after.\n\n------------  -----------------\nBlank line    after.\n\n============  =================\n"
+  },
+  {
+   "name": "simple_tables/19",
+   "input": "============  ====================\nA table with  many row separators.\n------------  --------------------\n------------  --------------------\n\n------------  --------------------\n============  ====================\n"
+  },
+  {
+   "name": "simple_tables/20",
+   "input": "==  ===========  ===========\n1   Span columns 2 & 3\n--  ------------------------\n2   Span columns 2 & 3\n    ------------------------\n3\n==  ===========  ===========\n\n==  ===========  ===========\n1 Span cols 1&2  but not 3\n---------------  -----------\n2 Span cols 1&2  but not 3\n---------------\n3   no spans     here\n==  ===========  ===========\n\n==  ===========  ===========\n1   Not a span   Not a span\n    -----------  -----------\n2\n==  ===========  ===========\n"
+  }
+ ]
+}

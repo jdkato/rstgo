@@ -1,0 +1,53 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_code.py",
+ "cases": [
+  {
+   "name": "code/0",
+   "input": ".. code::\n\n   This is a code block.\n"
+  },
+  {
+   "name": "code/1",
+   "input": ".. code::\n  :class: testclass\n  :name: without argument\n\n  This is a code block with generic options.\n"
+  },
+  {
+   "name": "code/2",
+   "input": ".. code:: text\n  :class: testclass\n\n  This is a code block with text.\n"
+  },
+  {
+   "name": "code/3",
+   "input": ".. code::\n  :number-lines:\n\n  This is a code block with text.\n"
+  },
+  {
+   "name": "code/4",
+   "input": ".. code::\n  :number-lines: 30\n\n  This is a code block with text.\n"
+  },
+  {
+   "name": "code/5",
+   "input": ".. code::\n"
+  },
+  {
+   "name": "code_parsing/0",
+   "input": ".. code:: python3\n  :class: testclass\n\n   print('hello world') # to stdout\n"
+  },
+  {
+   "name": "code_parsing/1",
+   "input": ".. code:: python3\n  :class: testclass\n  :name: my_function\n  :number-lines: 7\n\n  def my_function():\n      '''Test the lexer.\n      '''\n\n      # and now for something completely different\n      print(8/2)\n"
+  },
+  {
+   "name": "code_parsing/2",
+   "input": ".. code:: latex\n  :class: testclass\n\n  hello \\emph{world} % emphasize\n"
+  },
+  {
+   "name": "code_parsing/3",
+   "input": ".. code:: rst\n  :number-lines:\n\n  This is a code block with text.\n"
+  },
+  {
+   "name": "code_parsing/4",
+   "input": "Code not parsed but warning silenced in ParserTestCase.\n\n.. code:: s-lang\n\n   % abc.sl\n   autoload(\"abc_mode\", \"abc\");\n"
+  },
+  {
+   "name": "code_parsing/5",
+   "input": "Place the language name in a class argument to avoid the no-lexer warning:\n\n.. code::\n   :class: s-lang\n\n   % abc.sl\n   autoload(\"abc_mode\", \"abc\");\n"
+  }
+ ]
+}

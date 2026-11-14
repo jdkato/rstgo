@@ -1,0 +1,45 @@
+{
+ "origin": "test/test_parsers/test_rst/test_nested_parsing.py",
+ "cases": [
+  {
+   "name": "nested_parsing/0",
+   "input": "sec1\n====\nsec1.1\n------\n.. nested::\n\n  nested1.1.1\n  ***********\n  nested1.1.1.1\n  ~~~~~~~~~~~~~\n\nsec2\n====\n.. nested::\n\n  skipping2.1\n  ***********\n  nested2.1\n  ---------\n  nested2.2\n  ---------\n  inaccessible2\n  =============\n\nsec2.2\n------\nskipping2.2.1\n~~~~~~~~~~~~~\n"
+  },
+  {
+   "name": "nested_parsing/1",
+   "input": ".. nested::\n\n  nested1\n  *******\n  nested2\n  *******\n  nested2.1\n  ---------\n\nThis paragraph belongs to the last nested section.\n"
+  },
+  {
+   "name": "nested_parsing/2",
+   "input": ".. note:: The next directive is parsed with \"nested_list_parse()\".\n.. nested::\n\n  nested1\n  *********\n  nested1.1\n  ---------\n\nThis paragraph belongs to the last nested section.\n"
+  },
+  {
+   "name": "nested_parsing/3",
+   "input": ".. nested::\n\n  Keep the \"current node\", if the nested parse does not\n  contain a section.\n\nThis paragraph belongs to the document.\n"
+  },
+  {
+   "name": "nested_parsing/4",
+   "input": "sec1\n====\nsec1.1\n------\n.. note:: The next directive is parsed with \"nested_list_parse()\".\n.. nested-current::\n\n  nc1.1.1\n  *******\n  nc1.2\n  -----\n  nc2\n  ===\n\nsec2.2\n------\n"
+  },
+  {
+   "name": "nested_parsing/5",
+   "input": "sec1\n====\nsec1.1\n------\n.. nested-section::\n\n  nested-section1.1.1\n  *******************\n\nThis paragraph belongs to the last nested section (sic!).\n\nsec2\n====\n"
+  },
+  {
+   "name": "nested_parsing/6",
+   "input": "sec1\n====\n.. nested-section::\n\n  nested-section1\n  ===============\n  with content\n"
+  },
+  {
+   "name": "nested_parsing/7",
+   "input": "  .. nested::\n\n    A section in a block-quote is invalid.\n\n    invalid section\n    ---------------\n\n  .. nested-current::\n\n    invalid, too\n    ============\n\n  .. nested-section::\n\n    The <section> base node is discarded.\n\n    invalid section (sic!)\n    ----------------------\n"
+  },
+  {
+   "name": "nested_parsing/8",
+   "input": "sec1\n====\nsec1.1\n------\n.. fresh::\n\n  fresh1.1.1\n  ==========\n  fresh1.1.1.1\n  ~~~~~~~~~~~~~\n\nsec2\n====\n.. fresh::\n\n  fresh2.1\n  ***********\n  New title styles with every directive.\n\n  fresh2.1.1\n  -----------\n  fresh2.1.2\n  -----------\n  fresh2.1.2.1\n  =============\n\nThis text belongs into the last nested section (sic!).\n\nsec2.2\n------\nDocument-wide title styles unchanged\n\nsec2.2.1\n********\n"
+  },
+  {
+   "name": "nested_parsing/9",
+   "input": "sec1\n====\nsec1.1\n------\n.. fresh-current::\n\n  fc1.1.1\n  -------\n  fc1.1.2\n  -------\n  fc1.1.2.1\n  =========\n\nThis text belongs into the last nested section.\n\nsec1.2\n------\n"
+  }
+ ]
+}

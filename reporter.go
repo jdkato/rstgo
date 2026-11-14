@@ -13,6 +13,7 @@ type reporter struct {
 	haltLevel   int
 	stream      io.Writer
 	maxLevel    int
+	observer    func(*Node)
 	// getSourceAndLine is installed by the parser (first state machine).
 	getSourceAndLine func(lineno int, hasLineno bool) (src string, hasSrc bool, line int, hasLine bool)
 }
@@ -133,6 +134,9 @@ func (r *reporter) systemMessage(level int, message string, children []*Node, op
 	}
 	if level >= r.haltLevel {
 		panic(&haltError{level: level, text: msg.astext()})
+	}
+	if r.observer != nil {
+		r.observer(msg)
 	}
 	if level > r.maxLevel {
 		r.maxLevel = level

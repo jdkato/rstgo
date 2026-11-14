@@ -1,0 +1,26 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "default_role/0",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        This is a \n        <subscript>\n            subscript\n        .\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p>This is a <sub>subscript</sub>.</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p>This is a <sub>subscript</sub>.</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "default_role/1",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        Must define a custom role before using it.\n    <system_message level=\"3\" line=\"3\" source=\"<stdin>\" type=\"ERROR\">\n        <paragraph>\n            Unknown interpreted text role \"custom\".\n        <literal_block xml:space=\"preserve\">\n            .. default-role:: custom\n",
+   "err": "<stdin>:3: (ERROR/3) Unknown interpreted text role \"custom\".\n\n.. default-role:: custom\n",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p>Must define a custom role before using it.</p>\n<div class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<tt class=\"docutils\">&lt;stdin&gt;</tt>, line 3)</p>\n<p>Unknown interpreted text role &quot;custom&quot;.</p>\n<pre class=\"literal-block\">\n.. default-role:: custom\n</pre>\n</div>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p>Must define a custom role before using it.</p>\n<aside class=\"system-message\">\n<p class=\"system-message-title\">System Message: ERROR/3 (<span class=\"docutils literal\">&lt;stdin&gt;</span>, line 3)</p>\n<p>Unknown interpreted text role &quot;custom&quot;.</p>\n<pre class=\"literal-block\">.. default-role:: custom</pre>\n</aside>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "default_role/2",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        This text uses the \n        <inline classes=\"custom\">\n            default role\n        .\n    <paragraph>\n        Returned the \n        <title_reference>\n            default role\n         to its standard default.\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p>This text uses the <span class=\"custom\">default role</span>.</p>\n<p>Returned the <cite>default role</cite> to its standard default.</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p>This text uses the <span class=\"custom\">default role</span>.</p>\n<p>Returned the <cite>default role</cite> to its standard default.</p>\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

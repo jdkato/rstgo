@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_admonitions_dummy_lang.py",
+ "cases": [
+  {
+   "name": "admonitions/0",
+   "input": ".. Dummy-Attention:: directive with silly localised name.\n\n.. Attention:: English fallback (an INFO is written).\n"
+  }
+ ]
+}

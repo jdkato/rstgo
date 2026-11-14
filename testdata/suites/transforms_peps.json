@@ -1,0 +1,13 @@
+{
+ "origin": "test/test_transforms/test_peps.py",
+ "cases": [
+  {
+   "name": "target_notes/0",
+   "input": "No references or targets exist, therefore\nno \"References\" section should be generated.\n"
+  },
+  {
+   "name": "target_notes/1",
+   "input": "A target exists, here's the reference_.\nA \"References\" section should be generated.\n\n.. _reference: http://www.example.org\n"
+  }
+ ]
+}

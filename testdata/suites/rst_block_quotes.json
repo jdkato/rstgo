@@ -1,0 +1,57 @@
+{
+ "origin": "test/test_parsers/test_rst/test_block_quotes.py",
+ "cases": [
+  {
+   "name": "block_quotes/0",
+   "input": "Line 1.\nLine 2.\n\n   Indented.\n"
+  },
+  {
+   "name": "block_quotes/1",
+   "input": "Line 1.\nLine 2.\n\n   Indented 1.\n\n      Indented 2.\n"
+  },
+  {
+   "name": "block_quotes/2",
+   "input": "Line 1.\nLine 2.\n    Unexpectedly indented.\n"
+  },
+  {
+   "name": "block_quotes/3",
+   "input": "Line 1.\nLine 2.\n\n   Indented.\nno blank line\n"
+  },
+  {
+   "name": "block_quotes/4",
+   "input": "Here is a paragraph.\n\n        Indent 8 spaces.\n\n    Indent 4 spaces.\n\nIs this correct? Should it generate a warning?\nYes, it is correct, no warning necessary.\n"
+  },
+  {
+   "name": "block_quotes/5",
+   "input": "Paragraph.\n\n   Block quote.\n\n   -- Attribution\n\nParagraph.\n\n   Block quote.\n\n   --Attribution\n"
+  },
+  {
+   "name": "block_quotes/6",
+   "input": "Alternative: true em-dash.\n\n   Block quote.\n\n   — Attribution\n\nAlternative: three hyphens.\n\n   Block quote.\n\n   --- Attribution\n"
+  },
+  {
+   "name": "block_quotes/7",
+   "input": "Paragraph.\n\n   Block quote.\n\n   -- Attribution line one\n   and line two\n\nParagraph.\n\n   Block quote.\n\n   -- Attribution line one\n      and line two\n\nParagraph.\n"
+  },
+  {
+   "name": "block_quotes/8",
+   "input": "Paragraph.\n\n   Block quote 1.\n\n   -- Attribution 1\n\n   Block quote 2.\n\n   --Attribution 2\n"
+  },
+  {
+   "name": "block_quotes/9",
+   "input": "Paragraph.\n\n   Block quote 1.\n\n   -- Attribution 1\n\n   Block quote 2.\n"
+  },
+  {
+   "name": "block_quotes/10",
+   "input": "Unindented paragraph.\n\n    Block quote 1.\n\n    -- Attribution 1\n\n    Block quote 2.\n\n..\n\n    Block quote 3.\n"
+  },
+  {
+   "name": "block_quotes/11",
+   "input": "Paragraph.\n\n   -- Not an attribution\n\nParagraph.\n\n   Block quote.\n\n   \\-- Not an attribution\n\nParagraph.\n\n   Block quote.\n\n   -- Not an attribution line one\n      and line two\n          and line three\n"
+  },
+  {
+   "name": "block_quotes/12",
+   "input": "Paragraph.\n\n   -- Not a valid attribution\n\n   Block quote 1.\n\n   --Attribution 1\n\n   --Invalid attribution\n\n   Block quote 2.\n\n   --Attribution 2\n"
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_admonitions.py",
+ "cases": [
+  {
+   "name": "admonitions/0",
+   "input": ".. Attention:: Directives at large.\n\n.. Note:: :name: mynote\n   :class: testnote\n\n   Admonitions support the generic \"name\" and \"class\" options.\n\n.. Tip:: 15% if the\n   service is good.\n\n.. Hint:: It's bigger than a bread box.\n\n- .. WARNING:: Strong prose may provoke extreme mental exertion.\n     Reader discretion is strongly advised.\n- .. Error:: Does not compute.\n\n.. Caution::\n\n   Don't take any wooden nickels.\n\n.. DANGER:: Mad scientist at work!\n\n.. Important::\n   - Wash behind your ears.\n   - Clean up your room.\n   - Call your mother.\n   - Back up your data.\n"
+  },
+  {
+   "name": "admonitions/1",
+   "input": ".. note:: One-line notes.\n.. note:: One after the other.\n.. note:: No blank lines in-between.\n"
+  },
+  {
+   "name": "admonitions/2",
+   "input": ".. note:: Content before options\n   is possible too.\n   :class: mynote\n\n.. note:: :strong:`a role is not an option`.\n   :name: role not option\n\n.. note:: a role is\n   :strong:`not an option`, even if its starts a line.\n"
+  },
+  {
+   "name": "admonitions/3",
+   "input": ".. note::\n"
+  },
+  {
+   "name": "admonitions/4",
+   "input": ".. admonition:: Admonition\n\n   This is a generic admonition.\n"
+  },
+  {
+   "name": "admonitions/5",
+   "input": ".. admonition:: And, by the way...\n\n   You can make up your own admonition too.\n"
+  },
+  {
+   "name": "admonitions/6",
+   "input": ".. admonition:: Admonition\n   :class: emergency\n   :name: reference name\n\n   Test the \"class\" override.\n"
+  },
+  {
+   "name": "admonitions/7",
+   "input": ".. admonition::\n\n   Generic admonitions require a title.\n"
+  }
+ ]
+}

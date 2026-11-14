@@ -1,0 +1,21 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_target_notes.py",
+ "cases": [
+  {
+   "name": "target_notes/0",
+   "input": ".. target-notes::\n"
+  },
+  {
+   "name": "target_notes/1",
+   "input": ".. target-notes:: :class: custom\n"
+  },
+  {
+   "name": "target_notes/2",
+   "input": ".. target-notes::\n   :class: custom\n   :name: targets\n"
+  },
+  {
+   "name": "target_notes/3",
+   "input": ".. target-notes::\n   :class:\n"
+  }
+ ]
+}

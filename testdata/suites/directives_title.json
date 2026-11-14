@@ -1,0 +1,9 @@
+{
+ "origin": "test/test_parsers/test_rst/test_directives/test_title.py",
+ "cases": [
+  {
+   "name": "title/0",
+   "input": ".. title:: This is the document title.\n"
+  }
+ ]
+}

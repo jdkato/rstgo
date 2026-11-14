@@ -1,0 +1,45 @@
+{
+ "origin": "test/test_parsers/test_rst/test_SimpleTableParser.py",
+ "cases": [
+  {
+   "name": "simple_tables/0",
+   "input": "============  ============\nA table with  two columns.\n============  ============\n"
+  },
+  {
+   "name": "simple_tables/1",
+   "input": "============  ===============\nA tāble w̅ith  comb̲ining chars\n============  ===============\n"
+  },
+  {
+   "name": "simple_tables/2",
+   "input": "============  ============\nA table with  two columns\nand           two rows.\n============  ============\n"
+  },
+  {
+   "name": "simple_tables/3",
+   "input": "======================================\nThe last row might stick into the margin\nsecond row.\n======================================\n"
+  },
+  {
+   "name": "simple_tables/4",
+   "input": "==========  ===========\nA table with four rows,\n-----------------------\nand two     columns.\nFirst and   last rows\ncontain column spans.\n=======================\n"
+  },
+  {
+   "name": "simple_tables/5",
+   "input": "=======  =====  ======\nA bad table     cell 2\ncell 3          cell 4\n============  ======\n"
+  },
+  {
+   "name": "simple_tables/6",
+   "input": "======  =====  ======\nrow     one\nAnother bad    table\n======  =====  ======\n"
+  },
+  {
+   "name": "simple_tables/7",
+   "input": "===========  ================\nA table with two header rows,\n-----------------------------\nthe first    with a span.\n===========  ================\nTwo body     rows,\nthe second with a span.\n=============================\n"
+  },
+  {
+   "name": "simple_tables/8",
+   "input": "============  =============\nA table with  two head/body\n============  =============\nrow           separators.\n============  =============\nThat's bad.\n============  =============\n"
+  },
+  {
+   "name": "simple_tables/9",
+   "input": "============  ============\n============  ============\n"
+  }
+ ]
+}

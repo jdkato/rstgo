@@ -1,0 +1,57 @@
+{
+ "origin": "test/test_transforms/test_substitutions.py",
+ "cases": [
+  {
+   "name": "substitutions/0",
+   "input": "The |biohazard| symbol is deservedly scary-looking.\n\n.. |biohazard| image:: biohazard.png\n"
+  },
+  {
+   "name": "substitutions/1",
+   "input": "Here's an |unknown| substitution.\n"
+  },
+  {
+   "name": "substitutions/2",
+   "input": "Substitutions support case differences:\n\n.. |eacute| replace:: é\n.. |Eacute| replace:: É\n\n|Eacute|\\t\\ |eacute|, and even |EACUTE|.\n"
+  },
+  {
+   "name": "substitutions/3",
+   "input": "Indirect substitution definitions with multiple references:\n\n|substitute| my coke for gin\n|substitute| you for my mum\nat least I'll get my washing done\n\n.. |substitute| replace:: |replace|\n.. |replace| replace:: swap\n"
+  },
+  {
+   "name": "substitutions/4",
+   "input": ".. |l| unicode:: U+00AB .. left chevron\n.. |r| unicode:: U+00BB .. right chevron\n.. |.| replace:: |l|\\ ``.``\\ |r|\n\n.. Delete either of the following lines, and there is no error.\n\nRegular expression |.| will match any character\n\n.. Note:: Note that |.| matches *exactly* one character\n"
+  },
+  {
+   "name": "substitutions/5",
+   "input": ".. |sub| replace:: |sub|\n"
+  },
+  {
+   "name": "substitutions/6",
+   "input": ".. |sub| replace:: |indirect1|\n.. |indirect1| replace:: |indirect2|\n.. |indirect2| replace:: |Sub|\n"
+  },
+  {
+   "name": "substitutions/7",
+   "input": ".. |indirect1| replace:: |indirect2|\n.. |indirect2| replace:: |Sub|\n.. |sub| replace:: |indirect1|\n\nUse |sub| and |indirect1| and |sub| again (and |sub| one more time).\n"
+  },
+  {
+   "name": "substitutions/8",
+   "input": "Substitution reference with |reference-in-content|.\n\n.. |reference-in-content| replace:: text and hyperlink-reference_\n"
+  },
+  {
+   "name": "unicode/0",
+   "input": "Insert an em-dash (|mdash|), a copyright symbol (|copy|), a non-breaking\nspace (|nbsp|), a backwards-not-equals (|bne|), and a captial omega (|Omega|).\n\n.. |mdash| unicode:: 0x02014\n.. |copy| unicode:: \\u00A9\n.. |nbsp| unicode:: &#x000A0;\n.. |bne| unicode:: U0003D U020E5\n.. |Omega| unicode:: U+003A9\n"
+  },
+  {
+   "name": "unicode/1",
+   "input": "\nTesting comments and extra text.\n\nCopyright |copy| 2003, |BogusMegaCorp (TM)|.\n\n.. |copy| unicode:: 0xA9 .. copyright sign\n.. |BogusMegaCorp (TM)| unicode:: BogusMegaCorp U+2122\n   .. with trademark sign\n"
+  },
+  {
+   "name": "unicode/2",
+   "input": "Insert an em-dash |---| automatically trimming whitespace.\nSome substitutions |TM| only need |rarrow| trimming on one side.\n\n.. |---| unicode:: U+02014\n   :trim:\n.. |TM| unicode:: U+02122\n   :ltrim:\n.. |rarrow| unicode:: U+2192\n   :rtrim:\n"
+  },
+  {
+   "name": "unicode/3",
+   "input": "Substitution definition with an illegal element:\n\n.. |target| replace:: _`target`\n\nMake sure this substitution definition is not registered: |target|\n"
+  }
+ ]
+}

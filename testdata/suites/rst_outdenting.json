@@ -1,0 +1,13 @@
+{
+ "origin": "test/test_parsers/test_rst/test_outdenting.py",
+ "cases": [
+  {
+   "name": "outdenting/0",
+   "input": "Anywhere a paragraph would have an effect on the current\nindentation level, a comment or list item should also.\n\n+ bullet\n\nThis paragraph ends the bullet list item before a block quote.\n\n  Block quote.\n"
+  },
+  {
+   "name": "outdenting/1",
+   "input": "+ bullet\n\n.. Comments swallow up all indented text following.\n\n  (Therefore this is not a) block quote.\n\n- bullet\n\n  If we want a block quote after this bullet list item,\n  we need to use an empty comment:\n\n..\n\n  Block quote.\n"
+  }
+ ]
+}

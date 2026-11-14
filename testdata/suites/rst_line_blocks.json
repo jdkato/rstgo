@@ -1,0 +1,73 @@
+{
+ "origin": "test/test_parsers/test_rst/test_line_blocks.py",
+ "cases": [
+  {
+   "name": "line_blocks/0",
+   "input": "| This is a line block.\n| Line breaks are *preserved*.\n\n| This is a second line block.\n\n| This is a third.\n"
+  },
+  {
+   "name": "line_blocks/1",
+   "input": "| In line blocks,\n|     Initial indentation is *also* preserved.\n"
+  },
+  {
+   "name": "line_blocks/2",
+   "input": "| Individual lines in line blocks\n  *may* wrap, as indicated by the lack of a vertical bar prefix.\n| These are called \"continuation lines\".\n"
+  },
+  {
+   "name": "line_blocks/3",
+   "input": "| Inline markup in line blocks may also wrap *to\n  continuation lines*.\n| But not to following lines.\n"
+  },
+  {
+   "name": "line_blocks/4",
+   "input": "\\| This is not a line block.\nThe vertical bar is simply part of a paragraph.\n"
+  },
+  {
+   "name": "line_blocks/5",
+   "input": "| This line block is incomplete.\nThere should be a blank line before this paragraph.\n"
+  },
+  {
+   "name": "line_blocks/6",
+   "input": "| This line block contains\n|\n| blank lines.\n"
+  },
+  {
+   "name": "line_blocks/7",
+   "input": "| The blank lines in this block\n|   \n|       \n| have bogus spaces.\n"
+  },
+  {
+   "name": "line_blocks/8",
+   "input": "| Initial indentation is also significant and preserved:\n|\n|     Indented 4 spaces\n| Not indented\n|   Indented 2 spaces\n|     Indented 4 spaces\n|  Only one space\n|\n|     Continuation lines may be indented less\n  than their base lines.\n"
+  },
+  {
+   "name": "line_blocks/9",
+   "input": "|\n| This block begins and ends with blank lines.\n|\n"
+  },
+  {
+   "name": "line_blocks/10",
+   "input": "This is not\n| a line block.\n"
+  },
+  {
+   "name": "line_blocks/11",
+   "input": "|   The first line is indented.\n|     The second line is more indented.\n"
+  },
+  {
+   "name": "line_blocks/12",
+   "input": "|     The first line is indented.\n|   The second line is less indented.\n"
+  },
+  {
+   "name": "line_blocks/13",
+   "input": "|This is not\n|a line block\n\n| This is an\n|incomplete line block.\n"
+  },
+  {
+   "name": "line_blocks/14",
+   "input": "| Inline markup *may not\n| wrap* over several lines.\n"
+  },
+  {
+   "name": "line_blocks/15",
+   "input": "| * Block level markup\n| * is not recognized.\n"
+  },
+  {
+   "name": "line_blocks/16",
+   "input": "System messages are no longer inserted between <line>s:\n\n| `uff <test1>`_\n| `uff <test2>`_\n"
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "origin": "test/test_parsers/test_rst/test_root_prefix.py",
+ "cases": [
+  {
+   "name": "include-root/0",
+   "input": ".. include:: /include 11.rst\n"
+  },
+  {
+   "name": "include-root/1",
+   "input": ".. include:: /include 11.rst\n   :parser: rst\n"
+  },
+  {
+   "name": "include-root/2",
+   "input": ".. include:: /include 11.rst\n   :literal:\n"
+  },
+  {
+   "name": "include-root/3",
+   "input": ".. include:: /include 11.rst\n   :code:\n"
+  },
+  {
+   "name": "include-root/4",
+   "input": ".. CSV-table::\n   :file: /include 11.rst\n"
+  },
+  {
+   "name": "include-root/5",
+   "input": ".. raw:: txt\n   :file: /include 11.rst\n"
+  }
+ ]
+}

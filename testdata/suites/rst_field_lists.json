@@ -1,0 +1,61 @@
+{
+ "origin": "test/test_parsers/test_rst/test_field_lists.py",
+ "cases": [
+  {
+   "name": "field_lists/0",
+   "input": "One-liners:\n\n:Author: Me\n\n:Version: 1\n\n:Date: 2001-08-11\n\n:Parameter i: integer\n"
+  },
+  {
+   "name": "field_lists/1",
+   "input": "One-liners, no blank lines:\n\n:Author: Me\n:Version: 1\n:Date: 2001-08-11\n:Parameter i: integer\n"
+  },
+  {
+   "name": "field_lists/2",
+   "input": ":field:\nempty item above, no blank line\n"
+  },
+  {
+   "name": "field_lists/3",
+   "input": "Field bodies starting on the next line:\n\n:Author:\n  Me\n:Version:\n  1\n:Date:\n  2001-08-11\n:Parameter i:\n  integer\n"
+  },
+  {
+   "name": "field_lists/4",
+   "input": "One-paragraph, multi-liners:\n\n:Authors: Me,\n          Myself,\n          and I\n:Version: 1\n          or so\n:Date: 2001-08-11\n       (Saturday)\n:Parameter i: counter\n              (integer)\n"
+  },
+  {
+   "name": "field_lists/5",
+   "input": "One-paragraph, multi-liners, not lined up:\n\n:Authors: Me,\n  Myself,\n  and I\n:Version: 1\n  or so\n:Date: 2001-08-11\n  (Saturday)\n:Parameter i: counter\n  (integer)\n"
+  },
+  {
+   "name": "field_lists/6",
+   "input": "Multiple body elements:\n\n:Authors: - Me\n          - Myself\n          - I\n\n:Abstract:\n    This is a field list item's body,\n    containing multiple elements.\n\n    Here's a literal block::\n\n        def f(x):\n            return x**2 + x\n\n    Even nested field lists are possible:\n\n    :Date: 2001-08-11\n    :Day: Saturday\n    :Time: 15:07\n"
+  },
+  {
+   "name": "field_lists/7",
+   "input": "Nested field lists on one line:\n\n:field1: :field2: :field3: body\n:field4: :field5: :field6: body\n                  :field7: body\n         :field8: body\n         :field9: body line 1\n           body line 2\n"
+  },
+  {
+   "name": "field_lists/8",
+   "input": ":Parameter i j k: multiple arguments\n"
+  },
+  {
+   "name": "field_lists/9",
+   "input": ":Field *name* `with` **inline** ``markup``: inline markup in\n                                            field name is parsed.\n"
+  },
+  {
+   "name": "field_lists/10",
+   "input": ":Field name with *bad inline markup: should generate warning.\n"
+  },
+  {
+   "name": "field_lists/11",
+   "input": "Some edge cases:\n\n:Empty:\n:Author: Me\nNo blank line before this paragraph.\n\n: Field: marker must not begin with whitespace.\n\n:Field : marker must not end with whitespace.\n\nField: marker is missing its open-colon.\n\n:Field marker is missing its close-colon.\n\n:Field\\: names\\: with\\: colons\\:: are possible.\n\n:\\\\Field\\  names with backslashes\\\\: are possible, too.\n\n:\\\\: A backslash.\n\n:Not a\\\\\\: field list.\n\n:Not a \\: field list either.\n\n:\\: Not a field list either.\n\n:\\:\n    A definition list, not a field list.\n"
+  },
+  {
+   "name": "field_lists/12",
+   "input": "\n:first: field\n:field:name:with:embedded:colons: unambiguous, no need for escapes\n\n..\n\n:embedded:colons: in first field name\n:field:\\`:name: not interpreted text\n:field:\\`name: not interpreted text\n"
+  },
+  {
+   "name": "field_lists/13",
+   "input": "\nEdge cases involving embedded colons and interpreted text.\n\nRecognized as field list items:\n\n:field\\:`name`: interpreted text (standard role) requires\n                escaping a leading colon in a field name\n\n:field:name: unambiguous, no need for escapes\n\n:field::name: double colons are OK, too\n\n:field:\\`name`: not interpreted text\n\n:`field name`:code:: interpreted text with role in the field name\n                     works only when the role follows the text\n\n:a `complex`:code:\\  field name: field body\n\nNot recognized as field list items:\n\n::code:`not a field name`: paragraph with interpreted text\n\n:code:`not a field name`: paragraph with interpreted text\n"
+  }
+ ]
+}

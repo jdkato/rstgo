@@ -1,0 +1,19 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "target_notes/0",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        No references or targets exist, therefore\n        no \"References\" section should be generated.\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p>No references or targets exist, therefore\nno &quot;References&quot; section should be generated.</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p>No references or targets exist, therefore\nno &quot;References&quot; section should be generated.</p>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "target_notes/1",
+   "pxml": "<document source=\"<stdin>\">\n    <paragraph>\n        A target exists, here's the \n        <reference name=\"reference\" refuri=\"http://www.example.org\">\n            reference\n        .\n        A \"References\" section should be generated.\n    <target ids=\"reference\" names=\"reference\" refuri=\"http://www.example.org\">\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<p>A target exists, here's the <a class=\"reference external\" href=\"http://www.example.org\">reference</a>.\nA &quot;References&quot; section should be generated.</p>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<p>A target exists, here's the <a class=\"reference external\" href=\"http://www.example.org\">reference</a>.\nA &quot;References&quot; section should be generated.</p>\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

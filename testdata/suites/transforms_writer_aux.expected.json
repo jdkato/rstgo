@@ -1,0 +1,19 @@
+{
+ "docutils": "0.23",
+ "cases": [
+  {
+   "name": "admonitions/0",
+   "pxml": "<document source=\"<stdin>\">\n    <note>\n        <paragraph>\n            These are the note contents.\n        <paragraph>\n            Another paragraph.\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<div class=\"admonition note\">\n<p class=\"first admonition-title\">Note</p>\n<p>These are the note contents.</p>\n<p class=\"last\">Another paragraph.</p>\n</div>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<aside class=\"admonition note\">\n<p class=\"admonition-title\">Note</p>\n<p>These are the note contents.</p>\n<p>Another paragraph.</p>\n</aside>\n</main>\n</body>\n</html>\n"
+  },
+  {
+   "name": "admonitions/1",
+   "pxml": "<document source=\"<stdin>\">\n    <admonition classes=\"admonition-generic\">\n        <title>\n            Generic\n        <paragraph>\n            Admonitions contents...\n",
+   "err": "",
+   "html4": "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<div class=\"document\">\n\n\n<div class=\"admonition admonition-generic\">\n<p class=\"first admonition-title\">Generic</p>\n<p class=\"last\">Admonitions contents...</p>\n</div>\n</div>\n</body>\n</html>\n",
+   "html5": "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n<head>\n<meta name=\"generator\" content=\"Docutils 0.23: https://docutils.sourceforge.io/\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n<title>&lt;stdin&gt;</title>\n\n</head>\n<body>\n<main>\n\n\n<aside class=\"admonition admonition-generic\">\n<p class=\"admonition-title\">Generic</p>\n<p>Admonitions contents...</p>\n</aside>\n</main>\n</body>\n</html>\n"
+  }
+ ]
+}

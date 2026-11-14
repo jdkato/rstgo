@@ -1,0 +1,25 @@
+{
+ "origin": "test/test_parsers/test_rst/test_paragraphs.py",
+ "cases": [
+  {
+   "name": "paragraphs/0",
+   "input": "A paragraph.\n"
+  },
+  {
+   "name": "paragraphs/1",
+   "input": "Paragraph 1.\n\nParagraph 2.\n"
+  },
+  {
+   "name": "paragraphs/2",
+   "input": "Line 1.\nLine 2.\nLine 3.\n"
+  },
+  {
+   "name": "paragraphs/3",
+   "input": "Paragraph 1, Line 1.\nLine 2.\nLine 3.\n\nParagraph 2, Line 1.\nLine 2.\nLine 3.\n"
+  },
+  {
+   "name": "paragraphs/4",
+   "input": "A. Einstein was a really\nsmart dude.\n"
+  }
+ ]
+}
