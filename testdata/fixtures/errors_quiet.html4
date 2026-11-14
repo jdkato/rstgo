@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>errors_quiet.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<div class="section" id="title">
+<h1>Title</h1>
+<p>Short underline above.</p>
+<p>Unknown role :foo:`bar` and undefined ref_ and |undefined| subst.</p>
+<p>*unterminated emphasis and ``unterminated literal</p>
+<p>Footnote ref [5]_ missing, auto <a class="footnote-reference" href="#footnote-1" id="footnote-reference-2">[1]</a> missing, anon__ missing.</p>
+<p>dup_</p>
+<blockquote>
+Unexpected indentation</blockquote>
+<dl class="docutils">
+<dt>after block quote</dt>
+<dd>again.</dd>
+</dl>
+<ul class="simple">
+<li>list</li>
+</ul>
+<p>without blank line</p>
+<p>1. enumerated
+text</p>
+<div class="section" id="section">
+<h2>Section</h2>
+<div class="section" id="level-skip">
+<h3>Level skip</h3>
+</div>
+</div>
+</div>
+<div class="section" id="another">
+<h1>Another</h1>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[1]</a></td><td>Unreferenced footnote</td></tr>
+</tbody>
+</table>
+<p id="unused-target">`embedded &lt;http://x`_ and `bad &lt;uri&gt; ref`_.</p>
+<pre class="literal-block">
+.. class::
+</pre>
+</div>
+</div>
+</body>
+</html>

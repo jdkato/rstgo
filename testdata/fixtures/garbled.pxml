@@ -1,0 +1,107 @@
+<document source="testdata/fixtures/garbled.rst">
+    <system_message level="3" line="1" source="testdata/fixtures/garbled.rst" type="ERROR">
+        <paragraph>
+            Title overline & underline mismatch.
+        <literal_block xml:space="preserve">
+            =====
+             x
+            ==
+    <paragraph>
+        <problematic ids="problematic-1" refid="system-message-1">
+            ``
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="5" source="testdata/fixtures/garbled.rst" type="WARNING">
+        <paragraph>
+            Inline literal start-string without end-string.
+    <paragraph>
+        <problematic ids="problematic-2" refid="system-message-2">
+            **
+    <system_message backrefs="problematic-2" ids="system-message-2" level="2" line="7" source="testdata/fixtures/garbled.rst" type="WARNING">
+        <paragraph>
+            Inline strong start-string without end-string.
+    <comment xml:space="preserve">
+    <comment xml:space="preserve">
+    <comment xml:space="preserve">
+        _
+    <comment xml:space="preserve">
+        |
+    <comment xml:space="preserve">
+        [
+    <footnote ids="footnote-1" names="1">
+        <label>
+            1
+        <system_message level="2" line="14" source="testdata/fixtures/garbled.rst" type="WARNING">
+            <paragraph>
+                Footnote content expected.
+    <comment xml:space="preserve">
+        [#]_ x
+    <target anonymous="1" refid="target-1">
+    <target anonymous="1" refid="target-2">
+    <paragraph ids="target-2 target-1">
+        :
+    <literal_block xml:space="preserve">
+        :field
+    <bullet_list bullet="-">
+        <list_item>
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+    <paragraph>
+        (1
+    <paragraph>
+        +--
+    <paragraph>
+        +--+
+    <paragraph>
+        ==
+    <system_message level="3" line="45" source="testdata/fixtures/garbled.rst" type="ERROR">
+        <paragraph>
+            Malformed table.
+            No bottom table border found.
+        <literal_block xml:space="preserve">
+            == ==
+            
+            |
+            
+            |
+            
+            >>>
+            
+            -o
+            
+            --
+            
+            `
+            
+            `x
+            
+            x`_
+            
+            _`
+            
+            |x
+            
+            [1]_
+            
+            \
+            
+            \\
+            
+            .. |a| replace:: |a|
+            
+            |a|
+            
+            .. |b| replace:: |c|
+            .. |c| replace:: |b|
+            
+            |b|
+            
+            .. _a: b_
+            .. _b: a_
+            
+            a_
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message ids="system-message-3" level="3" line="86" source="testdata/fixtures/garbled.rst" type="ERROR">
+            <paragraph>
+                Anonymous hyperlink mismatch: 0 references but 2 targets.
+                See "backrefs" attribute for IDs.

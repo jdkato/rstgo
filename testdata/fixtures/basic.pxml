@@ -1,0 +1,495 @@
+<document ids="document-title" names="document\ title" source="testdata/fixtures/basic.rst" title="Document Title">
+    <title>
+        Document Title
+    <subtitle ids="a-subtitle" names="a\ subtitle">
+        A Subtitle
+    <meta content="A test document" name="description">
+    <meta content="rst, test" name="keywords">
+    <meta content="en" http-equiv="Content-Language">
+    <decoration>
+        <header>
+            <paragraph>
+                Header text.
+        <footer>
+            <paragraph>
+                Footer text.
+    <docinfo>
+        <author>
+            Jane Doe
+        <field classes="authors">
+            <field_name>
+                Authors
+            <field_body>
+                <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
+                    <list_item>
+                        <paragraph>
+                            One; B. Two; C. Three
+                <system_message level="2" line="9" source="testdata/fixtures/basic.rst" type="WARNING">
+                    <paragraph>
+                        Cannot extract "Authors" from bibliographic field:
+                        Bibliographic field "Authors" must contain either
+                         a single paragraph (with author names separated by a character from the set ";,"),
+                         multiple paragraphs (one per author),
+                         or a bullet list with one author name per item.
+                        Note: Leading initials can cause (mis)recognizing names as enumerated list.
+        <organization>
+            ACME
+        <address xml:space="preserve">
+            1 Main St.
+            Springfield
+        <contact>
+            <reference refuri="mailto:jane@example.org">
+                jane@example.org
+        <version>
+            1.2
+        <revision>
+            42
+        <status>
+            Draft
+        <date>
+            2024-01-02
+        <copyright>
+            Public domain.
+        <field classes="custom-field">
+            <field_name>
+                Custom Field
+            <field_body>
+                <paragraph>
+                    custom 
+                    <emphasis>
+                        value
+    <topic classes="dedication">
+        <title>
+            Dedication
+        <paragraph>
+            To someone.
+    <topic classes="abstract">
+        <title>
+            Abstract
+        <paragraph>
+            Short abstract
+            over two lines.
+    <topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
+        <title>
+            Table of Contents
+        <bullet_list>
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-1" refid="section-one">
+                        Section One
+                <bullet_list>
+                    <list_item>
+                        <paragraph>
+                            <reference ids="toc-entry-2" refid="subsection">
+                                Subsection
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-3" refid="section-two">
+                        Section Two
+    <section ids="section-one" names="section\ one">
+        <title refid="toc-entry-1">
+            Section One
+        <paragraph>
+            Paragraph with 
+            <emphasis>
+                emphasis
+            , 
+            <strong>
+                strong
+            , 
+            <literal>
+                literal
+            , 
+            <title_reference>
+                interpreted
+            ,
+            <subscript>
+                sub
+             and 
+            <superscript>
+                sup
+             text, a 
+            <reference name="reference" refuri="https://example.org/">
+                reference
+             
+            <footnote_reference auto="1" ids="footnote-reference-6" refid="footnote-4">
+                4
+            , an 
+            <reference anonymous="1" name="anonymous one" refuri="https://example.org/anon">
+                anonymous one
+             
+            <footnote_reference auto="1" ids="footnote-reference-7" refid="footnote-5">
+                5
+            , a
+            footnote 
+            <footnote_reference ids="footnote-reference-1" refid="footnote-1">
+                1
+            , an auto footnote 
+            <footnote_reference auto="1" ids="footnote-reference-2" refid="footnote-2">
+                2
+            , labeled 
+            <footnote_reference auto="1" ids="footnote-reference-3" refid="lbl">
+                3
+            , symbol 
+            <footnote_reference auto="*" ids="footnote-reference-4" refid="footnote-3">
+                *
+             and a
+            citation 
+            <citation_reference ids="citation-reference-1" refid="cit2002">
+                CIT2002
+            .  Inline 
+            <target ids="target" names="target">
+                target
+             here; 
+            replaced 
+            <emphasis>
+                text
+             too.  Standalone
+            <reference refuri="https://example.org/x?y=1#z">
+                https://example.org/x?y=1#z
+             and 
+            <reference refuri="mailto:me@example.org">
+                mailto:me@example.org
+            , 
+            <reference refuri="mailto:me@example.org">
+                me@example.org
+            .
+        <target ids="reference" names="reference" refuri="https://example.org/">
+        <target anonymous="1" ids="target-1" refuri="https://example.org/anon">
+        <substitution_definition names="subst">
+            replaced 
+            <emphasis>
+                text
+        <footnote backrefs="footnote-reference-1" ids="footnote-1" names="1">
+            <label>
+                1
+            <paragraph>
+                Manual footnote.
+        <footnote auto="1" backrefs="footnote-reference-2" ids="footnote-2" names="2">
+            <label>
+                2
+            <paragraph>
+                Auto footnote.
+        <footnote auto="1" backrefs="footnote-reference-3 footnote-reference-5" ids="lbl" names="lbl">
+            <label>
+                3
+            <paragraph>
+                Labeled auto footnote, see 
+                <footnote_reference auto="1" ids="footnote-reference-5" refid="lbl">
+                    3
+                .
+        <footnote auto="*" backrefs="footnote-reference-4" ids="footnote-3">
+            <label>
+                *
+            <paragraph>
+                Symbol footnote.
+        <citation backrefs="citation-reference-1" ids="cit2002" names="cit2002">
+            <label>
+                CIT2002
+            <paragraph>
+                A citation.
+        <section ids="subsection" names="subsection">
+            <title refid="toc-entry-2">
+                Subsection
+            <bullet_list bullet="-">
+                <list_item>
+                    <paragraph>
+                        bullet one
+                <list_item>
+                    <paragraph>
+                        bullet two
+                    <bullet_list bullet="-">
+                        <list_item>
+                            <paragraph>
+                                nested a
+                        <list_item>
+                            <paragraph>
+                                nested b
+            <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                <list_item>
+                    <paragraph>
+                        first
+                <list_item>
+                    <paragraph>
+                        second
+                    <enumerated_list enumtype="loweralpha" prefix="" suffix=")">
+                        <list_item>
+                            <paragraph>
+                                alpha
+                        <list_item>
+                            <paragraph>
+                                beta
+                <list_item>
+                    <paragraph>
+                        auto
+                <list_item>
+                    <paragraph>
+                        auto 2
+            <enumerated_list enumtype="lowerroman" prefix="(" start="4" suffix=")">
+                <list_item>
+                    <paragraph>
+                        roman four
+                <list_item>
+                    <paragraph>
+                        roman five
+            <definition_list>
+                <definition_list_item>
+                    <term>
+                        Term
+                    <definition>
+                        <paragraph>
+                            Definition.
+                <definition_list_item>
+                    <term>
+                        Term 2
+                    <classifier>
+                        classifier
+                    <classifier>
+                        another
+                    <definition>
+                        <paragraph>
+                            Definition 2.
+                        <paragraph>
+                            Second paragraph.
+            <option_list>
+                <option_list_item>
+                    <option_group>
+                        <option>
+                            <option_string>
+                                -a
+                    <description>
+                        <paragraph>
+                            option a
+                <option_list_item>
+                    <option_group>
+                        <option>
+                            <option_string>
+                                -b
+                            <option_argument delimiter=" ">
+                                FILE
+                    <description>
+                        <paragraph>
+                            option b with argument
+                <option_list_item>
+                    <option_group>
+                        <option>
+                            <option_string>
+                                --long
+                    <description>
+                        <paragraph>
+                            long option
+                <option_list_item>
+                    <option_group>
+                        <option>
+                            <option_string>
+                                --very-long-option
+                            <option_argument delimiter="=">
+                                VALUE
+                    <description>
+                        <paragraph>
+                            description on
+                            two lines
+                <option_list_item>
+                    <option_group>
+                        <option>
+                            <option_string>
+                                /V
+                    <description>
+                        <paragraph>
+                            DOS style
+            <line_block>
+                <line>
+                    Line block
+                <line_block>
+                    <line>
+                        indented line
+                <line>
+                    back
+            <block_quote>
+                <paragraph>
+                    Block quote with attribution.
+                <attribution>
+                    Somebody Famous
+            <doctest_block xml:space="preserve">
+                >>> print("doctest")
+                doctest
+            <paragraph>
+                Literal block:
+            <literal_block xml:space="preserve">
+                literal  <text> & more
+                  indented
+            <paragraph>
+                Quoted literal:
+            <literal_block xml:space="preserve">
+                > quoted
+                > literal
+    <section ids="section-two" names="section\ two">
+        <title refid="toc-entry-3">
+            Section Two
+        <table>
+            <tgroup cols="3">
+                <colspec colwidth="7">
+                <colspec colwidth="7">
+                <colspec colwidth="7">
+                <thead>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                Head
+                        <entry>
+                            <paragraph>
+                                Grid
+                        <entry>
+                            <paragraph>
+                                Table
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                a
+                        <entry morecols="1">
+                            <paragraph>
+                                spans two
+                    <row>
+                        <entry morerows="1">
+                            <paragraph>
+                                rows
+                        <entry>
+                            <paragraph>
+                                b
+                        <entry>
+                            <paragraph>
+                                c
+                    <row>
+                        <entry>
+                            <paragraph>
+                                d
+                        <entry>
+                            <paragraph>
+                                e
+        <table>
+            <tgroup cols="3">
+                <colspec colwidth="5">
+                <colspec colwidth="5">
+                <colspec colwidth="6">
+                <thead>
+                    <row>
+                        <entry morecols="1">
+                            <paragraph>
+                                Inputs
+                        <entry>
+                            <paragraph>
+                                Output
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A
+                        <entry>
+                            <paragraph>
+                                B
+                        <entry>
+                            <paragraph>
+                                A or B
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                False
+                    <row>
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                True
+        <transition>
+        <note>
+            <paragraph>
+                A note.
+        <warning>
+            <paragraph>
+                A warning with 
+                <emphasis>
+                    markup
+                .
+        <admonition classes="special">
+            <title>
+                Custom Admonition
+            <paragraph>
+                Body.
+        <image align="center" alt="A picture" uri="picture.png" width="200px">
+        <figure classes="fancy" width="50%">
+            <image uri="picture.png">
+            <caption>
+                The caption.
+            <legend>
+                <paragraph>
+                    The legend.
+        <topic>
+            <title>
+                Topic Title
+            <paragraph>
+                Topic body.
+        <sidebar>
+            <title>
+                Sidebar Title
+            <subtitle>
+                Sidebar Subtitle
+            <paragraph>
+                Sidebar body.
+        <rubric>
+            A Rubric
+        <block_quote classes="epigraph">
+            <paragraph>
+                An epigraph.
+            <attribution>
+                Author
+        <compound>
+            <paragraph>
+                First part.
+            <literal_block xml:space="preserve">
+                literal in compound
+        <container classes="custom">
+            <paragraph>
+                In container.
+        <literal_block xml:space="preserve">
+            parsed 
+            <emphasis>
+                literal
+             with 
+            <literal>
+                markup
+        <system_message level="2" line="186" source="testdata/fixtures/basic.rst" type="WARNING">
+            <paragraph>
+                Cannot analyze code. Pygments package not found.
+            <literal_block xml:space="preserve">
+                .. code:: python
+                
+                   def f(x):
+                       return x
+        <paragraph classes="classy">
+            Paragraph with class.
+        <comment xml:space="preserve">
+            comment here
+            continues
+        <footnote auto="1" backrefs="footnote-reference-6" ids="footnote-4" names="TARGET_NOTE:\ footnote-4">
+            <label>
+                4
+            <paragraph>
+                <reference refuri="https://example.org/">
+                    https://example.org/
+        <footnote auto="1" backrefs="footnote-reference-7" ids="footnote-5" names="TARGET_NOTE:\ footnote-5">
+            <label>
+                5
+            <paragraph>
+                <reference refuri="https://example.org/anon">
+                    https://example.org/anon

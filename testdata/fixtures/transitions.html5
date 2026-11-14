@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>transitions.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<hr class="docutils" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/transitions.rst</span>, line 1)</p>
+<p>Transition at the start of the document.</p>
+</aside>
+<p>Para.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/transitions.rst</span>, line 7)</p>
+<p>At least one body element should separate transitions.</p>
+</aside>
+<section id="section">
+<h2>Section</h2>
+<hr class="docutils" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/transitions.rst</span>, line 12)</p>
+<p>Transition at the start of the section.</p>
+</aside>
+<p>Para.</p>
+<blockquote>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<span class="docutils literal">testdata/fixtures/transitions.rst</span>, line 16)</p>
+<p>Unexpected section title or transition.</p>
+<pre class="literal-block">----</pre>
+</aside>
+<p>In quote.</p>
+</blockquote>
+<p>Para.</p>
+<hr class="docutils" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/transitions.rst</span>, line 22)</p>
+<p>Transition at the end of the document.</p>
+</aside>
+</section>
+</main>
+</body>
+</html>

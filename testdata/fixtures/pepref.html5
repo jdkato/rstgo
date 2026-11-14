@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pepref.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<p>See <a class="reference external" href="https://peps.python.org/pep-0008">PEP 8</a> and <a class="reference external" href="https://peps.python.org/pep-0287">pep-0287.txt</a>, <a class="reference external" href="https://tools.ietf.org/html/rfc2822.html">RFC 2822</a> and <a class="reference external" href="https://tools.ietf.org/html/rfc1123.html">RFC-1123</a>, not PEPx 9 or RFC2822x.</p>
+<blockquote>
+<p>Tab indented block quote
+with    tabs.</p>
+</blockquote>
+<p>Literal:</p>
+<pre class="literal-block">tabbed  literal</pre>
+</main>
+</body>
+</html>

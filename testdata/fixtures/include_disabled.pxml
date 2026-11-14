@@ -1,0 +1,89 @@
+<document ids="includes" names="includes" source="testdata/fixtures/include_disabled.rst" title="Includes">
+    <title>
+        Includes
+    <system_message level="2" line="4" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: included.txt
+    <paragraph>
+        After include.
+    <system_message level="2" line="8" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: included.txt
+               :literal:
+    <system_message level="2" line="11" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: included.txt
+               :code: python
+               :number-lines:
+    <system_message level="2" line="15" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: included.txt
+               :start-after: START
+               :end-before: END
+    <system_message level="2" line="19" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: included.txt
+               :start-line: 1
+               :end-line: 3
+               :literal:
+               :number-lines: 10
+    <system_message level="2" line="25" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: <isonum.txt>
+    <paragraph>
+        Copyright 
+        <problematic ids="problematic-2" refid="system-message-2">
+            |copy|
+         and 
+        <problematic ids="problematic-3" refid="system-message-3">
+            |reg|
+        .
+    <system_message level="2" line="29" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "raw" directive disabled.
+        <literal_block xml:space="preserve">
+            .. raw:: html
+            
+               <b>raw html</b>
+    <system_message level="2" line="33" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "raw" directive disabled.
+        <literal_block xml:space="preserve">
+            .. raw:: latex
+            
+               \LaTeX
+    <system_message level="2" line="37" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            "raw" directive disabled.
+        <literal_block xml:space="preserve">
+            .. raw:: html
+               :file: included.txt
+    <paragraph>
+        Inline 
+        <problematic ids="problematic-1" refid="system-message-1">
+            :raw-html:`<i>raw</i>`
+         role.
+    <system_message backrefs="problematic-1" ids="system-message-1" level="2" line="44" source="testdata/fixtures/include_disabled.rst" type="WARNING">
+        <paragraph>
+            raw (and derived) roles disabled
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="problematic-2" ids="system-message-2" level="3" line="27" source="testdata/fixtures/include_disabled.rst" type="ERROR">
+            <paragraph>
+                Undefined substitution referenced: "copy".
+        <system_message backrefs="problematic-3" ids="system-message-3" level="3" line="27" source="testdata/fixtures/include_disabled.rst" type="ERROR">
+            <paragraph>
+                Undefined substitution referenced: "reg".

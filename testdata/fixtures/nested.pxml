@@ -1,0 +1,84 @@
+<document source="testdata/fixtures/nested.rst">
+    <bullet_list bullet="*">
+        <list_item>
+            <paragraph>
+                a
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        b
+                    <bullet_list bullet="*">
+                        <list_item>
+                            <paragraph>
+                                c
+                            <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                                <list_item>
+                                    <paragraph>
+                                        d
+                                    <enumerated_list enumtype="loweralpha" prefix="(" suffix=")">
+                                        <list_item>
+                                            <paragraph>
+                                                e
+                                            <definition_list>
+                                                <definition_list_item>
+                                                    <term>
+                                                        term
+                                                    <definition>
+                                                        <paragraph>
+                                                            def
+                                                        <field_list>
+                                                            <field>
+                                                                <field_name>
+                                                                    field
+                                                                <field_body>
+                                                                    <paragraph>
+                                                                        value
+                                                                    <paragraph>
+                                                                        quote
+                                                                    <system_message level="3" line="21" source="testdata/fixtures/nested.rst" type="ERROR">
+                                                                        <paragraph>
+                                                                            Malformed table.
+                                                                            Right border not aligned or missing.
+                                                                        <literal_block xml:space="preserve">
+                                                                            +---+---+
+                                                                            | x | y |
+                                                                            +---+---+
+                                                                            | - list in cell
+                                                                            | - two |
+                                                                            +---+---+
+            <note>
+                <warning>
+                    <tip>
+                        <paragraph>
+                            deep
+                        <literal_block xml:space="preserve">
+                            literal
+    <admonition classes="admonition-outer">
+        <title>
+            Outer
+        <system_message level="3" line="37" source="testdata/fixtures/nested.rst" type="ERROR">
+            <paragraph>
+                The "topic" directive may not be used within topics or body elements.
+            <literal_block xml:space="preserve">
+                .. topic:: Not allowed here
+                
+                   text
+        <system_message level="3" line="41" source="testdata/fixtures/nested.rst" type="ERROR">
+            <paragraph>
+                The "sidebar" directive may not be used within topics or body elements.
+            <literal_block xml:space="preserve">
+                .. sidebar:: Nor here
+                
+                   text
+    <section ids="title" names="title">
+        <title>
+            Title
+        <note>
+            <system_message level="3" line="51" source="testdata/fixtures/nested.rst" type="ERROR">
+                <paragraph>
+                    Unexpected section title.
+                <literal_block xml:space="preserve">
+                    Section in note
+                    ---------------
+            <paragraph>
+                text

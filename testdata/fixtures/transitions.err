@@ -1,0 +1,7 @@
+testdata/fixtures/transitions.rst:16: (ERROR/3) Unexpected section title or transition.
+
+----
+testdata/fixtures/transitions.rst:1: (WARNING/2) Transition at the start of the document.
+testdata/fixtures/transitions.rst:7: (WARNING/2) At least one body element should separate transitions.
+testdata/fixtures/transitions.rst:12: (WARNING/2) Transition at the start of the section.
+testdata/fixtures/transitions.rst:22: (WARNING/2) Transition at the end of the document.

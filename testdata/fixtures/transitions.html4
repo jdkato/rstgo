@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>transitions.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<hr class="docutils" />
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/transitions.rst</tt>, line 1)</p>
+Transition at the start of the document.</div>
+<p>Para.</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/transitions.rst</tt>, line 7)</p>
+At least one body element should separate transitions.</div>
+<div class="section" id="section">
+<h1>Section</h1>
+<hr class="docutils" />
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/transitions.rst</tt>, line 12)</p>
+Transition at the start of the section.</div>
+<p>Para.</p>
+<blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/transitions.rst</tt>, line 16)</p>
+<p>Unexpected section title or transition.</p>
+<pre class="literal-block">
+----
+</pre>
+</div>
+<p>In quote.</p>
+</blockquote>
+<p>Para.</p>
+<hr class="docutils" />
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/transitions.rst</tt>, line 22)</p>
+Transition at the end of the document.</div>
+</div>
+</div>
+</body>
+</html>

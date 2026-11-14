@@ -1,0 +1,332 @@
+<document ids="inline-markup-corner-cases" names="inline\ markup\ corner\ cases" source="testdata/fixtures/inline.rst" title="Inline markup corner cases">
+    <title>
+        Inline markup corner cases
+    <paragraph>
+        <emphasis>
+            a
+         
+        <strong>
+            b
+         
+        <literal>
+            c
+         
+        <title_reference>
+            d
+         
+        <emphasis>
+            E
+         text
+         
+        <problematic ids="problematic-6" refid="system-message-4">
+            f_
+         
+        <problematic ids="problematic-3" refid="system-message-3">
+            g__
+         
+        <footnote_reference ids="footnote-reference-1" refid="footnote-1">
+            1
+         
+        <footnote_reference auto="1" ids="footnote-reference-2" refid="footnote-4">
+            4
+         
+        <footnote_reference auto="*" ids="footnote-reference-3" refid="footnote-5">
+            *
+         
+        <problematic ids="citation-reference-1" refid="system-message-5">
+            [x]_
+         
+        <target ids="h" names="h">
+            h
+    <paragraph>
+        "
+        <emphasis>
+            quoted
+        " '
+        <emphasis>
+            quoted
+        ' (
+        <emphasis>
+            paren
+        ) [
+        <emphasis>
+            bracket
+        ] {
+        <emphasis>
+            brace
+        } <
+        <emphasis>
+            angle
+        >
+        <emphasis>
+            not emphasis * and * not either
+        , 2*3*4, a*b, 
+        <emphasis>
+            a*b, a*b
+        c.
+    <paragraph>
+        <strong>
+            strong**text and text**strong
+        , 
+        <literal>
+            lit``eral, x``lit
+        .
+    <paragraph>
+        Escapes: *not emphasis*, \backslash, `not interpreted`, ab, C:\dir.
+    <paragraph>
+        <reference name="phrase reference" refuri="http://phrase.example.org">
+            phrase reference
+        , 
+        <reference name="phrase" refuri="http://example.org/ab">
+            phrase
+        <target ids="phrase" names="phrase" refuri="http://example.org/ab">
+        , 
+        <reference name="http://bare.example.org" refuri="http://bare.example.org">
+            http://bare.example.org
+        <target ids="http-bare-example-org" names="http://bare.example.org" refuri="http://bare.example.org">
+        ,
+        <reference name="alias" refuri="http://phrase.example.org">
+            alias
+        <target ids="alias" names="alias" refuri="http://phrase.example.org">
+        , 
+        <reference name="anon embedded" refuri="http://x.org">
+            anon embedded
+        , 
+        <reference name="with <escaped>" refuri="http://esc.example.org">
+            with <escaped>
+        .
+    <target ids="phrase-reference" names="phrase\ reference" refuri="http://phrase.example.org">
+    <target ids="with-escaped" names="with\ <escaped>" refuri="http://esc.example.org">
+    <paragraph>
+        <emphasis>
+            role
+        , 
+        <strong>
+            suffix role
+        , 
+        <literal>
+            lit\eral
+        , 
+        <literal classes="code">
+            x = 1
+        ,
+        <math>
+            a^2
+        , 
+        <reference refuri="https://peps.python.org/pep-0008">
+            PEP 8
+        , 
+        <reference refuri="https://peps.python.org/pep-0287">
+            PEP 287
+        , 
+        <reference refuri="https://tools.ietf.org/html/rfc2822.html">
+            RFC 2822
+        , 
+        <reference refuri="https://tools.ietf.org/html/rfc2822.html#section-3">
+            RFC 2822
+        , 
+        <title_reference>
+            T
+        ,
+        <abbreviation>
+            abbr
+        , 
+        <acronym>
+            ACR
+        , 
+        <subscript>
+            s
+        , 
+        <superscript>
+            s
+        , 
+        <problematic ids="problematic-1" refid="system-message-1">
+            :pep:`x`
+        , 
+        <problematic ids="problematic-2" refid="system-message-2">
+            :rfc:`0`
+        .
+    <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="19" source="testdata/fixtures/inline.rst" type="ERROR">
+        <paragraph>
+            PEP number must be a number from 0 to 9999; "x" is invalid.
+    <system_message backrefs="problematic-2" ids="system-message-2" level="3" line="19" source="testdata/fixtures/inline.rst" type="ERROR">
+        <paragraph>
+            RFC number must be a number greater than or equal to 1; "0" is invalid.
+    <paragraph>
+        URIs: 
+        <reference refuri="http://www.example.org">
+            http://www.example.org
+        , <
+        <reference refuri="http://example.org/path">
+            http://example.org/path
+        >, (
+        <reference refuri="https://example.org/">
+            https://example.org/
+        ),
+        <reference refuri="ftp://ftp.example.org/file.txt">
+            ftp://ftp.example.org/file.txt
+        ; 
+        <reference refuri="news:comp.lang.python">
+            news:comp.lang.python
+        , 
+        <reference refuri="urn:isbn:0-486-27557-4">
+            urn:isbn:0-486-27557-4
+        ,
+        <reference refuri="http://example.org/a_(b">
+            http://example.org/a_(b
+        ), 
+        <reference refuri="http://example.org/x">
+            http://example.org/x
+        ., foo:bar, user@example.org,
+        mailto:user@example.org?subject=hi, http://example.org/*escaped, www.example.org.
+    <paragraph>
+        Footnote refs: text 
+        <footnote_reference ids="footnote-reference-4" refid="footnote-1">
+            1
+         and[2]_ and 
+        <footnote_reference ids="footnote-reference-5" refid="footnote-3">
+            3
+        .
+    <footnote backrefs="footnote-reference-1 footnote-reference-4" ids="footnote-1" names="1">
+        <label>
+            1
+        <paragraph>
+            one
+    <footnote ids="footnote-2" names="2">
+        <label>
+            2
+        <paragraph>
+            two
+    <footnote backrefs="footnote-reference-5" ids="footnote-3" names="3">
+        <label>
+            3
+        <paragraph>
+            three
+    <footnote auto="1" backrefs="footnote-reference-2" ids="footnote-4" names="4">
+        <label>
+            4
+        <paragraph>
+            auto
+    <footnote auto="*" backrefs="footnote-reference-3" ids="footnote-5">
+        <label>
+            *
+        <paragraph>
+            sym
+    <citation dupnames="x" ids="x">
+        <label>
+            x
+        <paragraph>
+            cit
+    <paragraph>
+        Substitutions: 
+        <emphasis>
+            E
+         text
+        , 
+        <reference refuri="http://e.example.org">
+            <emphasis>
+                E
+             text
+        , 
+        <problematic ids="problematic-4" refid="system-message-3">
+            |e|__
+        , 
+        <image alt="the image" uri="i.png">
+        , 
+        2024
+         and
+        ©
+        .
+    <substitution_definition names="e">
+        <emphasis>
+            E
+         text
+    <target ids="e" names="e" refuri="http://e.example.org">
+    <target anonymous="1" ids="target-1" refuri="http://anon.example.org">
+    <target anonymous="1" ids="target-2" refuri="http://anon2.example.org">
+    <substitution_definition names="img">
+        <image alt="the image" uri="i.png">
+    <substitution_definition names="date-ish">
+        2024
+    <substitution_definition ltrim="1" names="uni" rtrim="1">
+        ©
+    <paragraph>
+        Unicode: «
+        <emphasis>
+            guillemets
+        » „
+        <emphasis>
+            quotes
+        “ ‘
+        <emphasis>
+            single
+        ’ —
+        <emphasis>
+            dash
+        — ¿
+        <emphasis>
+            que
+        ? 日本語*強調*テキスト,
+        日本語 
+        <emphasis>
+            強調
+         テキスト, naïve café 
+        <reference name="ref with ünïcode" refuri="http://unicode.example.org">
+            ref with ünïcode
+        .
+    <target ids="ref-with-unicode" names="ref\ with\ ünïcode" refuri="http://unicode.example.org">
+    <paragraph>
+        Interpreted 
+        <title_reference>
+            default role
+        , 
+        <literal>
+            literal with `backquote` inside
+        , 
+        <literal>
+            `triple`
+        ,
+        `` ` 
+        <literal>
+            , **\***, *\**, ``\
+        .
+    <paragraph>
+        <target ids="inline-target" names="inline\ target">
+            inline target
+         and 
+        <reference name="inline target" refid="inline-target">
+            inline target
+         reference. 
+        <target ids="multi-word-target" names="multi\ word\ target">
+            multi word target
+        .
+    <paragraph>
+        Long: aaaaaaaaaa*bbbbbbbbbb, __init__, snake_case_name, 
+        <reference name="a_b" refuri="http://ab.example.org">
+            a_b
+        , _private, 
+        <problematic ids="problematic-5" refid="system-message-3">
+            x__
+        , 
+        <reference name="y" refuri="http://y.example.org">
+            y
+        .
+    <system_message level="2" line="61" source="testdata/fixtures/inline.rst" type="WARNING">
+        <paragraph>
+            Duplicate explicit target name: "x".
+    <target dupnames="x" ids="x-1" refuri="http://x.example.org">
+    <target ids="y" names="y" refuri="http://y.example.org">
+    <target ids="a-b" names="a_b" refuri="http://ab.example.org">
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="problematic-3 problematic-4 problematic-5" ids="system-message-3" level="3" source="testdata/fixtures/inline.rst" type="ERROR">
+            <paragraph>
+                Anonymous hyperlink mismatch: 3 references but 2 targets.
+                See "backrefs" attribute for IDs.
+        <system_message backrefs="problematic-6" ids="system-message-4" level="3" line="4" source="testdata/fixtures/inline.rst" type="ERROR">
+            <paragraph>
+                Unknown target name: "f".
+        <system_message backrefs="citation-reference-1" ids="system-message-5" level="3" line="4" source="testdata/fixtures/inline.rst" type="ERROR">
+            <paragraph>
+                Duplicate target name, cannot be used as a unique reference: "x".

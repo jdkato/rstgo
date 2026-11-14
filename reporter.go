@@ -26,7 +26,7 @@ type haltError struct {
 }
 
 func (e *haltError) Error() string {
-	return fmt.Sprintf("%s\nExiting due to level-%d (%s) system message.", e.text, e.level, levelNames[e.level])
+	return fmt.Sprintf("Exiting due to level-%d (%s) system message.", e.level, levelNames[e.level])
 }
 
 type msgOpt func(*msgConf)

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="A test document" name="description" />
+<meta content="rst, test" name="keywords" />
+<meta content="en" http-equiv="Content-Language" />
+<title>Custom &lt;Title&gt;</title>
+
+</head>
+<body class="with-toc">
+<header>
+<p>Header text.</p>
+</header>
+<main id="document-title">
+<h1 class="title">Document Title</h1>
+<p class="subtitle" id="a-subtitle">A Subtitle</p>
+
+<dl class="field-list">
+<dt>Author<span class="colon">:</span></dt>
+<dd><p>Jane Doe</p>
+</dd>
+<dt>Authors<span class="colon">:</span></dt>
+<dd><ol class="upperalpha">
+<li><p>One; B. Two; C. Three</p></li>
+</ol>
+</dd>
+<dt>Organization<span class="colon">:</span></dt>
+<dd><p>ACME</p>
+</dd>
+<dt>Address<span class="colon">:</span></dt>
+<dd><p>1 Main St.
+Springfield</p>
+</dd>
+<dt>Contact<span class="colon">:</span></dt>
+<dd><p><a class="reference external" href="mailto:jane&#37;&#52;&#48;example&#46;org">jane<span>&#64;</span>example<span>&#46;</span>org</a></p>
+</dd>
+<dt>Version<span class="colon">:</span></dt>
+<dd><p>1.2</p>
+</dd>
+<dt>Revision<span class="colon">:</span></dt>
+<dd><p>$Revision: 42 $</p>
+</dd>
+<dt>Status<span class="colon">:</span></dt>
+<dd><p>Draft</p>
+</dd>
+<dt>Date<span class="colon">:</span></dt>
+<dd><p>$Date: 2024-01-02 03:04:05 +0000 (Tue, 02 Jan 2024) $</p>
+</dd>
+<dt>Copyright<span class="colon">:</span></dt>
+<dd><p>Public domain.</p>
+</dd>
+<dt>Custom Field<span class="colon">:</span></dt>
+<dd><p>custom <em>value</em></p>
+</dd>
+<dt>Dedication<span class="colon">:</span></dt>
+<dd><p>To someone.</p>
+</dd>
+<dt>Abstract<span class="colon">:</span></dt>
+<dd><p>Short abstract
+over two lines.</p>
+</dd>
+</dl>
+<nav class="contents" id="table-of-contents" role="doc-toc">
+<p class="topic-title"><a class="reference internal" href="#top">Table of Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#section-one" id="toc-entry-1">Section One</a></p>
+<ul>
+<li><p><a class="reference internal" href="#subsection" id="toc-entry-2">Subsection</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#section-two" id="toc-entry-3">Section Two</a></p></li>
+</ul>
+</nav>
+<section id="section-one">
+<h2><a class="toc-backref" href="#table-of-contents" role="doc-backlink">Section One</a><a class="self-link" title="link to this section" href="#section-one"></a></h2>
+<p>Paragraph with <em>emphasis</em>, <strong>strong</strong>, <span class="docutils literal">literal</span>, <cite>interpreted</cite>,
+<sub>sub</sub> and <sup>sup</sup> text, a <a class="reference external" href="https://example.org/">reference</a><a class="superscript" href="#footnote-4" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>, an <a class="reference external" href="https://example.org/anon">anonymous one</a><a class="superscript" href="#footnote-5" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>, a
+footnote<a class="superscript" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, an auto footnote<a class="superscript" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, labeled<a class="superscript" href="#lbl" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, symbol<a class="superscript" href="#footnote-3" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a> and a
+citation <a class="citation-reference" href="#cit2002" id="citation-reference-1" role="doc-biblioref">[CIT2002]</a>.  Inline <span class="target" id="target">target</span> here; replaced <em>text</em> too.  Standalone
+<a class="reference external" href="https://example.org/x?y=1#z">https://example.org/x?y=1#z</a> and <a class="reference external" href="mailto:me&#37;&#52;&#48;example&#46;org">mailto:me<span>&#64;</span>example<span>&#46;</span>org</a>, <a class="reference external" href="mailto:me&#37;&#52;&#48;example&#46;org">me<span>&#64;</span>example<span>&#46;</span>org</a>.</p>
+<aside class="footnote-list superscript">
+<aside class="footnote superscript" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Manual footnote.</p>
+</aside>
+<aside class="footnote superscript" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Auto footnote.</p>
+</aside>
+<aside class="footnote superscript" id="lbl" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Labeled auto footnote, see<a class="superscript" href="#lbl" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+</aside>
+<aside class="footnote superscript" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></span>
+<p>Symbol footnote.</p>
+</aside>
+</aside>
+<div role="list" class="citation-list">
+<div class="citation" id="cit2002" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>CIT2002<span class="fn-bracket">]</span></span>
+<p>A citation.</p>
+</div>
+</div>
+<section id="subsection">
+<h3><a class="toc-backref" href="#table-of-contents" role="doc-backlink">Subsection</a><a class="self-link" title="link to this section" href="#subsection"></a></h3>
+<ul>
+<li><p>bullet one</p></li>
+<li><p>bullet two</p>
+<ul>
+<li><p>nested a</p></li>
+<li><p>nested b</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic">
+<li><p>first</p></li>
+<li><p>second</p>
+<ol class="loweralpha">
+<li><p>alpha</p></li>
+<li><p>beta</p></li>
+</ol>
+</li>
+<li><p>auto</p></li>
+<li><p>auto 2</p></li>
+</ol>
+<ol class="lowerroman" start="4">
+<li><p>roman four</p></li>
+<li><p>roman five</p></li>
+</ol>
+<dl>
+<dt>Term</dt>
+<dd><p>Definition.</p>
+</dd>
+<dt>Term 2<span class="classifier">classifier</span><span class="classifier">another</span></dt>
+<dd><p>Definition 2.</p>
+<p>Second paragraph.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-a</span></kbd></dt>
+<dd><p>option a</p>
+</dd>
+<dt><kbd><span class="option">-b <var>FILE</var></span></kbd></dt>
+<dd><p>option b with argument</p>
+</dd>
+<dt><kbd><span class="option">--long</span></kbd></dt>
+<dd><p>long option</p>
+</dd>
+<dt><kbd><span class="option">--very-long-option=<var>VALUE</var></span></kbd></dt>
+<dd><p>description on
+two lines</p>
+</dd>
+<dt><kbd><span class="option">/V</span></kbd></dt>
+<dd><p>DOS style</p>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">Line block</div>
+<div class="line-block">
+<div class="line">indented line</div>
+</div>
+<div class="line">back</div>
+</div>
+<blockquote>
+<p>Block quote with attribution.</p>
+<p class="attribution">(Somebody Famous)</p>
+</blockquote>
+<pre class="code python doctest">&gt;&gt;&gt; print(&quot;doctest&quot;)
+doctest
+</pre>
+<p>Literal block:</p>
+<pre class="literal-block">literal  &lt;text&gt; &amp; more
+  indented</pre>
+<p>Quoted literal:</p>
+<pre class="literal-block">&gt; quoted
+&gt; literal</pre>
+</section>
+</section>
+<section id="section-two">
+<h2><a class="toc-backref" href="#table-of-contents" role="doc-backlink">Section Two</a><a class="self-link" title="link to this section" href="#section-two"></a></h2>
+<table class="borderless booktabs">
+<thead>
+<tr><th class="head"><p>Head</p></th>
+<th class="head"><p>Grid</p></th>
+<th class="head"><p>Table</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>a</p></td>
+<td colspan="2"><p>spans two</p></td>
+</tr>
+<tr><td rowspan="2"><p>rows</p></td>
+<td><p>b</p></td>
+<td><p>c</p></td>
+</tr>
+<tr><td><p>d</p></td>
+<td><p>e</p></td>
+</tr>
+</tbody>
+</table>
+<table class="borderless booktabs">
+<thead>
+<tr><th class="head" colspan="2"><p>Inputs</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+<tr><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>A or B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>False</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A note.</p>
+</aside>
+<aside class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A warning with <em>markup</em>.</p>
+</aside>
+<aside class="admonition special">
+<p class="admonition-title">Custom Admonition</p>
+<p>Body.</p>
+</aside>
+<img alt="A picture" class="align-center" src="picture.png" style="width: 200px;" />
+<figure class="fancy" style="width: 50%">
+<img alt="picture.png" src="picture.png" />
+<figcaption>
+<p>The caption.</p>
+<div class="legend">
+<p>The legend.</p>
+</div>
+</figcaption>
+</figure>
+<aside class="topic">
+<p class="topic-title">Topic Title</p>
+<p>Topic body.</p>
+</aside>
+<aside class="sidebar">
+<p class="sidebar-title">Sidebar Title</p>
+<p class="sidebar-subtitle">Sidebar Subtitle</p>
+<p>Sidebar body.</p>
+</aside>
+<p class="rubric">A Rubric</p>
+<blockquote class="epigraph">
+<p>An epigraph.</p>
+<p class="attribution">(Author)</p>
+</blockquote>
+<div class="compound">
+<p>First part.</p>
+<pre class="literal-block">literal in compound</pre>
+</div>
+<div class="custom docutils container">
+<p>In container.</p>
+</div>
+<pre class="literal-block">parsed <em>literal</em> with <span class="docutils literal">markup</span></pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/basic_opts.rst</span>, line 186)</p>
+<p>Cannot analyze code. Pygments package not found.</p>
+<pre class="literal-block">.. code:: python
+
+   def f(x):
+       return x
+</pre>
+</aside>
+<p class="classy">Paragraph with class.</p>
+<aside class="footnote-list superscript">
+<aside class="footnote superscript" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://example.org/">https://example.org/</a></p>
+</aside>
+<aside class="footnote superscript" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://example.org/anon">https://example.org/anon</a></p>
+</aside>
+</aside>
+</section>
+</main>
+<footer>
+<p>Footer text.</p>
+<p><a class="reference external" href="testdata/fixtures/basic_opts.rst">View document source</a>.
+Generated by <a class="reference external" href="https://docutils.sourceforge.io/">Docutils</a> from <a class="reference external" href="https://docutils.sourceforge.io/rst.html">reStructuredText</a> source.
+</p>
+</footer>
+</body>
+</html>

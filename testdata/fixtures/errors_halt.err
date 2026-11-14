@@ -1,0 +1,11 @@
+testdata/fixtures/errors_halt.rst:2: (WARNING/2) Title underline too short.
+
+Title
+====
+testdata/fixtures/errors_halt.rst:6: (ERROR/3) Unknown directive type "unknown-directive".
+
+.. unknown-directive:: argument
+   :option: value
+
+   content
+

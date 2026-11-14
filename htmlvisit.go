@@ -1578,8 +1578,21 @@ func (t *htmlTranslator) visitImage4(node *Node) {
 		atts["height"] = node.str("height")
 	}
 	if node.has("scale") {
-		// (reading the image size requires PIL in Docutils; not done here)
 		scale, _ := node.get("scale").(int)
+		if (!node.has("width") || !node.has("height")) && t.settings.fileInsertionEnabled {
+			if imagepath, e := t.uri2path(uri); e != "" {
+				t.doc.reporter.warning("Problem reading image file: "+e, nil)
+			} else if w, h, e := readImageSize(imagepath); e != "" {
+				t.doc.reporter.warning("Problem reading image file: "+e, nil)
+			} else {
+				if _, ok := atts["width"]; !ok {
+					atts["width"] = fmt.Sprintf("%dpx", w)
+				}
+				if _, ok := atts["height"]; !ok {
+					atts["height"] = fmt.Sprintf("%dpx", h)
+				}
+			}
+		}
 		for _, name := range []string{"width", "height"} {
 			if v, ok := atts[name].(string); ok {
 				if m := numUnitRe.Match(v); m != nil {
@@ -1637,7 +1650,19 @@ func (t *htmlTranslator) imageSize(node *Node) A {
 		}
 	}
 	if node.has("scale") && len(measures) < 2 {
-		t.readSizeFails(node)
+		if w, h, ok := t.readSize(node); ok {
+			for i, d := range dims {
+				if _, has := measures[d]; !has {
+					measures[d] = measure{float64([]int{w, h}[i]), ""}
+				}
+			}
+			order = nil
+			for _, d := range dims {
+				if _, has := measures[d]; has {
+					order = append(order, d)
+				}
+			}
+		}
 	}
 	scaling := 1.0
 	if s, ok := node.get("scale").(int); ok {
@@ -1660,19 +1685,32 @@ func (t *htmlTranslator) imageSize(node *Node) A {
 	return atts
 }
 
-// readSizeFails mirrors read_size_with_PIL in an installation without the
-// Python Imaging Library (image files are never read).
-func (t *htmlTranslator) readSizeFails(node *Node) {
+// readSize mirrors read_size_with_PIL.
+func (t *htmlTranslator) readSize(node *Node) (int, int, bool) {
 	uri := node.str("uri")
-	problems := []string{"Requires Python Imaging Library."}
+	var problems []string
 	if isVideoType(guessMimeType(uri)) {
 		problems = append(problems, "PIL cannot read video images.")
 	}
 	if !t.settings.fileInsertionEnabled {
 		problems = append(problems, "Reading external files disabled.")
 	}
-	msg := append([]string{"Cannot scale image!", fmt.Sprintf(`Could not get size from "%s":`, uri)}, problems...)
-	t.messages = append(t.messages, t.doc.reporter.warning(strings.Join(msg, "\n  "), nil, baseNode(node)))
+	var w, h int
+	if len(problems) == 0 {
+		imagepath, e := t.uri2path(uri)
+		if e == "" {
+			w, h, e = readImageSize(imagepath)
+		}
+		if e != "" {
+			problems = append(problems, e)
+		}
+	}
+	if len(problems) > 0 {
+		msg := append([]string{"Cannot scale image!", fmt.Sprintf(`Could not get size from "%s":`, uri)}, problems...)
+		t.messages = append(t.messages, t.doc.reporter.warning(strings.Join(msg, "\n  "), nil, baseNode(node)))
+		return 0, 0, false
+	}
+	return w, h, true
 }
 
 func (t *htmlTranslator) visitImage5(node *Node) {

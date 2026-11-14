@@ -1,0 +1,19 @@
+<document source="testdata/fixtures/charlevel.rst">
+    <paragraph>
+        Character-level markup: re
+        <emphasis>
+            struct
+        ured, re
+        <emphasis>
+            struct
+        ured, a
+        <strong>
+            b
+        c, x
+        <literal>
+            y
+        z,
+        日本語
+        <emphasis>
+            強調
+        テキスト.

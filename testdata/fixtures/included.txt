@@ -1,0 +1,10 @@
+Included *paragraph*.
+
+Included Section
+----------------
+
+START
+Between markers.
+END
+
+Last line of include with warning: `undefined`_.

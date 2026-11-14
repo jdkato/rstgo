@@ -197,6 +197,9 @@ func (n *Node) insertAll(i int, cs []*Node) {
 }
 
 func (n *Node) index(c *Node) int {
+	if n == nil {
+		return -1
+	}
 	for i, x := range n.Children {
 		if x == c {
 			return i
@@ -212,6 +215,9 @@ func (n *Node) removeAt(i int) *Node {
 }
 
 func (n *Node) remove(c *Node) {
+	if n == nil {
+		return
+	}
 	if i := n.index(c); i >= 0 {
 		n.removeAt(i)
 	}
@@ -219,6 +225,9 @@ func (n *Node) remove(c *Node) {
 
 // replace replaces child old with the given nodes.
 func (n *Node) replace(old *Node, news ...*Node) {
+	if n == nil {
+		return
+	}
 	i := n.index(old)
 	if i < 0 {
 		return
@@ -232,6 +241,9 @@ func (n *Node) replace(old *Node, news ...*Node) {
 
 // replaceSelf mirrors Element.replace_self.
 func (n *Node) replaceSelf(news ...*Node) {
+	if n.Parent == nil || n.Parent.index(n) < 0 {
+		return // (Docutils raises an exception here)
+	}
 	if len(news) > 0 && !news[0].IsText() {
 		news[0].updateBasicAtts(n)
 	}

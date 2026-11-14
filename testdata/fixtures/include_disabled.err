@@ -1,0 +1,12 @@
+testdata/fixtures/include_disabled.rst:4: (WARNING/2) "include" directive disabled.
+testdata/fixtures/include_disabled.rst:8: (WARNING/2) "include" directive disabled.
+testdata/fixtures/include_disabled.rst:11: (WARNING/2) "include" directive disabled.
+testdata/fixtures/include_disabled.rst:15: (WARNING/2) "include" directive disabled.
+testdata/fixtures/include_disabled.rst:19: (WARNING/2) "include" directive disabled.
+testdata/fixtures/include_disabled.rst:25: (WARNING/2) "include" directive disabled.
+testdata/fixtures/include_disabled.rst:29: (WARNING/2) "raw" directive disabled.
+testdata/fixtures/include_disabled.rst:33: (WARNING/2) "raw" directive disabled.
+testdata/fixtures/include_disabled.rst:37: (WARNING/2) "raw" directive disabled.
+testdata/fixtures/include_disabled.rst:44: (WARNING/2) raw (and derived) roles disabled
+testdata/fixtures/include_disabled.rst:27: (ERROR/3) Undefined substitution referenced: "copy".
+testdata/fixtures/include_disabled.rst:27: (ERROR/3) Undefined substitution referenced: "reg".

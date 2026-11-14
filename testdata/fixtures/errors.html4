@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>errors.rst</title>
+
+</head>
+<body>
+<div class="document">
+
+
+<div class="section" id="title">
+<h1>Title</h1>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 2)</p>
+<p>Title underline too short.</p>
+<pre class="literal-block">
+Title
+====
+</pre>
+</div>
+<p>Short underline above.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 6)</p>
+<p>Unknown directive type &quot;unknown-directive&quot;.</p>
+<pre class="literal-block">
+.. unknown-directive:: argument
+   :option: value
+
+   content
+
+</pre>
+</div>
+<p>Unknown role <a href="#system-message-1"><span class="problematic" id="problematic-1">:foo:`bar`</span></a> and undefined <a href="#system-message-6"><span class="problematic" id="problematic-6">ref_</span></a> and <a href="#system-message-4"><span class="problematic" id="problematic-4">|undefined|</span></a> subst.</p>
+<div class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 11); <em><a href="#problematic-1">backlink</a></em></p>
+Unknown interpreted text role &quot;foo&quot;.</div>
+<p><a href="#system-message-2"><span class="problematic" id="problematic-2">*</span></a>unterminated emphasis and <a href="#system-message-3"><span class="problematic" id="problematic-3">``</span></a>unterminated literal</p>
+<div class="system-message" id="system-message-2">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 13); <em><a href="#problematic-2">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+<div class="system-message" id="system-message-3">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 13); <em><a href="#problematic-3">backlink</a></em></p>
+Inline literal start-string without end-string.</div>
+<p>Footnote ref <a href="#system-message-7"><span class="problematic" id="footnote-reference-1">[5]_</span></a> missing, auto <a class="footnote-reference" href="#footnote-1" id="footnote-reference-2">[1]</a> missing, <a href="#system-message-5"><span class="problematic" id="problematic-5">anon__</span></a> missing.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 18)</p>
+Duplicate explicit target name: &quot;dup&quot;.</div>
+<p><a href="#system-message-8"><span class="problematic" id="problematic-7">dup_</span></a></p>
+<blockquote>
+Unexpected indentation</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 23)</p>
+Block quote ends without a blank line; unexpected unindent.</div>
+<dl class="docutils">
+<dt>after block quote</dt>
+<dd>again.</dd>
+</dl>
+<ul class="simple">
+<li>list</li>
+</ul>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 27)</p>
+Bullet list ends without a blank line; unexpected unindent.</div>
+<p>without blank line</p>
+<p>1. enumerated
+text</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 32)</p>
+<p>Content block expected for the &quot;note&quot; directive; none found.</p>
+<pre class="literal-block">
+.. note::
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 34)</p>
+<p>Error in &quot;image&quot; directive:
+1 argument(s) required, 0 supplied.</p>
+<pre class="literal-block">
+.. image::
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 36)</p>
+<p>Error in &quot;figure&quot; directive:
+invalid option value: (option: &quot;scale&quot;; value: 'abc')
+invalid literal for int() with base 10: 'abc'.</p>
+<pre class="literal-block">
+.. figure:: x.png
+   :scale: abc
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 39)</p>
+<p>Problems with &quot;include&quot; directive path:
+InputError: [Errno 2] No such file or directory: 'testdata/fixtures/does-not-exist.rst'.</p>
+<pre class="literal-block">
+.. include:: does-not-exist.rst
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 41)</p>
+<p>5 header row(s) specified but only 1 row(s) of data supplied (&quot;csv-table&quot; directive).</p>
+<pre class="literal-block">
+.. csv-table:: bad
+   :header-rows: 5
+
+   a,b
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 48)</p>
+<p>Malformed table.
+Bottom border missing or corrupt.</p>
+<pre class="literal-block">
++-----+
+| bad |
++----
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 52)</p>
+<p>Malformed table.
+Bottom border or header rule does not match top border.</p>
+<pre class="literal-block">
+=====  ====
+bad table
+=====
+</pre>
+</div>
+<div class="section" id="section">
+<h2>Section</h2>
+<div class="section" id="level-skip">
+<h3>Level skip</h3>
+</div>
+</div>
+</div>
+<div class="section" id="another">
+<h1>Another</h1>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 63)</p>
+<p>Inconsistent title style: skip from level 1 to 3.</p>
+<pre class="literal-block">
+Bad
+~~~
+</pre>
+<p>Established title styles: = - ~</p>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 66)</p>
+<p>Content block expected for the &quot;replace&quot; directive; none found.</p>
+<pre class="literal-block">
+replace::
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 66)</p>
+<p>Substitution definition &quot;empty&quot; empty or invalid.</p>
+<pre class="literal-block">
+.. |empty| replace::
+
+</pre>
+</div>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[1]</a></td><td>Unreferenced footnote</td></tr>
+</tbody>
+</table>
+<p id="unused-target"><a href="#system-message-9"><span class="problematic" id="problematic-8">`embedded &lt;http://x`_</span></a> and <a href="#system-message-10"><span class="problematic" id="problematic-9">`bad &lt;uri&gt; ref`_</span></a>.</p>
+<pre class="literal-block">
+.. class::
+</pre>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 78)</p>
+<p>Unknown interpreted text role &quot;nonexistent&quot;.</p>
+<pre class="literal-block">
+.. role:: custom(nonexistent)
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 80)</p>
+<p>Unknown interpreted text role &quot;nonexistent&quot;.</p>
+<pre class="literal-block">
+.. default-role:: nonexistent
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 82)</p>
+<p>Error parsing content block for the &quot;table&quot; directive: exactly one table expected.</p>
+<pre class="literal-block">
+.. table::
+
+   not a table
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 86)</p>
+<p>Error parsing content block for the &quot;list-table&quot; directive: uniform two-level bullet list expected, but row 2 does not contain the same number of items as row 1 (2 vs 1).</p>
+<pre class="literal-block">
+.. list-table::
+
+   * - a
+   * - b
+     - c
+</pre>
+</div>
+</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="system-message-4">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 11); <em><a href="#problematic-4">backlink</a></em></p>
+Undefined substitution referenced: &quot;undefined&quot;.</div>
+<div class="system-message" id="system-message-5">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>); <em><a href="#problematic-5">backlink</a></em></p>
+Anonymous hyperlink mismatch: 1 references but 0 targets.
+See &quot;backrefs&quot; attribute for IDs.</div>
+<div class="system-message" id="system-message-6">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 11); <em><a href="#problematic-6">backlink</a></em></p>
+Unknown target name: &quot;ref&quot;.</div>
+<div class="system-message" id="system-message-7">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 15); <em><a href="#footnote-reference-1">backlink</a></em></p>
+Unknown target name: &quot;5&quot;.</div>
+<div class="system-message" id="system-message-8">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 20); <em><a href="#problematic-7">backlink</a></em></p>
+Duplicate target name, cannot be used as a unique reference: &quot;dup&quot;.</div>
+<div class="system-message" id="system-message-9">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 72); <em><a href="#problematic-8">backlink</a></em></p>
+<p>Unknown target name: &quot;embedded &lt;http://x&quot;.</p>
+<p>Did you want to embed a URI or alias?
+Closing bracket missing.</p>
+</div>
+<div class="system-message" id="system-message-10">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/errors.rst</tt>, line 72); <em><a href="#problematic-9">backlink</a></em></p>
+<p>Unknown target name: &quot;bad &lt;uri&gt; ref&quot;.</p>
+<p>Did you want to embed a URI or alias?
+The embedded reference must be the last text before the end string.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

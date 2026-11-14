@@ -85,8 +85,8 @@ type htmlTranslator struct {
 
 	mathClasses map[string]*[]string
 	stubs       map[*Node][]bool
-	column   map[*Node]int
-	html5tag map[*Node]string
+	column      map[*Node]int
+	html5tag    map[*Node]string
 }
 
 func newHTMLTranslator(doc *Document) *htmlTranslator {

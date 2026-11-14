@@ -1,0 +1,2 @@
+testdata/fixtures/include.rst:11: (WARNING/2) Cannot analyze code. Pygments package not found.
+testdata/fixtures/included.txt:10: (ERROR/3) Unknown target name: "undefined".

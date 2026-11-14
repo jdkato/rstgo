@@ -1,0 +1,3 @@
+<document source="testdata/fixtures/strip.rst">
+    <paragraph classes="keep">
+        Paragraph keeping one class.

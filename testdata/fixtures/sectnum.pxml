@@ -1,0 +1,94 @@
+<document source="testdata/fixtures/sectnum.rst">
+    <topic classes="contents" ids="contents" names="contents">
+        <title>
+            Contents
+        <bullet_list classes="auto-toc">
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-1" refid="one">
+                        <generated classes="sectnum">
+                            §1.   
+                        One
+                <bullet_list classes="auto-toc">
+                    <list_item>
+                        <paragraph>
+                            <reference ids="toc-entry-2" refid="one-a">
+                                <generated classes="sectnum">
+                                    §1.1.   
+                                One A
+                        <bullet_list>
+                            <list_item>
+                                <paragraph>
+                                    <reference ids="toc-entry-3" refid="deep">
+                                        Deep
+                                <bullet_list>
+                                    <list_item>
+                                        <paragraph>
+                                            <reference ids="toc-entry-4" refid="deeper">
+                                                Deeper
+            <list_item>
+                <paragraph>
+                    <reference ids="toc-entry-5" refid="two">
+                        <generated classes="sectnum">
+                            §2.   
+                        Two
+                <bullet_list classes="auto-toc">
+                    <list_item>
+                        <paragraph>
+                            <reference ids="toc-entry-6" refid="two-a">
+                                <generated classes="sectnum">
+                                    §2.1.   
+                                Two A
+                    <list_item>
+                        <paragraph>
+                            <reference ids="toc-entry-7" refid="two-b">
+                                <generated classes="sectnum">
+                                    §2.2.   
+                                Two B
+    <section ids="one" names="one">
+        <title auto="1" refid="contents">
+            <generated classes="sectnum">
+                §1.   
+            One
+        <section ids="one-a" names="one\ a">
+            <title auto="1" refid="contents">
+                <generated classes="sectnum">
+                    §1.1.   
+                One A
+            <section ids="deep" names="deep">
+                <title refid="contents">
+                    Deep
+                <section ids="deeper" names="deeper">
+                    <title refid="contents">
+                        Deeper
+    <section ids="two" names="two">
+        <title auto="1" refid="contents">
+            <generated classes="sectnum">
+                §2.   
+            Two
+        <topic classes="contents local" ids="local" names="local">
+            <title>
+                Local
+            <bullet_list classes="auto-toc">
+                <list_item>
+                    <paragraph>
+                        <reference ids="toc-entry-8" refid="two-a">
+                            <generated classes="sectnum">
+                                §2.1.   
+                            Two A
+                <list_item>
+                    <paragraph>
+                        <reference ids="toc-entry-9" refid="two-b">
+                            <generated classes="sectnum">
+                                §2.2.   
+                            Two B
+        <section ids="two-a" names="two\ a">
+            <title auto="1" refid="toc-entry-8">
+                <generated classes="sectnum">
+                    §2.1.   
+                Two A
+        <section ids="two-b" names="two\ b">
+            <title auto="1" refid="toc-entry-9">
+                <generated classes="sectnum">
+                    §2.2.   
+                Two B

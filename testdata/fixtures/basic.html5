@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="A test document" name="description" />
+<meta content="rst, test" name="keywords" />
+<meta content="en" http-equiv="Content-Language" />
+<meta name="author" content="Jane Doe" />
+<meta name="dcterms.date" content="2024-01-02" />
+<meta name="dcterms.rights" content="Public domain." />
+<title>Document Title</title>
+<link rel="schema.dcterms" href="http://purl.org/dc/terms/"/>
+
+</head>
+<body class="with-toc">
+<header>
+<p>Header text.</p>
+</header>
+<main id="document-title">
+<h1 class="title">Document Title</h1>
+<p class="subtitle" id="a-subtitle">A Subtitle</p>
+<dl class="docinfo">
+<dt class="author">Author<span class="colon">:</span></dt>
+<dd class="author"><p>Jane Doe</p></dd>
+<dt class="authors">Authors<span class="colon">:</span></dt>
+<dd class="authors"><ol class="upperalpha simple">
+<li><p>One; B. Two; C. Three</p></li>
+</ol>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/basic.rst</span>, line 9)</p>
+<p>Cannot extract &quot;Authors&quot; from bibliographic field:
+Bibliographic field &quot;Authors&quot; must contain either
+ a single paragraph (with author names separated by a character from the set &quot;;,&quot;),
+ multiple paragraphs (one per author),
+ or a bullet list with one author name per item.
+Note: Leading initials can cause (mis)recognizing names as enumerated list.</p>
+</aside>
+</dd>
+<dt class="organization">Organization<span class="colon">:</span></dt>
+<dd class="organization">ACME</dd>
+<dt class="address">Address<span class="colon">:</span></dt>
+<dd class="address"><pre class="address">1 Main St.
+Springfield
+</pre>
+</dd>
+<dt class="contact">Contact<span class="colon">:</span></dt>
+<dd class="contact"><a class="reference external" href="mailto:jane&#64;example.org">jane&#64;example.org</a></dd>
+<dt class="version">Version<span class="colon">:</span></dt>
+<dd class="version">1.2</dd>
+<dt class="revision">Revision<span class="colon">:</span></dt>
+<dd class="revision">42</dd>
+<dt class="status">Status<span class="colon">:</span></dt>
+<dd class="status">Draft</dd>
+<dt class="date">Date<span class="colon">:</span></dt>
+<dd class="date">2024-01-02</dd>
+<dt class="copyright">Copyright<span class="colon">:</span></dt>
+<dd class="copyright">Public domain.</dd>
+<dt class="custom-field">Custom Field<span class="colon">:</span></dt>
+<dd class="custom-field"><p>custom <em>value</em></p>
+</dd>
+</dl>
+<div class="topic dedication" role="doc-dedication">
+<p class="topic-title">Dedication</p>
+<p>To someone.</p>
+</div>
+<div class="topic abstract" role="doc-abstract">
+<p class="topic-title">Abstract</p>
+<p>Short abstract
+over two lines.</p>
+</div>
+<nav class="contents" id="table-of-contents" role="doc-toc">
+<p class="topic-title"><a class="reference internal" href="#top">Table of Contents</a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#section-one" id="toc-entry-1">Section One</a></p>
+<ul>
+<li><p><a class="reference internal" href="#subsection" id="toc-entry-2">Subsection</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#section-two" id="toc-entry-3">Section Two</a></p></li>
+</ul>
+</nav>
+<section id="section-one">
+<h2><a class="toc-backref" href="#toc-entry-1" role="doc-backlink">Section One</a></h2>
+<p>Paragraph with <em>emphasis</em>, <strong>strong</strong>, <span class="docutils literal">literal</span>, <cite>interpreted</cite>,
+<sub>sub</sub> and <sup>sup</sup> text, a <a class="reference external" href="https://example.org/">reference</a> <a class="brackets" href="#footnote-4" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>, an <a class="reference external" href="https://example.org/anon">anonymous one</a> <a class="brackets" href="#footnote-5" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>, a
+footnote <a class="brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, an auto footnote <a class="brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, labeled <a class="brackets" href="#lbl" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, symbol <a class="brackets" href="#footnote-3" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a> and a
+citation <a class="citation-reference" href="#cit2002" id="citation-reference-1" role="doc-biblioref">[CIT2002]</a>.  Inline <span class="target" id="target">target</span> here; replaced <em>text</em> too.  Standalone
+<a class="reference external" href="https://example.org/x?y=1#z">https://example.org/x?y=1#z</a> and <a class="reference external" href="mailto:me&#64;example.org">mailto:me&#64;example.org</a>, <a class="reference external" href="mailto:me&#64;example.org">me&#64;example.org</a>.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Manual footnote.</p>
+</aside>
+<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p>Auto footnote.</p>
+</aside>
+<aside class="footnote brackets" id="lbl" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#footnote-reference-3">1</a>,<a role="doc-backlink" href="#footnote-reference-5">2</a>)</span>
+<p>Labeled auto footnote, see <a class="brackets" href="#lbl" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+</aside>
+<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">*</a><span class="fn-bracket">]</span></span>
+<p>Symbol footnote.</p>
+</aside>
+</aside>
+<div role="list" class="citation-list">
+<div class="citation" id="cit2002" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">CIT2002</a><span class="fn-bracket">]</span></span>
+<p>A citation.</p>
+</div>
+</div>
+<section id="subsection">
+<h3><a class="toc-backref" href="#toc-entry-2" role="doc-backlink">Subsection</a></h3>
+<ul class="simple">
+<li><p>bullet one</p></li>
+<li><p>bullet two</p>
+<ul>
+<li><p>nested a</p></li>
+<li><p>nested b</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple">
+<li><p>first</p></li>
+<li><p>second</p>
+<ol class="loweralpha simple">
+<li><p>alpha</p></li>
+<li><p>beta</p></li>
+</ol>
+</li>
+<li><p>auto</p></li>
+<li><p>auto 2</p></li>
+</ol>
+<ol class="lowerroman simple" start="4">
+<li><p>roman four</p></li>
+<li><p>roman five</p></li>
+</ol>
+<dl>
+<dt>Term</dt>
+<dd><p>Definition.</p>
+</dd>
+<dt>Term 2<span class="classifier">classifier</span><span class="classifier">another</span></dt>
+<dd><p>Definition 2.</p>
+<p>Second paragraph.</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-a</span></kbd></dt>
+<dd><p>option a</p>
+</dd>
+<dt><kbd><span class="option">-b <var>FILE</var></span></kbd></dt>
+<dd><p>option b with argument</p>
+</dd>
+<dt><kbd><span class="option">--long</span></kbd></dt>
+<dd><p>long option</p>
+</dd>
+<dt><kbd><span class="option">--very-long-option=<var>VALUE</var></span></kbd></dt>
+<dd><p>description on
+two lines</p>
+</dd>
+<dt><kbd><span class="option">/V</span></kbd></dt>
+<dd><p>DOS style</p>
+</dd>
+</dl>
+<div class="line-block">
+<div class="line">Line block</div>
+<div class="line-block">
+<div class="line">indented line</div>
+</div>
+<div class="line">back</div>
+</div>
+<blockquote>
+<p>Block quote with attribution.</p>
+<p class="attribution">—Somebody Famous</p>
+</blockquote>
+<pre class="code python doctest">&gt;&gt;&gt; print(&quot;doctest&quot;)
+doctest
+</pre>
+<p>Literal block:</p>
+<pre class="literal-block">literal  &lt;text&gt; &amp; more
+  indented</pre>
+<p>Quoted literal:</p>
+<pre class="literal-block">&gt; quoted
+&gt; literal</pre>
+</section>
+</section>
+<section id="section-two">
+<h2><a class="toc-backref" href="#toc-entry-3" role="doc-backlink">Section Two</a></h2>
+<table>
+<thead>
+<tr><th class="head"><p>Head</p></th>
+<th class="head"><p>Grid</p></th>
+<th class="head"><p>Table</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>a</p></td>
+<td colspan="2"><p>spans two</p></td>
+</tr>
+<tr><td rowspan="2"><p>rows</p></td>
+<td><p>b</p></td>
+<td><p>c</p></td>
+</tr>
+<tr><td><p>d</p></td>
+<td><p>e</p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr><th class="head" colspan="2"><p>Inputs</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+<tr><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>A or B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>False</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr><td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<aside class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A note.</p>
+</aside>
+<aside class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A warning with <em>markup</em>.</p>
+</aside>
+<aside class="admonition special">
+<p class="admonition-title">Custom Admonition</p>
+<p>Body.</p>
+</aside>
+<img alt="A picture" class="align-center" src="picture.png" style="width: 200px;" />
+<figure class="fancy" style="width: 50%">
+<img alt="picture.png" src="picture.png" />
+<figcaption>
+<p>The caption.</p>
+<div class="legend">
+<p>The legend.</p>
+</div>
+</figcaption>
+</figure>
+<aside class="topic">
+<p class="topic-title">Topic Title</p>
+<p>Topic body.</p>
+</aside>
+<aside class="sidebar">
+<p class="sidebar-title">Sidebar Title</p>
+<p class="sidebar-subtitle">Sidebar Subtitle</p>
+<p>Sidebar body.</p>
+</aside>
+<p class="rubric">A Rubric</p>
+<blockquote class="epigraph">
+<p>An epigraph.</p>
+<p class="attribution">—Author</p>
+</blockquote>
+<div class="compound">
+<p>First part.</p>
+<pre class="literal-block">literal in compound</pre>
+</div>
+<div class="custom docutils container">
+<p>In container.</p>
+</div>
+<pre class="literal-block">parsed <em>literal</em> with <span class="docutils literal">markup</span></pre>
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/basic.rst</span>, line 186)</p>
+<p>Cannot analyze code. Pygments package not found.</p>
+<pre class="literal-block">.. code:: python
+
+   def f(x):
+       return x
+</pre>
+</aside>
+<p class="classy">Paragraph with class.</p>
+<!-- comment here
+continues -->
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">4</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://example.org/">https://example.org/</a></p>
+</aside>
+<aside class="footnote brackets" id="footnote-5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">5</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://example.org/anon">https://example.org/anon</a></p>
+</aside>
+</aside>
+</section>
+</main>
+<footer>
+<p>Footer text.</p>
+</footer>
+</body>
+</html>

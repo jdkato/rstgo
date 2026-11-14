@@ -491,7 +491,7 @@ func (d *directive) getCSVData() ([]string, string, bool) {
 		source := adaptPath(f.(string), d.state.document.currentSource, st.rootPrefix)
 		data, err := os.ReadFile(source)
 		if err != nil {
-			d.propagate(d.reporter().severe(fmt.Sprintf("Problems with \"%s\" directive path:\n%s.", d.name, ioErrorString(err, source)),
+			d.propagate(d.reporter().severe(fmt.Sprintf("Problems with \"%s\" directive path:\n%s.", d.name, strings.TrimPrefix(ioErrorString(err, source), "InputError: ")),
 				d.literalBlockOfSource(), atLine(d.lineno)))
 		}
 		encoding := "utf-8"
@@ -505,8 +505,12 @@ func (d *directive) getCSVData() ([]string, string, bool) {
 		}
 		return pySplitlines(text, false), source, true
 	} else if u, ok := d.options["url"]; ok {
-		d.propagate(d.reporter().severe(fmt.Sprintf("Problems with \"%s\" directive URL \"%s\":\nnetwork access is not supported.", d.name, u),
-			d.literalBlockOfSource(), atLine(d.lineno)))
+		text, errStr := readURL(u.(string))
+		if errStr != "" {
+			d.propagate(d.reporter().severe(fmt.Sprintf("Problems with \"%s\" directive URL \"%s\":\n%s.", d.name, u, errStr),
+				d.literalBlockOfSource(), atLine(d.lineno)))
+		}
+		return pySplitlines(text, false), u.(string), true
 	}
 	d.propagate(d.reporter().warning(fmt.Sprintf(`The "%s" directive requires content; none supplied.`, d.name),
 		d.literalBlockOfSource(), atLine(d.lineno)))
@@ -615,4 +619,26 @@ func (d *directive) checkListContent(node *Node) []int {
 		}
 	}
 	return d.getColumnWidths(numCols)
+}
+
+// readURL stands in for urllib.request.urlopen: only "file:" URLs are
+// supported (no network access).
+func readURL(u string) (string, string) {
+	i := strings.Index(u, ":")
+	if i <= 0 {
+		return "", fmt.Sprintf("unknown url type: %s", pyStrRepr(u))
+	}
+	if strings.ToLower(u[:i]) != "file" {
+		return "", fmt.Sprintf("<urlopen error network access is not supported: %s>", u)
+	}
+	p := strings.TrimPrefix(u[i+1:], "//")
+	data, err := os.ReadFile(p)
+	if err != nil {
+		return "", "<urlopen error " + pyOSError(err, p) + ">"
+	}
+	text, derr := decodeInput(data, "utf-8")
+	if derr != nil {
+		return "", derr.Error()
+	}
+	return text, ""
 }

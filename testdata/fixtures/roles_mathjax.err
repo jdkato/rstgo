@@ -1,0 +1,2 @@
+testdata/fixtures/roles_mathjax.rst:12: (WARNING/2) Cannot analyze code. Pygments package not found.
+testdata/fixtures/roles_mathjax.rst:26: (WARNING/2) Cannot analyze code. Pygments package not found.

@@ -1,0 +1,23 @@
+<document source="testdata/fixtures/pepref.rst">
+    <paragraph>
+        See 
+        <reference refuri="https://peps.python.org/pep-0008">
+            PEP 8
+         and 
+        <reference refuri="https://peps.python.org/pep-0287">
+            pep-0287.txt
+        , 
+        <reference refuri="https://tools.ietf.org/html/rfc2822.html">
+            RFC 2822
+         and 
+        <reference refuri="https://tools.ietf.org/html/rfc1123.html">
+            RFC-1123
+        , not PEPx 9 or RFC2822x.
+    <block_quote>
+        <paragraph>
+            Tab indented block quote
+            with    tabs.
+    <paragraph>
+        Literal:
+    <literal_block xml:space="preserve">
+        tabbed  literal

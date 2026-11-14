@@ -5,6 +5,7 @@ package rstgo
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 )
 
@@ -439,9 +440,17 @@ func runFigure(d *directive) []*Node {
 	figureNode := newElem("figure", "", imageNode)
 	figureNode.setSrcLine(d.sm.getSourceAndLine(d.lineno, true))
 	if hasFigwidth && figwidth != nil {
-		if figwidth.(string) != "image" {
-			// figwidth "image" needs the Python Imaging Library in
-			// Docutils; without it no width is set.
+		if figwidth.(string) == "image" {
+			if d.state.document.settings.fileInsertionEnabled {
+				p, err := url.PathUnescape(imageNode.str("uri"))
+				if err != nil {
+					p = imageNode.str("uri")
+				}
+				if w, _, e := readImageSize(p); e == "" {
+					figureNode.setAttr("width", fmt.Sprintf("%dpx", w))
+				}
+			}
+		} else {
 			figureNode.setAttr("width", figwidth)
 		}
 	}

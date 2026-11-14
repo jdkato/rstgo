@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta content="A test document" name="description" />
+<meta content="rst, test" name="keywords" />
+<meta content="en" http-equiv="Content-Language" />
+<meta name="author" content="Jane Doe" />
+<meta name="organization" content="ACME" />
+<meta name="date" content="2024-01-02" />
+<meta name="copyright" content="Public domain." />
+<title>Document Title</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 9511 2024-01-13 09:50:07Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+Despite the name, some widely supported CSS2 features are used.
+
+See https://docutils.sourceforge.io/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+.subscript {
+  vertical-align: sub;
+  font-size: smaller }
+
+.superscript {
+  vertical-align: super;
+  font-size: smaller }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left, table.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right, table.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+.align-top    {
+  vertical-align: top }
+
+.align-middle {
+  vertical-align: middle }
+
+.align-bottom {
+  vertical-align: bottom }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: gray; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic, pre.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="header">
+Header text.
+<hr class="header"/>
+</div>
+<div class="document" id="document-title">
+<h1 class="title">Document Title</h1>
+<h2 class="subtitle" id="a-subtitle">A Subtitle</h2>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Jane Doe</td></tr>
+<tr class="authors field"><th class="docinfo-name">Authors:</th><td class="field-body"><ol class="first upperalpha simple">
+<li>One; B. Two; C. Three</li>
+</ol>
+<div class="last system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/basic_css.rst</tt>, line 9)</p>
+Cannot extract &quot;Authors&quot; from bibliographic field:
+Bibliographic field &quot;Authors&quot; must contain either
+ a single paragraph (with author names separated by a character from the set &quot;;,&quot;),
+ multiple paragraphs (one per author),
+ or a bullet list with one author name per item.
+Note: Leading initials can cause (mis)recognizing names as enumerated list.</div>
+</td>
+</tr>
+<tr><th class="docinfo-name">Organization:</th>
+<td>ACME</td></tr>
+<tr><th class="docinfo-name">Address:</th>
+<td><pre class="address">
+1 Main St.
+Springfield
+</pre>
+</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="reference external first last" href="mailto:jane&#64;example.org">jane&#64;example.org</a></td></tr>
+<tr><th class="docinfo-name">Version:</th>
+<td>1.2</td></tr>
+<tr><th class="docinfo-name">Revision:</th>
+<td>42</td></tr>
+<tr><th class="docinfo-name">Status:</th>
+<td>Draft</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>2024-01-02</td></tr>
+<tr><th class="docinfo-name">Copyright:</th>
+<td>Public domain.</td></tr>
+<tr class="custom-field field"><th class="docinfo-name">Custom Field:</th><td class="field-body">custom <em>value</em></td>
+</tr>
+</tbody>
+</table>
+<div class="dedication topic">
+<p class="topic-title">Dedication</p>
+<p>To someone.</p>
+</div>
+<div class="abstract topic">
+<p class="topic-title">Abstract</p>
+<p>Short abstract
+over two lines.</p>
+</div>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title"><a class="reference internal" href="#top">Table of Contents</a></p>
+<ul class="simple">
+<li><a class="reference internal" href="#section-one" id="toc-entry-1">Section One</a><ul>
+<li><a class="reference internal" href="#subsection" id="toc-entry-2">Subsection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#section-two" id="toc-entry-3">Section Two</a></li>
+</ul>
+</div>
+<div class="section" id="section-one">
+<h1><a class="toc-backref" href="#toc-entry-1">Section One</a></h1>
+<p>Paragraph with <em>emphasis</em>, <strong>strong</strong>, <tt class="docutils literal">literal</tt>, <cite>interpreted</cite>,
+<sub>sub</sub> and <sup>sup</sup> text, a <a class="reference external" href="https://example.org/">reference</a> <a class="footnote-reference" href="#footnote-4" id="footnote-reference-6">[4]</a>, an <a class="reference external" href="https://example.org/anon">anonymous one</a> <a class="footnote-reference" href="#footnote-5" id="footnote-reference-7">[5]</a>, a
+footnote <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>, an auto footnote <a class="footnote-reference" href="#footnote-2" id="footnote-reference-2">[2]</a>, labeled <a class="footnote-reference" href="#lbl" id="footnote-reference-3">[3]</a>, symbol <a class="footnote-reference" href="#footnote-3" id="footnote-reference-4">[*]</a> and a
+citation <a class="citation-reference" href="#cit2002" id="citation-reference-1">[CIT2002]</a>.  Inline <span class="target" id="target">target</span> here; replaced <em>text</em> too.  Standalone
+<a class="reference external" href="https://example.org/x?y=1#z">https://example.org/x?y=1#z</a> and <a class="reference external" href="mailto:me&#64;example.org">mailto:me&#64;example.org</a>, <a class="reference external" href="mailto:me&#64;example.org">me&#64;example.org</a>.</p>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>Manual footnote.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[2]</a></td><td>Auto footnote.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="lbl" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#footnote-reference-3">1</a>, <a class="fn-backref" href="#footnote-reference-5">2</a>)</em> Labeled auto footnote, see <a class="footnote-reference" href="#lbl" id="footnote-reference-5">[3]</a>.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-4">[*]</a></td><td>Symbol footnote.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="cit2002" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#citation-reference-1">[CIT2002]</a></td><td>A citation.</td></tr>
+</tbody>
+</table>
+<div class="section" id="subsection">
+<h2><a class="toc-backref" href="#toc-entry-2">Subsection</a></h2>
+<ul class="simple">
+<li>bullet one</li>
+<li>bullet two<ul>
+<li>nested a</li>
+<li>nested b</li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple">
+<li>first</li>
+<li>second<ol class="loweralpha">
+<li>alpha</li>
+<li>beta</li>
+</ol>
+</li>
+<li>auto</li>
+<li>auto 2</li>
+</ol>
+<ol class="lowerroman simple" start="4">
+<li>roman four</li>
+<li>roman five</li>
+</ol>
+<dl class="docutils">
+<dt>Term</dt>
+<dd>Definition.</dd>
+<dt>Term 2 <span class="classifier-delimiter">:</span> <span class="classifier">classifier</span> <span class="classifier-delimiter">:</span> <span class="classifier">another</span></dt>
+<dd><p class="first">Definition 2.</p>
+<p class="last">Second paragraph.</p>
+</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-a</span></kbd></td>
+<td>option a</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b <var>FILE</var></span></kbd></td>
+<td>option b with argument</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">--long</span></kbd></td>
+<td>long option</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--very-long-option=<var>VALUE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>description on
+two lines</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">/V</span></kbd></td>
+<td>DOS style</td></tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Line block</div>
+<div class="line-block">
+<div class="line">indented line</div>
+</div>
+<div class="line">back</div>
+</div>
+<blockquote>
+<p>Block quote with attribution.</p>
+<p class="attribution">&mdash;Somebody Famous</p>
+</blockquote>
+<pre class="doctest-block">
+&gt;&gt;&gt; print(&quot;doctest&quot;)
+doctest
+</pre>
+<p>Literal block:</p>
+<pre class="literal-block">
+literal  &lt;text&gt; &amp; more
+  indented
+</pre>
+<p>Quoted literal:</p>
+<pre class="literal-block">
+&gt; quoted
+&gt; literal
+</pre>
+</div>
+</div>
+<div class="section" id="section-two">
+<h1><a class="toc-backref" href="#toc-entry-3">Section Two</a></h1>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Head</th>
+<th class="head">Grid</th>
+<th class="head">Table</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>a</td>
+<td colspan="2">spans two</td>
+</tr>
+<tr><td rowspan="2">rows</td>
+<td>b</td>
+<td>c</td>
+</tr>
+<tr><td>d</td>
+<td>e</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="31%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="2">Inputs</th>
+<th class="head">Output</th>
+</tr>
+<tr><th class="head">A</th>
+<th class="head">B</th>
+<th class="head">A or B</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>False</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr><td>True</td>
+<td>False</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A note.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">A warning with <em>markup</em>.</p>
+</div>
+<div class="admonition special">
+<p class="first admonition-title">Custom Admonition</p>
+<p class="last">Body.</p>
+</div>
+<img alt="A picture" class="align-center" src="picture.png" style="width: 200px;" />
+<div class="fancy figure" style="width: 50%">
+<img alt="picture.png" src="picture.png" />
+<p class="caption">The caption.</p>
+<div class="legend">
+The legend.</div>
+</div>
+<div class="topic">
+<p class="topic-title">Topic Title</p>
+<p>Topic body.</p>
+</div>
+<div class="sidebar">
+<p class="first sidebar-title">Sidebar Title</p>
+<p class="sidebar-subtitle">Sidebar Subtitle</p>
+<p class="last">Sidebar body.</p>
+</div>
+<p class="rubric">A Rubric</p>
+<blockquote class="epigraph">
+<p>An epigraph.</p>
+<p class="attribution">&mdash;Author</p>
+</blockquote>
+<div class="compound">
+<p class="compound-first">First part.</p>
+<pre class="compound-last literal-block">
+literal in compound
+</pre>
+</div>
+<div class="custom docutils container">
+In container.</div>
+<pre class="literal-block">
+parsed <em>literal</em> with <tt class="docutils literal">markup</tt>
+</pre>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/basic_css.rst</tt>, line 186)</p>
+<p>Cannot analyze code. Pygments package not found.</p>
+<pre class="literal-block">
+.. code:: python
+
+   def f(x):
+       return x
+
+</pre>
+</div>
+<p class="classy">Paragraph with class.</p>
+<!-- comment here
+continues -->
+<table class="docutils footnote" frame="void" id="footnote-4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-6">[4]</a></td><td><a class="reference external" href="https://example.org/">https://example.org/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-7">[5]</a></td><td><a class="reference external" href="https://example.org/anon">https://example.org/anon</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+Footer text.
+</div>
+</body>
+</html>

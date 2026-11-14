@@ -359,7 +359,12 @@ func runRaw(d *directive) []*Node {
 		}
 		source, hasSource = path, true
 	} else if u, ok := d.options["url"]; ok {
-		d.fail(3, fmt.Sprintf("Problems with \"%s\" directive URL \"%s\":\nInputError: network access is not supported.", d.name, u))
+		var errStr string
+		text, errStr = readURL(u.(string))
+		if errStr != "" {
+			d.fail(3, fmt.Sprintf("Problems with \"%s\" directive URL \"%s\":\nURLError: %s.", d.name, u, errStr))
+		}
+		source, hasSource = u.(string), true
 	} else {
 		d.assertHasContent()
 	}

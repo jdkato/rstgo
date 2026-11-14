@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Math</title>
+
+</head>
+<body>
+<main id="math">
+<h1 class="title">Math</h1>
+
+<p>Inline <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>α</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mn>2</mn>
+  </mfrac>
+</math> formula.</p>
+<div>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msubsup>
+    <mo>∫</mo>
+    <mn>0</mn>
+    <mn>1</mn>
+  </msubsup>
+  <mi>x</mi>
+  <mspace width="0.1667em"></mspace>
+  <mi>d</mi>
+  <mi>x</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mn>2</mn>
+  </mfrac>
+</math>
+</div>
+</main>
+</body>
+</html>

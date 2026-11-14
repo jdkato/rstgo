@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>errors_quiet.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<section id="title">
+<h2>Title</h2>
+<p>Short underline above.</p>
+<p>Unknown role :foo:`bar` and undefined ref_ and |undefined| subst.</p>
+<p>*unterminated emphasis and ``unterminated literal</p>
+<p>Footnote ref [5]_ missing, auto <a class="brackets" href="#footnote-1" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> missing, anon__ missing.</p>
+<p>dup_</p>
+<blockquote>
+<p>Unexpected indentation</p>
+</blockquote>
+<dl class="simple">
+<dt>after block quote</dt>
+<dd><p>again.</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>list</p></li>
+</ul>
+<p>without blank line</p>
+<p>1. enumerated
+text</p>
+<section id="section">
+<h3>Section</h3>
+<section id="level-skip">
+<h4>Level skip</h4>
+</section>
+</section>
+</section>
+<section id="another">
+<h2>Another</h2>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">1</a><span class="fn-bracket">]</span></span>
+<p>Unreferenced footnote</p>
+</aside>
+</aside>
+<p id="unused-target">`embedded &lt;http://x`_ and `bad &lt;uri&gt; ref`_.</p>
+<pre class="literal-block">.. class::</pre>
+</section>
+</main>
+</body>
+</html>

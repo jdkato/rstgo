@@ -1,0 +1,35 @@
+<document source="testdata/fixtures/transitions.rst">
+    <transition>
+    <system_message level="2" line="1" source="testdata/fixtures/transitions.rst" type="WARNING">
+        <paragraph>
+            Transition at the start of the document.
+    <paragraph>
+        Para.
+    <transition>
+    <transition>
+    <system_message level="2" line="7" source="testdata/fixtures/transitions.rst" type="WARNING">
+        <paragraph>
+            At least one body element should separate transitions.
+    <section ids="section" names="section">
+        <title>
+            Section
+        <transition>
+        <system_message level="2" line="12" source="testdata/fixtures/transitions.rst" type="WARNING">
+            <paragraph>
+                Transition at the start of the section.
+        <paragraph>
+            Para.
+        <block_quote>
+            <system_message level="3" line="16" source="testdata/fixtures/transitions.rst" type="ERROR">
+                <paragraph>
+                    Unexpected section title or transition.
+                <literal_block xml:space="preserve">
+                    ----
+            <paragraph>
+                In quote.
+        <paragraph>
+            Para.
+        <transition>
+        <system_message level="2" line="22" source="testdata/fixtures/transitions.rst" type="WARNING">
+            <paragraph>
+                Transition at the end of the document.

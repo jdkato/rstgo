@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>Includes</title>
+
+</head>
+<body>
+<div class="document" id="includes">
+<h1 class="title">Includes</h1>
+
+<p>Included <em>paragraph</em>.</p>
+<div class="section" id="included-section">
+<h1>Included Section</h1>
+<p>START
+Between markers.
+END</p>
+<p>Last line of include with warning: <a href="#system-message-1"><span class="problematic" id="problematic-1">`undefined`_</span></a>.</p>
+<p>After include.</p>
+<pre class="literal-block">
+Included *paragraph*.
+
+Included Section
+----------------
+
+START
+Between markers.
+END
+
+Last line of include with warning: `undefined`_.
+
+</pre>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include.rst</tt>, line 11)</p>
+<p>Cannot analyze code. Pygments package not found.</p>
+<pre class="literal-block">
+.. include:: included.txt
+   :code: python
+   :number-lines:
+
+</pre>
+</div>
+<p>Between markers.</p>
+<pre class="literal-block">
+<span class="ln">10 </span>
+<span class="ln">11 </span>Included Section
+</pre>
+<!-- This data file has been placed in the public domain. -->
+<!-- Derived from the Unicode character mappings available from
+<http://www.w3.org/2003/entities/xml/>.
+Processed by unicode2rstsubs.py, part of Docutils:
+<https://docutils.sourceforge.io>. -->
+<p>Copyright © and ®.</p>
+<b>raw html</b>Included *paragraph*.
+
+Included Section
+----------------
+
+START
+Between markers.
+END
+
+Last line of include with warning: `undefined`_.
+<p>Inline <span class="raw-html"><i>raw</i></span> role.</p>
+</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/included.txt</tt>, line 10); <em><a href="#problematic-1">backlink</a></em></p>
+Unknown target name: &quot;undefined&quot;.</div>
+</div>
+</div>
+</body>
+</html>

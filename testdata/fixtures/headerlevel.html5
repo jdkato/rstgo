@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>headerlevel.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<section id="top">
+<h3>Top</h3>
+<p class="section-subtitle" id="a">A</p>
+<section id="b">
+<h4>B</h4>
+<p class="section-subtitle" id="c">C</p>
+<section id="d">
+<h5>D</h5>
+<p class="section-subtitle" id="e">E</p>
+<section id="f">
+<h6>F</h6>
+<p class="section-subtitle" id="g">G</p>
+</section>
+</section>
+</section>
+</section>
+<section id="subtitle-candidate">
+<h3>Subtitle Candidate</h3>
+<p class="section-subtitle" id="lone-sub">Lone Sub</p>
+<p>text</p>
+</section>
+</main>
+</body>
+</html>

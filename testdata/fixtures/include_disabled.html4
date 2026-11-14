@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<title>Includes</title>
+
+</head>
+<body>
+<div class="document" id="includes">
+<h1 class="title">Includes</h1>
+
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 4)</p>
+<p>&quot;include&quot; directive disabled.</p>
+<pre class="literal-block">
+.. include:: included.txt
+
+</pre>
+</div>
+<p>After include.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 8)</p>
+<p>&quot;include&quot; directive disabled.</p>
+<pre class="literal-block">
+.. include:: included.txt
+   :literal:
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 11)</p>
+<p>&quot;include&quot; directive disabled.</p>
+<pre class="literal-block">
+.. include:: included.txt
+   :code: python
+   :number-lines:
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 15)</p>
+<p>&quot;include&quot; directive disabled.</p>
+<pre class="literal-block">
+.. include:: included.txt
+   :start-after: START
+   :end-before: END
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 19)</p>
+<p>&quot;include&quot; directive disabled.</p>
+<pre class="literal-block">
+.. include:: included.txt
+   :start-line: 1
+   :end-line: 3
+   :literal:
+   :number-lines: 10
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 25)</p>
+<p>&quot;include&quot; directive disabled.</p>
+<pre class="literal-block">
+.. include:: &lt;isonum.txt&gt;
+
+</pre>
+</div>
+<p>Copyright <a href="#system-message-2"><span class="problematic" id="problematic-2">|copy|</span></a> and <a href="#system-message-3"><span class="problematic" id="problematic-3">|reg|</span></a>.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 29)</p>
+<p>&quot;raw&quot; directive disabled.</p>
+<pre class="literal-block">
+.. raw:: html
+
+   &lt;b&gt;raw html&lt;/b&gt;
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 33)</p>
+<p>&quot;raw&quot; directive disabled.</p>
+<pre class="literal-block">
+.. raw:: latex
+
+   \LaTeX
+
+</pre>
+</div>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 37)</p>
+<p>&quot;raw&quot; directive disabled.</p>
+<pre class="literal-block">
+.. raw:: html
+   :file: included.txt
+
+</pre>
+</div>
+<p>Inline <a href="#system-message-1"><span class="problematic" id="problematic-1">:raw-html:`&lt;i&gt;raw&lt;/i&gt;`</span></a> role.</p>
+<div class="system-message" id="system-message-1">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 44); <em><a href="#problematic-1">backlink</a></em></p>
+raw (and derived) roles disabled</div>
+<div class="system-messages section">
+<h1>Docutils System Messages</h1>
+<div class="system-message" id="system-message-2">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 27); <em><a href="#problematic-2">backlink</a></em></p>
+Undefined substitution referenced: &quot;copy&quot;.</div>
+<div class="system-message" id="system-message-3">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">testdata/fixtures/include_disabled.rst</tt>, line 27); <em><a href="#problematic-3">backlink</a></em></p>
+Undefined substitution referenced: &quot;reg&quot;.</div>
+</div>
+</div>
+</body>
+</html>

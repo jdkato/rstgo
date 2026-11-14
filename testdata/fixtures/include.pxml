@@ -1,0 +1,240 @@
+<document ids="includes" names="includes" source="testdata/fixtures/include.rst" title="Includes">
+    <title>
+        Includes
+    <paragraph>
+        Included 
+        <emphasis>
+            paragraph
+        .
+    <section ids="included-section" names="included\ section">
+        <title>
+            Included Section
+        <paragraph>
+            START
+            Between markers.
+            END
+        <paragraph>
+            Last line of include with warning: 
+            <problematic ids="problematic-1" refid="system-message-1">
+                `undefined`_
+            .
+        <paragraph>
+            After include.
+        <literal_block source="testdata/fixtures/included.txt" xml:space="preserve">
+            Included *paragraph*.
+            
+            Included Section
+            ----------------
+            
+            START
+            Between markers.
+            END
+            
+            Last line of include with warning: `undefined`_.
+        <system_message level="2" line="11" source="testdata/fixtures/include.rst" type="WARNING">
+            <paragraph>
+                Cannot analyze code. Pygments package not found.
+            <literal_block xml:space="preserve">
+                .. include:: included.txt
+                   :code: python
+                   :number-lines:
+        <paragraph>
+            Between markers.
+        <literal_block source="testdata/fixtures/included.txt" xml:space="preserve">
+            <inline classes="ln">
+                10 
+            
+            <inline classes="ln">
+                11 
+            Included Section
+        <comment xml:space="preserve">
+            This data file has been placed in the public domain.
+        <comment xml:space="preserve">
+            Derived from the Unicode character mappings available from
+            <http://www.w3.org/2003/entities/xml/>.
+            Processed by unicode2rstsubs.py, part of Docutils:
+            <https://docutils.sourceforge.io>.
+        <substitution_definition names="amp">
+            &
+        <substitution_definition names="apos">
+            '
+        <substitution_definition names="ast">
+            *
+        <substitution_definition names="brvbar">
+            ¦
+        <substitution_definition names="bsol">
+            \
+        <substitution_definition names="cent">
+            ¢
+        <substitution_definition names="colon">
+            :
+        <substitution_definition names="comma">
+            ,
+        <substitution_definition names="commat">
+            @
+        <substitution_definition names="copy">
+            ©
+        <substitution_definition names="curren">
+            ¤
+        <substitution_definition names="darr">
+            ↓
+        <substitution_definition names="deg">
+            °
+        <substitution_definition names="divide">
+            ÷
+        <substitution_definition names="dollar">
+            $
+        <substitution_definition names="equals">
+            =
+        <substitution_definition names="excl">
+            !
+        <substitution_definition names="frac12">
+            ½
+        <substitution_definition names="frac14">
+            ¼
+        <substitution_definition names="frac18">
+            ⅛
+        <substitution_definition names="frac34">
+            ¾
+        <substitution_definition names="frac38">
+            ⅜
+        <substitution_definition names="frac58">
+            ⅝
+        <substitution_definition names="frac78">
+            ⅞
+        <substitution_definition names="gt">
+            >
+        <substitution_definition names="half">
+            ½
+        <substitution_definition names="horbar">
+            ―
+        <substitution_definition names="hyphen">
+            ‐
+        <substitution_definition names="iexcl">
+            ¡
+        <substitution_definition names="iquest">
+            ¿
+        <substitution_definition names="laquo">
+            «
+        <substitution_definition names="larr">
+            ←
+        <substitution_definition names="lcub">
+            {
+        <substitution_definition names="ldquo">
+            “
+        <substitution_definition names="lowbar">
+            _
+        <substitution_definition names="lpar">
+            (
+        <substitution_definition names="lsqb">
+            [
+        <substitution_definition names="lsquo">
+            ‘
+        <substitution_definition names="lt">
+            <
+        <substitution_definition names="micro">
+            µ
+        <substitution_definition names="middot">
+            ·
+        <substitution_definition names="nbsp">
+             
+        <substitution_definition names="not">
+            ¬
+        <substitution_definition names="num">
+            #
+        <substitution_definition names="ohm">
+            Ω
+        <substitution_definition names="ordf">
+            ª
+        <substitution_definition names="ordm">
+            º
+        <substitution_definition names="para">
+            ¶
+        <substitution_definition names="percnt">
+            %
+        <substitution_definition names="period">
+            .
+        <substitution_definition names="plus">
+            +
+        <substitution_definition names="plusmn">
+            ±
+        <substitution_definition names="pound">
+            £
+        <substitution_definition names="quest">
+            ?
+        <substitution_definition names="quot">
+            "
+        <substitution_definition names="raquo">
+            »
+        <substitution_definition names="rarr">
+            →
+        <substitution_definition names="rcub">
+            }
+        <substitution_definition names="rdquo">
+            ”
+        <substitution_definition names="reg">
+            ®
+        <substitution_definition names="rpar">
+            )
+        <substitution_definition names="rsqb">
+            ]
+        <substitution_definition names="rsquo">
+            ’
+        <substitution_definition names="sect">
+            §
+        <substitution_definition names="semi">
+            ;
+        <substitution_definition names="shy">
+            ­
+        <substitution_definition names="sol">
+            /
+        <substitution_definition names="sung">
+            ♪
+        <substitution_definition names="sup1">
+            ¹
+        <substitution_definition names="sup2">
+            ²
+        <substitution_definition names="sup3">
+            ³
+        <substitution_definition names="times">
+            ×
+        <substitution_definition names="trade">
+            ™
+        <substitution_definition names="uarr">
+            ↑
+        <substitution_definition names="verbar">
+            |
+        <substitution_definition names="yen">
+            ¥
+        <paragraph>
+            Copyright 
+            ©
+             and 
+            ®
+            .
+        <raw format="html" xml:space="preserve">
+            <b>raw html</b>
+        <raw format="latex" xml:space="preserve">
+            \LaTeX
+        <raw format="html" source="testdata/fixtures/included.txt" xml:space="preserve">
+            Included *paragraph*.
+            
+            Included Section
+            ----------------
+            
+            START
+            Between markers.
+            END
+            
+            Last line of include with warning: `undefined`_.
+        <paragraph>
+            Inline 
+            <raw classes="raw-html" format="html" xml:space="preserve">
+                <i>raw</i>
+             role.
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message backrefs="problematic-1" ids="system-message-1" level="3" line="10" source="testdata/fixtures/included.txt" type="ERROR">
+            <paragraph>
+                Unknown target name: "undefined".

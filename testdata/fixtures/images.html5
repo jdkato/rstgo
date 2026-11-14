@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.23: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>images.rst</title>
+
+</head>
+<body>
+<main>
+
+
+<img alt="testdata/fixtures/square.png" height="16" src="testdata/fixtures/square.png" width="16" />
+<img alt="testdata/fixtures/square.png" height="64" src="testdata/fixtures/square.png" width="20" />
+<img alt="missing.png" src="missing.png" />
+<aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">testdata/fixtures/images.rst</span>, line 8)</p>
+<p>Cannot scale image!
+  Could not get size from &quot;missing.png&quot;:
+  [Errno 2] No such file or directory: 'missing.png'</p>
+</aside>
+<a class="reference external image-reference" href="http://example.org/">
+<img alt="testdata/fixtures/square.png" src="testdata/fixtures/square.png" style="width: 50%; height: 2em;" />
+</a>
+<video controls="controls" src="movie.mp4" title="movie.mp4">
+<a href="movie.mp4">movie.mp4</a>
+</video>
+<img alt="SVG" src="drawing.svg" />
+<figure class="align-right" style="width: 32px">
+<img alt="testdata/fixtures/square.png" src="testdata/fixtures/square.png" />
+<figcaption>
+<p>Caption</p>
+</figcaption>
+</figure>
+<p id="fig-target">Inline <img alt="sq" class="align-middle" height="3" src="testdata/fixtures/square.png" width="3" /> image and a <a class="reference external" href="http://e.org">link around image</a>.</p>
+</main>
+</body>
+</html>
