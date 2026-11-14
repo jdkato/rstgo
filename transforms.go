@@ -31,7 +31,7 @@ var pendingTransforms = map[string]struct {
 
 func (d *Document) drainPendings(list []xform) []xform {
 	for _, p := range d.pendings {
-		t := pendingTransforms[p.node.pending.transform]
+		t := pendingTransforms[p.node.pend().transform]
 		pr := t.priority
 		if p.priority != 0 {
 			pr = p.priority
@@ -242,7 +242,7 @@ func xAdmonitions(d *Document, _ *Node) {
 // ---------------------------------------------------------------- misc
 
 func xClassAttribute(d *Document, pending *Node) {
-	classes, _ := pending.pending.details["class"].([]string)
+	classes, _ := pending.pend().details["class"].([]string)
 	// findall(include_self=False, descend=False, siblings=True, ascend=True)
 	node := pending
 	for node.Parent != nil {
@@ -261,7 +261,7 @@ func xClassAttribute(d *Document, pending *Node) {
 		}
 		node = node.Parent
 	}
-	e := d.reporter.error(fmt.Sprintf(`No suitable element following "%s" directive`, pending.pending.details["directive"]),
+	e := d.reporter.error(fmt.Sprintf(`No suitable element following "%s" directive`, pending.pend().details["directive"]),
 		[]*Node{newTextElem("literal_block", pending.Rawsource, pending.Rawsource)}, atLine(pending.Line))
 	pending.replaceSelf(e)
 }
@@ -340,7 +340,7 @@ func xSmartQuotes(d *Document, _ *Node) {
 // ---------------------------------------------------------------- parts
 
 func xSectNum(d *Document, start *Node) {
-	det := start.pending.details
+	det := start.pend().details
 	maxdepth := int(^uint(0) >> 1)
 	if v, ok := det["depth"].(int); ok {
 		maxdepth = v
@@ -382,7 +382,7 @@ func xSectNum(d *Document, start *Node) {
 
 func xContents(d *Document, start *Node) {
 	tocID := d.setID(start.Parent, nil, "")
-	det := start.pending.details
+	det := start.pend().details
 	var startnode *Node
 	if _, ok := det["local"]; ok {
 		startnode = start.Parent.Parent

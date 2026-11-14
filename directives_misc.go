@@ -446,7 +446,7 @@ func runClass(d *directive) []*Node {
 		nodeList = append(nodeList, container.Children...)
 	} else {
 		pending := newElem("pending", d.blockText)
-		pending.pending = &pendingInfo{transform: "docutils.transforms.misc.ClassAttribute",
+		pending.ext().pending = &pendingInfo{transform: "docutils.transforms.misc.ClassAttribute",
 			details: map[string]any{"class": classValue, "directive": d.name}}
 		d.sm.document.notePending(pending, 0)
 		nodeList = append(nodeList, pending)

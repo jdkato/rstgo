@@ -59,8 +59,10 @@ func (sl *stringList) slice(start, end int) *stringList {
 	pstart := start
 	start, end = clampSlice(start, end, len(sl.data))
 	return &stringList{
-		data:         append([]string{}, sl.data[start:end]...),
-		items:        append([]lineInfo{}, sl.items[start:end]...),
+		data: append([]string{}, sl.data[start:end]...),
+		// items are never modified in place, so they can be shared; the
+		// capacity is clipped so that appending reallocates
+		items:        sl.items[start:end:end],
 		parent:       sl,
 		parentOffset: pstart,
 	}
@@ -149,7 +151,8 @@ func (sl *stringList) trimStart(n int) {
 
 func (sl *stringList) trimEnd(n int) {
 	sl.data = sl.data[:len(sl.data)-n]
-	sl.items = sl.items[:len(sl.items)-n]
+	k := len(sl.items) - n
+	sl.items = sl.items[:k:k]
 }
 
 func (sl *stringList) pop() string {
@@ -159,7 +162,7 @@ func (sl *stringList) pop() string {
 	}
 	s := sl.data[i]
 	sl.data = sl.data[:i]
-	sl.items = sl.items[:i]
+	sl.items = sl.items[:i:i]
 	return s
 }
 

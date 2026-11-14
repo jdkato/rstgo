@@ -133,7 +133,6 @@ func (s *rstState) makeTarget(block []string, blockText string, lineno int, targ
 	if targetType == "refname" {
 		target := newTextElem("target", blockText, "")
 		target.setAttr("refname", fullyNormalizeName(data))
-		target.indirectRefName, target.hasIndirectName = data, true
 		s.addTarget(targetName, "", target, lineno)
 		s.document.noteIndirectTarget(target)
 		return target

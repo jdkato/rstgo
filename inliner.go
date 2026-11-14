@@ -234,8 +234,6 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 			alias = fullyNormalizeName(unescape(aliastext[:len(aliastext)-1], false))
 			target = newTextElem("target", group1, "")
 			target.setAttr("refname", alias)
-			target.indirectRefName = whitespaceNormalizeName(unescape(aliastext[:len(aliastext)-1], false))
-			target.hasIndirectName = true
 		} else {
 			aliastype = "uri"
 			aliasParts := splitEscapedWhitespace(aliastext)

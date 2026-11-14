@@ -128,6 +128,7 @@ func newHTMLTranslator(doc *Document) *htmlTranslator {
 	}
 	t.meta = append([]string{fmt.Sprintf(t.contentType, st.outputEncoding)}, t.meta...)
 	t.compactP = true
+	t.body = make([]byte, 0, st.inputLen+st.inputLen/2+1024)
 	if !t.v4 {
 		t.meta = append(t.meta, `<meta name="viewport" content="width=device-width, initial-scale=1" />`+"\n")
 	}
@@ -484,15 +485,32 @@ func visibleChildren(node *Node) []*Node {
 }
 
 func (t *htmlTranslator) setClassOnChild(node *Node, class string, index int) {
-	children := visibleChildren(node)
-	i := pyIndex(index, len(children))
-	if i < 0 {
+	var child *Node
+	switch index {
+	case 0:
+		for _, c := range node.Children {
+			if !invisibleTags[c.Tag] {
+				child = c
+				break
+			}
+		}
+	case -1:
+		for i := len(node.Children) - 1; i >= 0; i-- {
+			if c := node.Children[i]; !invisibleTags[c.Tag] {
+				child = c
+				break
+			}
+		}
+	default:
+		children := visibleChildren(node)
+		if i := pyIndex(index, len(children)); i >= 0 {
+			child = children[i]
+		}
+	}
+	if child == nil || child.IsText() {
 		return
 	}
-	if children[i].IsText() {
-		return
-	}
-	children[i].appendTo("classes", class)
+	child.appendTo("classes", class)
 }
 
 func (t *htmlTranslator) setFirstLast(node *Node) {

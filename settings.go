@@ -69,6 +69,7 @@ type settings struct {
 	destPath            string
 	hasSource           bool
 	viewport            string
+	inputLen            int // size of the input, to size output buffers
 }
 
 func (st *settings) trimFootnoteRefSpace() bool {

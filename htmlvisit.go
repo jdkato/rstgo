@@ -799,7 +799,7 @@ func (t *htmlTranslator) depart(node *Node) {
 		}
 		start := t.pop().(int)
 		t.docinfo = []string{string(t.body[start:])}
-		t.body = nil
+		t.body, t.last = t.body[:0], 0
 	case "doctest_block":
 		t.out("\n</pre>\n")
 	case "document":
@@ -1053,7 +1053,7 @@ func (t *htmlTranslator) depart(node *Node) {
 			t.inDocumentTitle = 0
 			t.bodyPreDocinfo = append(t.bodyPreDocinfo, string(t.body))
 			t.htmlTitle = append(t.htmlTitle, string(t.body))
-			t.body = nil
+			t.body, t.last = t.body[:0], 0
 		}
 	case "title_reference":
 		t.out("</cite>")
@@ -1428,7 +1428,7 @@ func (t *htmlTranslator) departSubtitle(node *Node) {
 			t.inDocumentTitle = 0
 			t.bodyPreDocinfo = append(t.bodyPreDocinfo, string(t.body))
 			t.htmlSubtitle = append(t.htmlSubtitle, string(t.body))
-			t.body = nil
+			t.body, t.last = t.body[:0], 0
 		}
 		return
 	}
@@ -1442,7 +1442,7 @@ func (t *htmlTranslator) departSubtitle(node *Node) {
 		t.inDocumentTitle = 0
 		t.bodyPreDocinfo = append(t.bodyPreDocinfo, string(t.body))
 		t.htmlSubtitle = append(t.htmlSubtitle, string(t.body))
-		t.body = nil
+		t.body, t.last = t.body[:0], 0
 	}
 }
 
@@ -1531,6 +1531,13 @@ func (t *htmlTranslator) departDocument(node *Node) {
 	t.bodyPrefix = append(t.bodyPrefix, t.starttag(node, t.documentTag, "\n", atts))
 	t.bodySuffix = append([]string{"</" + t.documentTag + ">\n"}, t.bodySuffix...)
 	t.fragment = t.body
+	size := len(t.body)
+	for _, part := range [][]string{t.bodyPrefix[1:], t.bodyPreDocinfo, t.docinfo, t.bodySuffix[:len(t.bodySuffix)-1]} {
+		for _, x := range part {
+			size += len(x)
+		}
+	}
+	t.htmlBody = make([]byte, 0, size)
 	for _, part := range [][]string{t.bodyPrefix[1:], t.bodyPreDocinfo, t.docinfo} {
 		for _, x := range part {
 			t.htmlBody = append(t.htmlBody, x...)

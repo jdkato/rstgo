@@ -103,7 +103,7 @@ func init() {
 			"prefix": optUnchangedRequired, "suffix": optUnchangedRequired},
 		run: func(d *directive) []*Node {
 			p := newElem("pending", "")
-			p.pending = &pendingInfo{transform: "docutils.transforms.parts.SectNum", details: copyOptions(d.options)}
+			p.ext().pending = &pendingInfo{transform: "docutils.transforms.parts.SectNum", details: copyOptions(d.options)}
 			d.sm.document.notePending(p, 0)
 			return []*Node{p}
 		}}
@@ -123,9 +123,9 @@ func init() {
 		optionSpec: map[string]optConv{"class": optClass},
 		run: func(d *directive) []*Node {
 			p := newElem("pending", "")
-			p.pending = &pendingInfo{transform: "docutils.transforms.references.TargetNotes"}
+			p.ext().pending = &pendingInfo{transform: "docutils.transforms.references.TargetNotes"}
 			d.addName(p)
-			p.pending.details = copyOptions(d.options)
+			p.ext().pending.details = copyOptions(d.options)
 			d.sm.document.notePending(p, 0)
 			return []*Node{p}
 		}}
@@ -212,16 +212,16 @@ func runLineBlock(d *directive) []*Node {
 		line := newTextElem("line", lineText, "", textNodes...)
 		line.setSrcLine(block.Source, block.hasSrc, block.Line+i, block.hasLine)
 		if pyStrip(lineText) != "" {
-			line.indent, line.hasIndent = len(lineText)-len(pyLstrip(lineText)), true
+			line.setIndent(len(lineText) - len(pyLstrip(lineText)))
 		}
 		block.append(line)
 		nodeList = append(nodeList, messages...)
 		d.contentOffset++
 	}
 	if len(block.Children) > 0 {
-		if !block.Children[0].hasIndent {
+		if !block.Children[0].hasIndent() {
 			// Python would raise comparing None; treat as 0
-			block.Children[0].indent, block.Children[0].hasIndent = 0, true
+			block.Children[0].setIndent(0)
 		}
 		nestLineBlockLines(block)
 	}
@@ -409,7 +409,6 @@ func runImage(d *directive) []*Node {
 			referenceNode = newTextElem("reference", "", "")
 			referenceNode.setAttr("refname", fullyNormalizeName(data))
 			referenceNode.setAttr("name", whitespaceNormalizeName(data))
-			referenceNode.indirectRefName, referenceNode.hasIndirectName = data, true
 			d.state.document.noteRefname(referenceNode)
 		}
 		delete(d.options, "target")
@@ -535,7 +534,7 @@ func runContents(d *directive) []*Node {
 	}
 	document.noteImplicitTarget(topic, nil)
 	pending := newElem("pending", d.blockText)
-	pending.pending = &pendingInfo{transform: "docutils.transforms.parts.Contents", details: copyOptions(d.options)}
+	pending.ext().pending = &pendingInfo{transform: "docutils.transforms.parts.Contents", details: copyOptions(d.options)}
 	document.notePending(pending, 0)
 	topic.append(pending)
 	return append([]*Node{topic}, messages...)

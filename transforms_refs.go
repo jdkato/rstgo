@@ -28,24 +28,27 @@ func xPropagateTargets(d *Document, _ *Node) {
 		}
 		nextNode.appendTo("ids", target.list("ids")...)
 		nextNode.appendTo("names", target.list("names")...)
-		if nextNode.expectByName == nil {
-			nextNode.expectByName = map[string]*Node{}
+		nx := nextNode.ext()
+		if nx.expectByName == nil {
+			nx.expectByName = map[string]*Node{}
 		}
-		if nextNode.expectByID == nil {
-			nextNode.expectByID = map[string]*Node{}
+		if nx.expectByID == nil {
+			nx.expectByID = map[string]*Node{}
 		}
 		for _, id := range target.list("ids") {
 			d.ids[id] = nextNode
-			nextNode.expectByID[id] = target
+			nx.expectByID[id] = target
 		}
 		for _, name := range target.list("names") {
-			nextNode.expectByName[name] = target
+			nx.expectByName[name] = target
 		}
-		for k, v := range target.expectByName {
-			nextNode.expectByName[k] = v
-		}
-		for k, v := range target.expectByID {
-			nextNode.expectByID[k] = v
+		if tx := target.ex; tx != nil {
+			for k, v := range tx.expectByName {
+				nx.expectByName[k] = v
+			}
+			for k, v := range tx.expectByID {
+				nx.expectByID[k] = v
+			}
 		}
 		if target.Parent.Tag == "figure" && nextNode.Tag == "caption" {
 			target.Parent.remove(target)
@@ -538,7 +541,7 @@ func xSubstitutions(d *Document, _ *Node) {
 }
 
 func xTargetNotes(d *Document, start *Node) {
-	classes, _ := start.pending.details["class"].([]string)
+	classes, _ := start.pend().details["class"].([]string)
 	notes := map[string]*Node{}
 	var nodelist []*Node
 	makeFootnote := func(refuri string, refs []*Node) *Node {

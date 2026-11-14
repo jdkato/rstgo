@@ -7,6 +7,7 @@
 package rstgo
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"strings"
@@ -261,6 +262,7 @@ func parseDocument(src []byte, opts *Options, htmlWriter bool) (doc *Document, e
 	if derr != nil {
 		return nil, fmt.Errorf("rstgo: input is not valid UTF-8")
 	}
+	st.inputLen = len(text)
 	doc = newDocument(sourceName(opts), st, opts.Stderr)
 	parseInto(doc, text)
 	applyStandardTransforms(doc, htmlWriter)
@@ -301,11 +303,11 @@ func PseudoXMLResult(src []byte, opts Options) ([]byte, Result, error) {
 
 // ConvertResult is like Convert but also returns run information.
 func ConvertResult(src []byte, opts Options) ([]byte, Result, error) {
-	p, res, err := convert(src, &opts)
+	t, res, err := translate(src, &opts)
 	if err != nil {
 		return nil, res, err
 	}
-	return []byte(p.Whole), res, nil
+	return t.whole(), res, nil
 }
 
 // Convert converts reStructuredText to a complete HTML document.
@@ -357,21 +359,51 @@ func ConvertParts(src []byte, opts Options) (*Parts, error) {
 // ConvertBody converts src and returns only the body fragment
 // (publish_parts()["html_body"]).
 func ConvertBody(src []byte, opts Options) ([]byte, error) {
-	p, _, err := convert(src, &opts)
+	t, _, err := translate(src, &opts)
 	if err != nil {
 		return nil, err
 	}
-	return []byte(p.HTMLBody), nil
+	return t.htmlBody, nil
 }
 
-func convert(src []byte, opts *Options) (parts *Parts, res Result, err error) {
+// translate runs the whole pipeline and returns the writer state.
+func translate(src []byte, opts *Options) (t *htmlTranslator, res Result, err error) {
 	defer catchHalt(&err)
 	doc, err := parseDocument(src, opts, true)
 	if err != nil {
 		return nil, Result{}, err
 	}
-	t := newHTMLTranslator(doc)
+	t = newHTMLTranslator(doc)
 	t.walkabout(doc.Root)
+	return t, Result{MaxLevel: doc.reporter.maxLevel}, nil
+}
+
+// whole assembles the complete document like Docutils' template.
+func (t *htmlTranslator) whole() []byte {
+	j := func(l []string) string { return strings.Join(l, "") }
+	parts := []string{j(t.headPrefix), j(t.head), j(t.stylesheet), j(t.bodyPrefix),
+		j(t.bodyPreDocinfo), j(t.docinfo), "", j(t.bodySuffix)}
+	size := len(t.body) + len(parts)
+	for _, p := range parts {
+		size += len(p)
+	}
+	out := make([]byte, 0, size)
+	for i, part := range parts {
+		if i == 6 {
+			out = append(out, bytes.TrimRight(t.body, "\n")...)
+		} else {
+			out = append(out, strings.TrimRight(part, "\n")...)
+		}
+		out = append(out, '\n')
+	}
+	return out
+}
+
+func convert(src []byte, opts *Options) (parts *Parts, res Result, err error) {
+	t, res, err := translate(src, opts)
+	if err != nil {
+		return nil, res, err
+	}
 	j := func(l []string) string { return strings.Join(l, "") }
 	parts = &Parts{
 		HTMLBody: string(t.htmlBody), Body: string(t.body), Fragment: string(t.fragment),
@@ -382,12 +414,6 @@ func convert(src []byte, opts *Options) (parts *Parts, res Result, err error) {
 		BodyPreDocinfo: j(t.bodyPreDocinfo), BodySuffix: j(t.bodySuffix),
 		HTMLHead: j(t.htmlHead), HTMLProlog: j(t.htmlProlog),
 	}
-	var b strings.Builder
-	for _, part := range []string{parts.HeadPrefix, parts.Head, parts.Stylesheet,
-		parts.BodyPrefix, parts.BodyPreDocinfo, parts.Docinfo, parts.Body, parts.BodySuffix} {
-		b.WriteString(strings.TrimRight(part, "\n"))
-		b.WriteByte('\n')
-	}
-	parts.Whole = b.String()
-	return parts, Result{MaxLevel: doc.reporter.maxLevel}, nil
+	parts.Whole = string(t.whole())
+	return parts, res, nil
 }

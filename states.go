@@ -877,8 +877,8 @@ func bodyLineBlock(s *rstState, m lineMatch, context []string, nextState string)
 		s.parent().append(s.reporter.warning("Line block ends without a blank line.", nil, atLine(lineno+1)))
 	}
 	if len(block.Children) > 0 {
-		if !block.Children[0].hasIndent {
-			block.Children[0].indent, block.Children[0].hasIndent = 0, true
+		if !block.Children[0].hasIndent() {
+			block.Children[0].setIndent(0)
 		}
 		nestLineBlockLines(block)
 	}
@@ -892,31 +892,31 @@ func (s *rstState) lineBlockLine(m lineMatch, lineno int) (*Node, []*Node, bool)
 	line := newTextElem("line", text, "", textNodes...)
 	line.setSrcLine(s.sm.getSourceAndLine(lineno, true))
 	if pyRstrip(m.s) != "|" {
-		line.indent, line.hasIndent = len(m.Group(1))-1, true
+		line.setIndent(len(m.Group(1)) - 1)
 	}
 	return line, messages, blankFinish
 }
 
 func nestLineBlockLines(block *Node) {
 	for i := 1; i < len(block.Children); i++ {
-		if !block.Children[i].hasIndent {
-			block.Children[i].indent, block.Children[i].hasIndent = block.Children[i-1].indent, true
+		if !block.Children[i].hasIndent() {
+			block.Children[i].setIndent(block.Children[i-1].indentOf())
 		}
 	}
 	nestLineBlockSegment(block)
 }
 
 func nestLineBlockSegment(block *Node) {
-	least := block.Children[0].indent
+	least := block.Children[0].indentOf()
 	for _, item := range block.Children {
-		if item.indent < least {
-			least = item.indent
+		if item.indentOf() < least {
+			least = item.indentOf()
 		}
 	}
 	var newItems []*Node
 	newBlock := newElem("line_block", "")
 	for _, item := range block.Children {
-		if item.indent > least {
+		if item.indentOf() > least {
 			newBlock.append(item)
 		} else {
 			if len(newBlock.Children) > 0 {

@@ -24,21 +24,49 @@ type Node struct {
 	Source    string
 	Line      int // 0 if unknown
 
+	doc *Document
+	ex  *nodeExtra // rarely needed state
+
 	hasLine bool
 	hasSrc  bool
-	doc     *Document
-
 	// internal (non-attribute) state, as in docutils
-	referenced      bool
-	resolved        bool
-	indirectRefName string
-	hasIndirectName bool
-	indent          int // for <line>
-	hasIndent       bool
-	pending         *pendingInfo
-	expectByName    map[string]*Node
-	expectByID      map[string]*Node
+	referenced bool
+	resolved   bool
 }
+
+// nodeExtra holds node state that only a few nodes need.
+type nodeExtra struct {
+	indent       int // for <line>
+	hasIndent    bool
+	pending      *pendingInfo
+	expectByName map[string]*Node
+	expectByID   map[string]*Node
+}
+
+func (n *Node) ext() *nodeExtra {
+	if n.ex == nil {
+		n.ex = &nodeExtra{}
+	}
+	return n.ex
+}
+
+func (n *Node) pend() *pendingInfo {
+	if n.ex == nil {
+		return nil
+	}
+	return n.ex.pending
+}
+
+func (n *Node) hasIndent() bool { return n.ex != nil && n.ex.hasIndent }
+
+func (n *Node) indentOf() int {
+	if n.ex == nil {
+		return 0
+	}
+	return n.ex.indent
+}
+
+func (n *Node) setIndent(i int) { e := n.ext(); e.indent, e.hasIndent = i, true }
 
 type pendingInfo struct {
 	transform string // e.g. "docutils.transforms.parts.Contents"
@@ -54,6 +82,9 @@ func newElem(tag string, rawsource string, children ...*Node) *Node {
 	if fixedTextElements[tag] {
 		n.Attrs = map[string]any{"xml:space": "preserve"}
 	}
+	if len(children) > 0 {
+		n.Children = make([]*Node, 0, len(children))
+	}
 	for _, c := range children {
 		n.append(c)
 	}
@@ -63,6 +94,13 @@ func newElem(tag string, rawsource string, children ...*Node) *Node {
 // newTextElem mirrors TextElement.__init__(rawsource, text, *children).
 func newTextElem(tag, rawsource, text string, children ...*Node) *Node {
 	n := newElem(tag, rawsource)
+	k := len(children)
+	if text != "" {
+		k++
+	}
+	if k > 0 {
+		n.Children = make([]*Node, 0, k)
+	}
 	if text != "" {
 		n.append(newText(text))
 	}
@@ -498,8 +536,8 @@ func (n *Node) copyNode() *Node {
 	}
 	c.doc = n.doc
 	c.Source, c.hasSrc, c.Line, c.hasLine = n.Source, n.hasSrc, n.Line, n.hasLine
-	if n.pending != nil {
-		c.pending = n.pending
+	if p := n.pend(); p != nil {
+		c.ext().pending = p
 	}
 	return c
 }
@@ -624,13 +662,16 @@ func (n *Node) previousSibling() *Node {
 
 func (n *Node) noteReferencedBy(name, id string) {
 	n.referenced = true
+	if n.ex == nil {
+		return
+	}
 	if name != "" {
-		if x := n.expectByName[name]; x != nil {
+		if x := n.ex.expectByName[name]; x != nil {
 			x.referenced = true
 		}
 	}
 	if id != "" {
-		if x := n.expectByID[id]; x != nil {
+		if x := n.ex.expectByID[id]; x != nil {
 			x.referenced = true
 		}
 	}
@@ -667,17 +708,17 @@ func (n *Node) pformat(b *strings.Builder, level int) {
 	for _, c := range n.Children {
 		c.pformat(b, level+1)
 	}
-	if n.pending != nil {
+	if pending := n.pend(); pending != nil {
 		internals := []string{".. internal attributes:",
-			"     .transform: " + n.pending.transform,
+			"     .transform: " + pending.transform,
 			"     .details:"}
-		keys := make([]string, 0, len(n.pending.details))
-		for k := range n.pending.details {
+		keys := make([]string, 0, len(pending.details))
+		for k := range pending.details {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
 		for _, k := range keys {
-			v := n.pending.details[k]
+			v := pending.details[k]
 			switch x := v.(type) {
 			case *Node:
 				internals = append(internals, "       "+k+":")
@@ -726,10 +767,21 @@ func unescape(text string, restoreBackslashes bool) string {
 }
 
 func fullyNormalizeName(name string) string {
-	return strings.Join(pySplit(pyLower(name)), " ")
+	return whitespaceNormalizeName(pyLower(name))
 }
 
 func whitespaceNormalizeName(name string) string {
+	// fast path: already normalized (single spaces between words)
+	ok := name == "" || (name[0] != ' ' && name[len(name)-1] != ' ')
+	for i := 0; ok && i < len(name); i++ {
+		c := name[i]
+		if c >= 0x80 || (c < ' ' && c != 0) || (c == ' ' && name[i+1] == ' ') {
+			ok = false
+		}
+	}
+	if ok {
+		return name
+	}
 	return strings.Join(pySplit(name), " ")
 }
 
