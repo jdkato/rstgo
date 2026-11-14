@@ -235,10 +235,21 @@ Other scripts: `scripts/gen_unidata.py` regenerates the Unicode tables
 `scripts/import_docutils_tests.py` extracts the unit-test inputs from a
 Docutils source distribution.
 
+## AI attribution
+
+rstgo was written by [Claude Code](https://claude.com/claude-code),
+Anthropic's AI coding agent, working under the direction of the repository
+owner. The code is a port of the Docutils source, and its correctness rests
+on the differential test corpus described above (byte-for-byte comparison
+with Docutils 0.23) rather than on line-by-line human authorship. Commits
+produced this way carry a `Co-Authored-By: Claude` trailer.
+
 ## License
 
-MIT (see `LICENSE`). The parser, transforms and writers are ports of
-Docutils, which is in the public domain; the bundled stylesheets, the
-standard include files under `include/` and the documents under
-`testdata/docutils/` are unmodified Docutils files and keep their own terms
-(public domain, BSD 2-Clause for `math.css` and a few others).
+MIT (see [LICENSE](LICENSE)). rstgo is derived from Docutils. Most of
+Docutils is in the public domain, but the HTML writer base, the HTML5
+writer, the LaTeX-to-MathML converter, the punctuation tables and most of
+the bundled stylesheets are under the BSD 2-Clause License; their copyright
+notices and the license text are in [NOTICE](NOTICE). The standard include
+files under `include/` and the documents under `testdata/docutils/` are
+unmodified Docutils files and keep their own terms.
