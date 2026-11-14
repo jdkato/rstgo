@@ -20,6 +20,7 @@ A run that halts (SEVERE system message) is recorded as {"halt": true}.
 import io
 import json
 import os
+import pickle
 import sys
 
 import docutils
@@ -50,6 +51,30 @@ ALLOWED = {
 
 
 def run(source, source_path, writer, overrides):
+    """Run Docutils in a forked child process, so that no global state
+    (role and directive registries, class attributes mutated by the
+    writers, ...) leaks from one document into the next -- every result is
+    what a fresh `rst2html` process would produce."""
+    r, w = os.pipe()
+    pid = os.fork()
+    if pid == 0:
+        os.close(r)
+        try:
+            result = _run(source, source_path, writer, overrides)
+            with os.fdopen(w, 'wb') as f:
+                pickle.dump(result, f)
+        finally:
+            os._exit(0)
+    os.close(w)
+    with os.fdopen(r, 'rb') as f:
+        data = f.read()
+    os.waitpid(pid, 0)
+    if not data:
+        raise SystemExit('Docutils crashed on %s (%s)' % (source_path, writer))
+    return pickle.loads(data)
+
+
+def _run(source, source_path, writer, overrides):
     roles._roles = {}
     directives._directives = {}
     stderr = io.StringIO()
@@ -121,6 +146,44 @@ def fixtures():
     return n
 
 
+def tree():
+    """Docutils' own documentation and functional test inputs (copied from
+    the Docutils 0.23 source distribution to testdata/docutils); expected
+    output is stored gzip-compressed under testdata/docutils.expected."""
+    import gzip
+    src = 'testdata/docutils'
+    dst = 'testdata/docutils.expected'
+    n = 0
+    for dirpath, dirnames, filenames in sorted(os.walk(src)):
+        dirnames.sort()
+        for fn in sorted(filenames):
+            if not fn.endswith('.rst'):
+                continue
+            path = os.path.join(dirpath, fn)
+            rel = os.path.relpath(path, src)
+            with open(path, encoding='utf-8', newline='') as f:
+                source = f.read()
+            os.makedirs(os.path.dirname(os.path.join(dst, rel)), exist_ok=True)
+            kinds = [(ext, writer, {}) for ext, writer in WRITERS]
+            pxml = run(source, path, 'pseudoxml', {})[0] or ''
+            if '<math' in pxml:
+                # also check the document structure independently of the
+                # LaTeX -> HTML/MathML conversion
+                kinds += [('html4m', 'html4', {'math_output': 'LaTeX'}),
+                          ('html5m', 'html5', {'math_output': 'LaTeX'})]
+            for ext, writer, overrides in kinds:
+                out, err, halt = run(source, path, writer, overrides)
+                data = ('*** HALT ***\n' if halt else out)
+                for suffix, text in ((ext, data), (ext + '.err', err)):
+                    with open(os.path.join(dst, rel + '.' + suffix + '.gz'),
+                              'wb') as f:
+                        with gzip.GzipFile(fileobj=f, mode='wb',
+                                           mtime=0) as g:
+                            g.write(text.encode('utf-8'))
+            n += 1
+    return n
+
+
 def suites():
     d = 'testdata/suites'
     n = 0
@@ -155,8 +218,10 @@ def suites():
 
 
 if __name__ == '__main__':
-    what = sys.argv[1:] or ['fixtures', 'suites']
+    what = sys.argv[1:] or ['fixtures', 'suites', 'tree']
     if 'fixtures' in what:
         print('fixtures:', fixtures())
     if 'suites' in what:
         print('suite cases:', suites())
+    if 'tree' in what:
+        print('docutils tree documents:', tree())

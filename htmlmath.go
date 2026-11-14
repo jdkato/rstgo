@@ -78,15 +78,14 @@ func (t *htmlTranslator) visitMath(node *Node) visitAction {
 		mathCode = t.encode(mathCode)
 	}
 	var tag string
-	var classes []string
 	switch format {
 	case "latex":
-		tag, classes = "tt", []string{"math"}
+		tag = "tt"
 		if isBlock {
 			tag = "pre"
 		}
 	case "mathjax":
-		tag, classes = "span", []string{"math"}
+		tag = "span"
 		if isBlock {
 			tag = "div"
 		}
@@ -95,7 +94,7 @@ func (t *htmlTranslator) visitMath(node *Node) visitAction {
 	if isBlock {
 		suffix = "\n"
 	}
-	t.out(t.starttag(node, tag, suffix, A{"classes": classes}))
+	t.out(t.starttag(node, tag, suffix, A{"classes_ptr": t.mathClasses[format]}))
 	t.out(mathCode, suffix)
 	t.out("</" + tag + ">" + suffix)
 	return actSkipChildren

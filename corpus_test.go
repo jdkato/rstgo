@@ -2,8 +2,10 @@ package rstgo
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"sort"
@@ -185,10 +187,10 @@ func runKind(kind string, input []byte, opts Options) (out string, stderr string
 	switch kind {
 	case "pxml":
 		res, err = PseudoXML(input, opts)
-	case "html4":
+	case "html4", "html4m":
 		opts.Writer = HTML4
 		res, err = Convert(input, opts)
-	case "html5":
+	case "html5", "html5m":
 		opts.Writer = HTML5
 		res, err = Convert(input, opts)
 	}
@@ -196,6 +198,20 @@ func runKind(kind string, input []byte, opts Options) (out string, stderr string
 		return "", errBuf.String(), true, nil
 	}
 	return string(res), errBuf.String(), false, err
+}
+
+func readGz(name string) (string, error) {
+	f, err := os.Open(name)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+	zr, err := gzip.NewReader(f)
+	if err != nil {
+		return "", err
+	}
+	data, err := io.ReadAll(zr)
+	return string(data), err
 }
 
 var corpusKinds = []string{"pxml", "html4", "html5"}
@@ -330,8 +346,45 @@ func TestCorpus(t *testing.T) {
 		}
 	}
 
-	for _, kind := range corpusKinds {
-		t.Logf("corpus %-5s: %d/%d cases identical to Docutils", kind, st.passed[kind], st.total[kind])
+	// Docutils' documentation and functional test inputs
+	var treeFiles []string
+	filepath.Walk("testdata/docutils", func(p string, info os.FileInfo, err error) error {
+		if err == nil && !info.IsDir() && strings.HasSuffix(p, ".rst") {
+			treeFiles = append(treeFiles, p)
+		}
+		return nil
+	})
+	sort.Strings(treeFiles)
+	for _, fn := range treeFiles {
+		rel, _ := filepath.Rel("testdata/docutils", fn)
+		input, err := os.ReadFile(fn)
+		if err != nil {
+			t.Fatal(err)
+		}
+		kinds := corpusKinds
+		if _, err := os.Stat(filepath.Join("testdata/docutils.expected", rel+".html4m.gz")); err == nil {
+			kinds = append(append([]string{}, kinds...), "html4m", "html5m")
+		}
+		for _, kind := range kinds {
+			opts := Options{SourcePath: fn, NoStylesheet: true}
+			if strings.HasSuffix(kind, "m") {
+				opts.MathOutput = "LaTeX"
+			}
+			want, err1 := readGz(filepath.Join("testdata/docutils.expected", rel+"."+kind+".gz"))
+			wantErr, err2 := readGz(filepath.Join("testdata/docutils.expected", rel+"."+kind+".err.gz"))
+			if err1 != nil || err2 != nil {
+				t.Fatalf("%s: missing expected output (run scripts/regen.sh)", fn)
+			}
+			wp := &want
+			if want == "*** HALT ***\n" {
+				wp = nil
+			}
+			st.check(t, known, "docutils:"+filepath.ToSlash(rel), kind, input, opts, wp, wantErr)
+		}
+	}
+
+	for _, kind := range append(append([]string{}, corpusKinds...), "html4m", "html5m") {
+		t.Logf("corpus %-6s: %d/%d cases identical to Docutils", kind, st.passed[kind], st.total[kind])
 	}
 	sort.Strings(st.failures)
 	t.Logf("known failures listed: %d, failing now: %d", len(known), len(st.failures))

@@ -83,7 +83,8 @@ type htmlTranslator struct {
 	mathHeader       []string
 	messages         []*Node
 
-	stubs    map[*Node][]bool
+	mathClasses map[string]*[]string
+	stubs       map[*Node][]bool
 	column   map[*Node]int
 	html5tag map[*Node]string
 }
@@ -102,6 +103,8 @@ func newHTMLTranslator(doc *Document) *htmlTranslator {
 		t.contentType = `<meta charset="%s" />` + "\n"
 		t.documentTag = "main"
 	}
+	t.mathClasses = map[string]*[]string{"latex": {"math"}, "mathjax": {"math"},
+		"html": {"formula"}, "mathml": {}, "problematic": {"math", "problematic"}}
 	t.initialHeader = st.initialHeaderLevel
 	t.imageLoading = st.imageLoading
 	mo := pySplitN(st.mathOutput, 1)
@@ -282,6 +285,18 @@ func (t *htmlTranslator) tag(node *Node, tagname, suffix string, empty bool, att
 		classes = append(classes, c...)
 	}
 	delete(atts, "classes")
+	// Docutils passes some class lists by reference and extends them in
+	// place (the list of a parent node, or the writer's shared math class
+	// lists); reproduce that aliasing.
+	classesOf, _ := atts["classes_of"].(*Node)
+	delete(atts, "classes_of")
+	classesPtr, _ := atts["classes_ptr"].(*[]string)
+	delete(atts, "classes_ptr")
+	if classesOf != nil {
+		classes = classesOf.list("classes")
+	} else if classesPtr != nil {
+		classes = *classesPtr
+	}
 	classStr, _ := atts["class"].(string)
 	delete(atts, "class")
 	var languages []string
@@ -291,6 +306,11 @@ func (t *htmlTranslator) tag(node *Node, tagname, suffix string, empty bool, att
 		} else if pyStrip(cls) != "" && !containsStr(classes, cls) {
 			classes = append(classes, cls)
 		}
+	}
+	if classesOf != nil {
+		classesOf.Attrs["classes"] = classes
+	} else if classesPtr != nil {
+		*classesPtr = classes
 	}
 	if len(languages) > 0 {
 		atts["lang"] = languages[0]

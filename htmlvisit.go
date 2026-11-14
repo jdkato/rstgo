@@ -306,7 +306,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 			}
 			t.out(t.starttag(node, "th", "", atts))
 		} else {
-			t.out(t.starttag(node, "dt", "", A{"classes": append([]string{}, node.Parent.list("classes")...)}))
+			t.out(t.starttag(node, "dt", "", A{"classes_of": node.Parent}))
 		}
 	case "field_body":
 		if t.v4 {
@@ -318,7 +318,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 				t.setClassOnChild(node, "last", -1)
 			}
 		} else {
-			t.out(t.starttag(node, "dd", "", A{"classes": append([]string{}, node.Parent.list("classes")...)}))
+			t.out(t.starttag(node, "dd", "", A{"classes_of": node.Parent}))
 			if len(node.Children) == 0 {
 				t.out("<p></p>")
 			}
@@ -643,7 +643,7 @@ func (t *htmlTranslator) visit(node *Node) visitAction {
 		if !t.v4 && hasClass(node.Parent.Parent, "details") {
 			t.out(t.starttag(node, "summary", "", nil))
 		} else {
-			t.out(t.starttag(node, "dt", "", A{"classes": append([]string{}, node.Parent.list("classes")...),
+			t.out(t.starttag(node, "dt", "", A{"classes_of": node.Parent,
 				"ids": append([]string{}, node.Parent.list("ids")...)}))
 		}
 	case "tgroup":
@@ -1482,7 +1482,7 @@ func (t *htmlTranslator) visitTitle(node *Node) {
 	switch {
 	case p.Tag == "topic":
 		t.out(t.starttag(node, "p", "", A{"class": "topic-title"}))
-		if !t.v4 && t.settings.tocBacklinks != "" && hasClass(p, "contents") {
+		if t.settings.tocBacklinks != "" && hasClass(p, "contents") {
 			t.out(`<a class="reference internal" href="#top">`)
 			closeTag = "</a></p>\n"
 		}
