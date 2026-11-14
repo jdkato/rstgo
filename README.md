@@ -163,6 +163,31 @@ does not match is listed in `testdata/known_failures.txt`.
 ### Test status
 
 <!-- test-status -->
+Corpus: 1116 documents (956 Docutils unit-test inputs, 132 Docutils
+documentation / functional-test documents, 28 project fixtures). Each is
+compared in three forms, output and stderr both byte for byte
+(`go test -run TestCorpus -v .`):
+
+| Output | Identical to Docutils 0.23 |
+|--------|----------------------------|
+| pseudo-XML document tree (`pxml`) | 1115 / 1116 |
+| html4css1 document (`html4`, the `rst2html` default) | 1087 / 1116 |
+| html5 document (`html5`) | 1115 / 1116 |
+| html4css1 with `--math-output=LaTeX`, 23 documents containing math (`html4m`) | 23 / 23 |
+| html5 with `--math-output=LaTeX`, same 23 documents (`html5m`) | 23 / 23 |
+
+The 31 known failures (`testdata/known_failures.txt`):
+
+* 28 html4 cases are documents containing math (unported `math2html`
+  conversion, see above);
+* 3 cases (one input, all three outputs) are an error message that contains
+  the installation path of Docutils' standard include directory
+  (`.. include:: <nonexistent>`).
+
+Robustness: `TestMutatedCorpus` converts about 19 600 truncated or randomly
+damaged variants of the corpus inputs, `TestPathological` a set of deeply
+nested and unterminated constructs, and `FuzzConvert` is a native fuzz
+target; none may panic or hang.
 <!-- /test-status -->
 
 ## Development
