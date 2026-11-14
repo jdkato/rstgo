@@ -364,7 +364,7 @@ func (sl *stringList) join() string { return strings.Join(sl.data, "\n") }
 
 // string2lines mirrors statemachine.string2lines.
 func string2lines(s string, tabWidth int, convertWhitespace bool) []string {
-	if convertWhitespace {
+	if convertWhitespace && strings.ContainsAny(s, "\v\f") {
 		s = strings.Map(func(r rune) rune {
 			if r == '\v' || r == '\f' {
 				return ' '

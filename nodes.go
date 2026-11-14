@@ -569,8 +569,22 @@ func (n *Node) findall(cond func(*Node) bool) []*Node {
 	return out
 }
 
-func (n *Node) findTag(tags ...string) []*Node {
-	return n.findall(func(x *Node) bool { return x.is(tags...) })
+func (n *Node) findTag(tag string) []*Node {
+	var out []*Node
+	collectTag(n, tag, &out)
+	return out
+}
+
+func collectTag(n *Node, tag string, out *[]*Node) {
+	if n.Tag == tag {
+		*out = append(*out, n)
+	}
+	for _, c := range n.Children {
+		if len(c.Children) == 0 && c.Tag != tag {
+			continue
+		}
+		collectTag(c, tag, out)
+	}
 }
 
 // nextNode mirrors Node.next_node(condition, include_self=False,

@@ -207,7 +207,14 @@ func relativePathFrom(source, target string) string {
 }
 
 func (t *htmlTranslator) encode(text string) string {
-	if !strings.ContainsAny(text, "&<\">@ ") {
+	clean := true
+	for i := 0; i < len(text) && clean; i++ {
+		switch text[i] {
+		case '&', '<', '"', '>', '@', 0xc2:
+			clean = false
+		}
+	}
+	if clean {
 		return text
 	}
 	var b strings.Builder
@@ -237,13 +244,15 @@ func (t *htmlTranslator) encode(text string) string {
 }
 
 func (t *htmlTranslator) attval(text string) string {
-	text = strings.Map(func(r rune) rune {
-		switch r {
-		case '\n', '\r', '\t', '\v', '\f':
-			return ' '
-		}
-		return r
-	}, text)
+	if strings.ContainsAny(text, "\n\r\t\v\f") {
+		text = strings.Map(func(r rune) rune {
+			switch r {
+			case '\n', '\r', '\t', '\v', '\f':
+				return ' '
+			}
+			return r
+		}, text)
+	}
 	encoded := t.encode(text)
 	if t.inMailto && t.settings.cloakEmailAddresses {
 		encoded = strings.ReplaceAll(encoded, "%40", "&#37;&#52;&#48;")

@@ -381,13 +381,21 @@ func searchEmbeddedLink(s string) (start, g2s, g2e int, ok bool) {
 	return 0, 0, 0, false
 }
 
-func isUric(c byte) bool {
-	return isASCIIAlnum(c) || c == 0 || strings.IndexByte("-_.!~*'()[];/:@&=+$,%", c) >= 0
+var uricTable, urilastTable, emailcTable [256]bool
+
+func init() {
+	for c := 0; c < 128; c++ {
+		b := byte(c)
+		alnum := isASCIIAlnum(b)
+		uricTable[c] = alnum || c == 0 || strings.IndexByte("-_.!~*'()[];/:@&=+$,%", b) >= 0
+		urilastTable[c] = alnum || strings.IndexByte("_~*/=+", b) >= 0
+		emailcTable[c] = alnum || c == 0 || strings.IndexByte("-_!~*'{|}/#?^`&=+$%", b) >= 0
+	}
 }
-func isUrilast(c byte) bool { return isASCIIAlnum(c) || strings.IndexByte("_~*/=+", c) >= 0 }
-func isEmailc(c byte) bool {
-	return isASCIIAlnum(c) || c == 0 || strings.IndexByte("-_!~*'{|}/#?^`&=+$%", c) >= 0
-}
+
+func isUric(c byte) bool    { return uricTable[c] }
+func isUrilast(c byte) bool { return urilastTable[c] }
+func isEmailc(c byte) bool  { return emailcTable[c] }
 
 // uriMatch is a match of patterns.uri.
 type uriMatch struct {
