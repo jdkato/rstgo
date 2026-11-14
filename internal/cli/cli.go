@@ -38,7 +38,7 @@ func Main(tool string, args []string, stdin io.Reader, stdout, stderr io.Writer)
 	output := ""
 	exitStatusLevel := 5
 	usage := func(msg string) int {
-		fmt.Fprintf(stderr, "Usage: %s [options] [<source> [<destination>]]\n\n%s: error: %s\n", tool, tool, msg)
+		fmt.Fprintf(stderr, "Usage\n=====\n  %s [options] [<source> [<destination>]]\n\n%s: error: %s\n", tool, tool, msg)
 		return 2
 	}
 	// options taking a value
@@ -288,7 +288,7 @@ func Main(tool string, args []string, stdin io.Reader, stdout, stderr io.Writer)
 			opts.RootPrefix = val
 		case "--input-encoding", "--output-encoding", "--error-encoding", "-e",
 			"--language", "-l", "--config", "--traceback", "--no-traceback",
-			"--debug", "--no-debug", "--legacy-ids", "--no-validation",
+			"--debug", "--no-debug", "--legacy-ids", "--no-validation", "--smart-quotes", "--smartquotes-locales",
 			"--record-dependencies", "--pep-base-url", "--rfc-base-url",
 			"--pep-file-url-template", "--stylesheet-dirs", "--warnings":
 			// accepted for compatibility; only the Docutils defaults
