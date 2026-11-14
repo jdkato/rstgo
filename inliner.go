@@ -123,6 +123,11 @@ func buildInlinePatterns(charLevel bool) *inlinePatterns {
                   (PEP\s+(?P<pepnum2>\d+))      # reference by name
                 )
                 `+endStringSuffix, reVerbose)
+	if !charLevel {
+		p.initial.prefilter = initialPrefilter
+		p.uri.quick = func(s string) bool { return strings.ContainsAny(s, ":@") }
+		p.uri.prefilter = uriPrefilter
+	}
 	p.rfc = pyCompile(`
                 `+startStringPrefix+`
                 (RFC(-|\s+)?(?P<rfcnum>\d+))
@@ -604,4 +609,64 @@ func (inl *inliner) implicitInline(text string, lineno int) []*Node {
 		}
 	}
 	return []*Node{newText(text)}
+}
+
+// initialPrefilter cheaply rejects positions where the "initial" inline
+// pattern (word-level markup) cannot match: it must start with a markup
+// character, or with a word that is not preceded by a word character and
+// that is followed by "_" before the next whitespace (a reference name).
+func initialPrefilter(s string, pos int) bool {
+	if pos >= len(s) {
+		return false
+	}
+	c := s[pos]
+	switch c {
+	case '*', '`', '_', '|', '[', ':':
+		return true
+	}
+	if c < 0x80 && !(c >= '0' && c <= '9' || c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
+		return false
+	}
+	if pos > 0 {
+		r, _ := utf8.DecodeLastRuneInString(s[:pos])
+		if isPyWord(r) {
+			return false
+		}
+	}
+	for i := pos; i < len(s); i++ {
+		switch s[i] {
+		case '_':
+			return true
+		case ' ', '\n', '\t':
+			return false
+		}
+	}
+	return false
+}
+
+// uriPrefilter rejects positions where neither a URI scheme nor an e-mail
+// address can start.
+func uriPrefilter(s string, pos int) bool {
+	if pos >= len(s) {
+		return false
+	}
+	c := s[pos]
+	if c >= 0x80 || c == ' ' || c == '\n' {
+		return false
+	}
+	if pos > 0 {
+		p := s[pos-1]
+		if p >= '0' && p <= '9' || p >= 'a' && p <= 'z' || p >= 'A' && p <= 'Z' {
+			return false
+		}
+	}
+	for i := pos; i < len(s); i++ {
+		switch s[i] {
+		case ':', '@':
+			return true
+		case ' ', '\n':
+			return false
+		}
+	}
+	return false
 }

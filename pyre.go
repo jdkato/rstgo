@@ -48,6 +48,10 @@ type pyRegexp struct {
 	ncap   int
 	names  map[string]int
 	gnames []string
+	// Optional search accelerators (must never reject a real match):
+	// quick rejects whole subjects, prefilter rejects start positions.
+	quick     func(s string) bool
+	prefilter func(s string, pos int) bool
 }
 
 type pyMatch struct {
@@ -112,9 +116,14 @@ func (re *pyRegexp) FullMatch(s string) *pyMatch { return re.run(s, 0, true) }
 func (re *pyRegexp) Search(s string) *pyMatch { return re.SearchFrom(s, 0) }
 
 func (re *pyRegexp) SearchFrom(s string, pos int) *pyMatch {
+	if re.quick != nil && !re.quick(s[pos:]) {
+		return nil
+	}
 	for {
-		if m := re.run(s, pos, false); m != nil {
-			return m
+		if re.prefilter == nil || re.prefilter(s, pos) {
+			if m := re.run(s, pos, false); m != nil {
+				return m
+			}
 		}
 		if pos >= len(s) {
 			return nil
