@@ -71,9 +71,29 @@ func (t *htmlTranslator) visitMath(node *Node) visitAction {
 			mathCode = `\(` + mathCode + `\)`
 		}
 		mathCode = t.encode(mathCode)
+	case "mathml":
+		if t.mathOptions != "" {
+			// external converters (latexml, ttm, blahtexml, pandoc) are not
+			// supported; fall back to LaTeX source
+			format = "latex"
+			mathCode = t.encode(mathCode)
+			break
+		}
+		converted, errStr := tex2mathml(mathCode, isBlock)
+		if errStr != "" {
+			t.messages = append(t.messages, t.doc.reporter.warning(errStr, nil, baseNode(node)))
+			mathCode = t.encode(node.astext())
+			if t.settings.reportLevel <= 2 {
+				format = "problematic"
+			} else {
+				format = "latex"
+			}
+		} else {
+			mathCode = converted
+		}
 	default:
-		// "latex"; the "html" (math2html) and "mathml" conversions of
-		// Docutils are not implemented and fall back to LaTeX source.
+		// "latex"; the "html" (math2html) conversion of Docutils is not
+		// implemented and falls back to LaTeX source.
 		format = "latex"
 		mathCode = t.encode(mathCode)
 	}
@@ -89,14 +109,27 @@ func (t *htmlTranslator) visitMath(node *Node) visitAction {
 		if isBlock {
 			tag = "div"
 		}
+	case "mathml":
+		if isBlock {
+			tag = "div"
+		}
+	case "problematic":
+		tag = "span"
+		if isBlock {
+			tag = "pre"
+		}
 	}
 	suffix := ""
 	if isBlock {
 		suffix = "\n"
 	}
-	t.out(t.starttag(node, tag, suffix, A{"classes_ptr": t.mathClasses[format]}))
+	if tag != "" {
+		t.out(t.starttag(node, tag, suffix, A{"classes_ptr": t.mathClasses[format]}))
+	}
 	t.out(mathCode, suffix)
-	t.out("</" + tag + ">" + suffix)
+	if tag != "" {
+		t.out("</" + tag + ">" + suffix)
+	}
 	return actSkipChildren
 }
 

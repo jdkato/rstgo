@@ -121,14 +121,18 @@ does not match is listed in `testdata/known_failures.txt`.
 
 ### Known gaps
 
-* **Math output.** Docutils converts LaTeX math to HTML+CSS (html4css1
-  default, `math2html`) or MathML (html5 default). Those converters are not
-  ported. Unless `--math-output=MathJax` or `LaTeX` is given, math is
-  written as with `--math-output=LaTeX` (`<tt class="math">` /
-  `<pre class="math">` containing the LaTeX source) and `math.css` is not
-  embedded. This is the cause of almost all known corpus failures; the same
-  documents are identical to Docutils when both sides use
+* **Math output of the html4css1 writer.** With the default
+  `--math-output="HTML math.css"`, Docutils converts LaTeX math to HTML+CSS
+  with its `math2html` module. That converter is not ported: `rst2html`
+  writes math as with `--math-output=LaTeX` (`<tt class="math">` /
+  `<pre class="math">` containing the LaTeX source) and does not embed
+  `math.css`. This is the cause of all known html4 corpus failures; the
+  same documents are identical to Docutils when both sides use
   `--math-output=LaTeX` (the `html4m`/`html5m` corpus runs).
+  `--math-output=MathJax` and `LaTeX` are implemented for both writers, and
+  the html5 writer's default MathML output is a port of Docutils'
+  `latex2mathml` (external converters such as `--math-output="MathML
+  pandoc"` are not supported).
 * **Syntax highlighting.** Pygments is not available; `code` directives and
   roles behave like Docutils without Pygments installed (a warning and no
   output for a `code` block that names a language, unless the report level
