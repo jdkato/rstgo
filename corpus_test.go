@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -214,11 +215,51 @@ func readGz(name string) (string, error) {
 	return string(data), err
 }
 
+var docutilsPaths struct {
+	sync.Once
+	include, writers string
+}
+
+// normalizeDocutilsPaths rewrites the directories recorded by
+// scripts/regen.py in testdata/docutils_paths.txt.
+func normalizeDocutilsPaths(s string) string {
+	docutilsPaths.Do(func() {
+		data, _ := os.ReadFile("testdata/docutils_paths.txt")
+		for _, line := range strings.Split(string(data), "\n") {
+			if v, ok := strings.CutPrefix(line, "include="); ok {
+				docutilsPaths.include = v
+			}
+			if v, ok := strings.CutPrefix(line, "writers="); ok {
+				docutilsPaths.writers = v
+			}
+		}
+	})
+	if d := docutilsPaths.include; d != "" && strings.Contains(s, d) {
+		s = strings.ReplaceAll(s, d, StandardIncludeDir)
+	}
+	if d := docutilsPaths.writers; d != "" && strings.Contains(s, d) {
+		s = strings.ReplaceAll(s, d+"html4css1/", "")
+		s = strings.ReplaceAll(s, d+"html5_polyglot/", "")
+	}
+	return s
+}
+
 var corpusKinds = []string{"pxml", "html4", "html5"}
 
 func (st *corpusStats) check(t *testing.T, known map[string]bool, id, kind string, input []byte, opts Options, wantOut *string, wantErr string) {
 	key := id + " " + kind
 	st.total[kind]++
+	// The only installation dependent text in the expected output are two
+	// directories of the Docutils installation that generated it: the
+	// standard include files, for which rstgo reports a notional location
+	// (StandardIncludeDir), and the writers' default stylesheets, which
+	// rstgo links by bare file name when they are not embedded.
+	wantErr = normalizeDocutilsPaths(wantErr)
+	if wantOut != nil {
+		if w := normalizeDocutilsPaths(*wantOut); w != *wantOut {
+			wantOut = &w
+		}
+	}
 	out, stderr, halted, err := runKind(kind, input, opts)
 	ok := err == nil
 	if ok {

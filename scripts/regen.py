@@ -103,6 +103,9 @@ def _run(source, source_path, writer, overrides):
                   'attribution', 'xml_declaration', 'field_name_limit',
                   'option_limit', 'section_self_link', 'image_loading'):
             settings.pop(k, None)
+    # Some components (math2html) print diagnostics directly to sys.stderr;
+    # the command line tools show them interleaved with the system messages.
+    sys.stderr = stderr
     try:
         out = core.publish_string(source, source_path=source_path,
                                   writer=writer, settings_overrides=settings)
@@ -110,6 +113,8 @@ def _run(source, source_path, writer, overrides):
         halt = False
     except SystemMessage:
         out, halt = None, True
+    finally:
+        sys.stderr = sys.__stderr__
     return out, stderr.getvalue(), halt
 
 
@@ -217,8 +222,23 @@ def suites():
     return n
 
 
+def record_paths():
+    """Record the installation dependent directories that can appear in
+    the expected output: messages about standard include files contain
+    the path of Docutils' "include" directory, and a linked (not embedded)
+    default stylesheet is referenced in the writer's directory.  The tests
+    map these to what rstgo emits (see corpus_test.go)."""
+    import docutils.writers
+    from docutils.parsers.rst import states
+    inc = os.path.join(os.path.dirname(states.__file__), 'include') + os.sep
+    wri = os.path.dirname(docutils.writers.__file__) + os.sep
+    with open('testdata/docutils_paths.txt', 'w', encoding='utf-8') as f:
+        f.write('include=%s\nwriters=%s\n' % (inc, wri))
+
+
 if __name__ == '__main__':
     what = sys.argv[1:] or ['fixtures', 'suites', 'tree']
+    record_paths()
     if 'fixtures' in what:
         print('fixtures:', fixtures())
     if 'suites' in what:

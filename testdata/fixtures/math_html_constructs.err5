@@ -1,0 +1,13 @@
+testdata/fixtures/math_html_constructs.rst:4: (WARNING/2) Unknown LaTeX command "\upalpha".
+testdata/fixtures/math_html_constructs.rst:15: (WARNING/2) Unknown LaTeX command "\nicefrac".
+testdata/fixtures/math_html_constructs.rst:27: (WARNING/2) Unknown LaTeX command "\middle".
+testdata/fixtures/math_html_constructs.rst:42: (WARNING/2) Environment "array" not supported!
+testdata/fixtures/math_html_constructs.rst:44: (WARNING/2) Environment "array" not supported!
+testdata/fixtures/math_html_constructs.rst:57: (WARNING/2) Environment "align*" not supported!
+testdata/fixtures/math_html_constructs.rst:59: (WARNING/2) Environment "eqnarray" not supported!
+testdata/fixtures/math_html_constructs.rst:61: (WARNING/2) Environment "gathered" not supported!
+testdata/fixtures/math_html_constructs.rst:73: (WARNING/2) Unknown LaTeX command "\stackrel".
+testdata/fixtures/math_html_constructs.rst:81: (WARNING/2) Unknown LaTeX command "\textbf".
+testdata/fixtures/math_html_constructs.rst:88: (WARNING/2) Unknown LaTeX command "\color".
+testdata/fixtures/math_html_constructs.rst:94: (WARNING/2) Unknown LaTeX command "\iff".
+testdata/fixtures/math_html_constructs.rst:102: (WARNING/2) Unknown LaTeX command "\unknowncommand".

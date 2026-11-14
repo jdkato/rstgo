@@ -3,6 +3,7 @@ package rstgo
 import (
 	"encoding/base64"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -37,6 +38,14 @@ func wrapMathCode(code string, asBlock bool) string {
 		return fmt.Sprintf("\\begin{%s}\n%s\n\\end{%s}", env, code, env)
 	}
 	return "$" + code + "$"
+}
+
+// mathCrashError reports a formula on which Docutils' math2html raises a
+// Python exception (and Docutils exits with a traceback).
+type mathCrashError struct{ text string }
+
+func (e *mathCrashError) Error() string {
+	return "rstgo: cannot convert math to HTML (Docutils fails here with " + e.text + ")"
 }
 
 func (t *htmlTranslator) visitMath(node *Node) visitAction {
@@ -91,14 +100,34 @@ func (t *htmlTranslator) visitMath(node *Node) visitAction {
 		} else {
 			mathCode = converted
 		}
+	case "html":
+		if t.mathOptions != "" && len(t.mathHeader) == 0 {
+			for _, sheet := range strings.Split(t.mathOptions, ",") {
+				t.mathHeader = append(t.mathHeader, t.stylesheetCall(sheet, true))
+			}
+		}
+		converted, traces, crash := math2html(wrapMathCode(mathCode, isBlock), isBlock)
+		// math2html reports problems on stderr ("* message")
+		if stream := t.doc.reporter.stream; stream != nil {
+			for _, msg := range traces {
+				io.WriteString(stream, msg+"\n")
+			}
+		}
+		if crash != "" {
+			panic(&mathCrashError{text: crash})
+		}
+		mathCode = converted
 	default:
-		// "latex"; the "html" (math2html) conversion of Docutils is not
-		// implemented and falls back to LaTeX source.
 		format = "latex"
 		mathCode = t.encode(mathCode)
 	}
 	var tag string
 	switch format {
+	case "html":
+		tag = "span"
+		if isBlock {
+			tag = "div"
+		}
 	case "latex":
 		tag = "tt"
 		if isBlock {

@@ -251,6 +251,10 @@ func catchHalt(err *error) {
 			*err = h
 			return
 		}
+		if m, ok := r.(*mathCrashError); ok {
+			*err = m
+			return
+		}
 		panic(r)
 	}
 }

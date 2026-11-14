@@ -55,6 +55,7 @@ func pySplitN(s string, n int) []string {
 }
 
 func pyLower(s string) string { return strings.ToLower(s) }
+func pyUpper(s string) string { return strings.ToUpper(s) }
 
 func isBlank(s string) bool { return pyStrip(s) == "" }
 

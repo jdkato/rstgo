@@ -1,0 +1,2 @@
+include=/usr/local/lib/python3.13/site-packages/docutils/parsers/rst/include/
+writers=/usr/local/lib/python3.13/site-packages/docutils/writers/

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"unicode"
 	"unicode/utf8"
 )
 
@@ -425,7 +424,7 @@ func isAlphaStr(s string) bool {
 		return false
 	}
 	for _, r := range s {
-		if !unicode.IsLetter(r) {
+		if !isPyAlpha(r) {
 			return false
 		}
 	}
@@ -466,9 +465,9 @@ func parseLatexMath(root *mmlElem, source string) *mmlElem {
 			}
 			p.append(n)
 			node = n
-		case unicode.IsLetter(c):
+		case isPyAlpha(c):
 			node = node.append(mmlToken("mi", string(c)))
-		case unicode.IsDigit(c):
+		case isPyStrDigit(c):
 			var number string
 			number, s = texNumber(s)
 			node = node.append(mmlToken("mn", string(c)+number))

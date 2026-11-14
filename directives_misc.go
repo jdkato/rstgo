@@ -18,6 +18,12 @@ import (
 //go:embed include/*.txt
 var standardIncludes embed.FS
 
+// StandardIncludeDir is the notional location of the standard include
+// files (".. include:: <isonum.txt>") that appears in messages and in the
+// "source" attribute of literal includes.  Docutils shows the "include"
+// directory of its installation there; rstgo embeds the files.
+const StandardIncludeDir = "/usr/lib/python3/site-packages/docutils/parsers/rst/include/"
+
 const standardIncludePrefix = "\x00std-include\x00/"
 
 func init() {
@@ -159,9 +165,10 @@ func runInclude(d *directive) []*Node {
 	var readPath string
 	if strings.HasPrefix(path, "<") && strings.HasSuffix(path, ">") {
 		name := path[1 : len(path)-1]
-		// Docutils reports the path of its installed "include" directory;
-		// we use a stable pseudo path instead.
-		path = "<" + name + ">"
+		// Docutils reports the path of its installed "include" directory,
+		// which depends on the installation; the files are embedded here
+		// and reported under a fixed notional location of the same shape.
+		path = StandardIncludeDir + name
 		readPath = standardIncludePrefix + name
 	} else {
 		path = adaptPath(path, d.state.document.currentSource, st.rootPrefix)
