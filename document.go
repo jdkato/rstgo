@@ -216,7 +216,7 @@ func (d *Document) setDuplicateName(node *Node, name string, msgnode *Node, expl
 			backrefs = []string{d.setID(node, nil, "")}
 		}
 		msg := d.reporter.systemMessage(level, s, nil, withBackrefs(backrefs), baseNode(node))
-		if msgnode != nil {
+		if msgnode != nil && bodyParents[msgnode.Tag] {
 			msgnode.append(msg)
 		}
 	}

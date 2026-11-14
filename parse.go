@@ -6,8 +6,6 @@ import (
 
 func applySmartQuotes(d *Document) {}
 
-func relativePathFrom(from, to string) string { return to }
-
 // parseInto runs the reStructuredText parser over text, filling doc.
 func parseInto(doc *Document, text string) {
 	st := doc.settings

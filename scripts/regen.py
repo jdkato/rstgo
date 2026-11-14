@@ -55,7 +55,7 @@ def run(source, source_path, writer, overrides):
     stderr = io.StringIO()
     settings = {
         'warning_stream': stderr,
-        'output_encoding': 'unicode',
+        'output_encoding': 'utf-8',
         'input_encoding': 'utf-8',
         '_disable_config': True,
         'traceback': True,
@@ -81,6 +81,7 @@ def run(source, source_path, writer, overrides):
     try:
         out = core.publish_string(source, source_path=source_path,
                                   writer=writer, settings_overrides=settings)
+        out = out.decode('utf-8')
         halt = False
     except SystemMessage:
         out, halt = None, True

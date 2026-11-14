@@ -9,6 +9,7 @@ package rstgo
 import (
 	"fmt"
 	"io"
+	"strings"
 )
 
 // Writer selects the output format.
@@ -300,11 +301,93 @@ func PseudoXMLResult(src []byte, opts Options) ([]byte, Result, error) {
 
 // ConvertResult is like Convert but also returns run information.
 func ConvertResult(src []byte, opts Options) ([]byte, Result, error) {
-	return nil, Result{}, fmt.Errorf("not implemented")
+	p, res, err := convert(src, &opts)
+	if err != nil {
+		return nil, res, err
+	}
+	return []byte(p.Whole), res, nil
 }
 
 // Convert converts reStructuredText to a complete HTML document.
 func Convert(src []byte, opts Options) ([]byte, error) {
 	out, _, err := ConvertResult(src, opts)
 	return out, err
+}
+
+// Parts holds the pieces of a converted document, named like the entries of
+// Docutils' publish_parts() dictionary.
+type Parts struct {
+	// Whole is the complete HTML document.
+	Whole string
+	// HTMLBody is the document body including title, docinfo, header and
+	// footer but without the <body> tags ("html_body").
+	HTMLBody string
+	// Body is the "naked" body without document title and docinfo ("body",
+	// same as "fragment").
+	Body string
+	// Fragment equals Body.
+	Fragment string
+	// Title and Subtitle are the HTML of the document title and subtitle
+	// (without the surrounding heading element).
+	Title, Subtitle string
+	// HTMLTitle and HTMLSubtitle include the heading elements.
+	HTMLTitle, HTMLSubtitle string
+	// Docinfo is the bibliographic data block.
+	Docinfo string
+	// Header and Footer hold the document decoration.
+	Header, Footer string
+	// Head is the content of the <head> element except the stylesheet;
+	// Stylesheet is the stylesheet link or embedding; Meta the <meta> tags.
+	Head, Stylesheet, Meta string
+	// HeadPrefix, BodyPrefix, BodyPreDocinfo and BodySuffix are the
+	// remaining template parts.
+	HeadPrefix, BodyPrefix, BodyPreDocinfo, BodySuffix string
+	// HTMLHead and HTMLProlog as in Docutils (with "%s" in place of the
+	// output encoding).
+	HTMLHead, HTMLProlog string
+}
+
+// ConvertParts converts src and returns the individual parts of the HTML
+// document (like docutils.core.publish_parts).
+func ConvertParts(src []byte, opts Options) (*Parts, error) {
+	p, _, err := convert(src, &opts)
+	return p, err
+}
+
+// ConvertBody converts src and returns only the body fragment
+// (publish_parts()["html_body"]).
+func ConvertBody(src []byte, opts Options) ([]byte, error) {
+	p, _, err := convert(src, &opts)
+	if err != nil {
+		return nil, err
+	}
+	return []byte(p.HTMLBody), nil
+}
+
+func convert(src []byte, opts *Options) (parts *Parts, res Result, err error) {
+	defer catchHalt(&err)
+	doc, err := parseDocument(src, opts, true)
+	if err != nil {
+		return nil, Result{}, err
+	}
+	t := newHTMLTranslator(doc)
+	t.walkabout(doc.Root)
+	j := func(l []string) string { return strings.Join(l, "") }
+	parts = &Parts{
+		HTMLBody: j(t.htmlBody), Body: j(t.body), Fragment: j(t.fragment),
+		Title: j(t.title), Subtitle: j(t.subtitle), HTMLTitle: j(t.htmlTitle),
+		HTMLSubtitle: j(t.htmlSubtitle), Docinfo: j(t.docinfo), Header: j(t.header),
+		Footer: j(t.footer), Head: j(t.head), Stylesheet: j(t.stylesheet), Meta: j(t.meta),
+		HeadPrefix: j(t.headPrefix), BodyPrefix: j(t.bodyPrefix),
+		BodyPreDocinfo: j(t.bodyPreDocinfo), BodySuffix: j(t.bodySuffix),
+		HTMLHead: j(t.htmlHead), HTMLProlog: j(t.htmlProlog),
+	}
+	var b strings.Builder
+	for _, part := range []string{parts.HeadPrefix, parts.Head, parts.Stylesheet,
+		parts.BodyPrefix, parts.BodyPreDocinfo, parts.Docinfo, parts.Body, parts.BodySuffix} {
+		b.WriteString(strings.TrimRight(part, "\n"))
+		b.WriteByte('\n')
+	}
+	parts.Whole = b.String()
+	return parts, Result{MaxLevel: doc.reporter.maxLevel}, nil
 }

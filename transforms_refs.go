@@ -82,6 +82,7 @@ func xAnonymousHyperlinks(d *Document, _ *Node) {
 	if len(refs) != len(targets) {
 		msg := d.reporter.error(fmt.Sprintf("Anonymous hyperlink mismatch: %d references but %d "+
 			"targets.\nSee \"backrefs\" attribute for IDs.", len(refs), len(targets)), nil)
+		d.setID(msg, nil, "")
 		for _, ref := range refs {
 			d.newProblematic(ref, msg)
 		}

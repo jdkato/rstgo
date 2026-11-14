@@ -340,10 +340,7 @@ func unicodeCode(code string) (string, error) {
 		}
 		v, perr = strconv.ParseInt(value, 16, 64)
 	}
-	if perr != nil || v > 0x7fffffff {
-		return "", errors.New("code too large (Python int too large to convert to C int)")
-	}
-	if v > 0x10ffff {
+	if perr != nil || v > 0x10ffff {
 		return "", errors.New("chr() arg not in range(0x110000)")
 	}
 	return string(rune(v)), nil

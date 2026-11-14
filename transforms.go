@@ -268,9 +268,12 @@ func xClassAttribute(d *Document, pending *Node) {
 
 var transitionIgnored = set("decoration meta pending substitution_definition subtitle target title")
 
-var bodyParents = set(`document section topic sidebar block_quote list_item definition
-	field_body description entry footnote citation attention caution danger error
-	important note tip hint warning admonition compound container legend header footer`)
+// bodyParents lists the elements whose content model includes Body
+// elements (and therefore system messages).
+var bodyParents = set(`admonition attention block_quote caution citation compound
+	container danger definition description document entry error field_body
+	footer footnote header hint important legend list_item note section sidebar
+	system_message tip topic warning`)
 
 func xTransitions(d *Document, _ *Node) {
 	for _, node := range d.Root.findTag("transition") {
