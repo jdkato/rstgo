@@ -773,3 +773,22 @@ func TestMiscScannersAgainstRegex(t *testing.T) {
 	}
 	t.Logf("%d inputs; %d RCS keyword matches, %d optarg matches", len(inputs), nRCS, nTex)
 }
+
+// TestMakeIDFastPath compares the ASCII fast path of makeID with the
+// general implementation.
+func TestMakeIDFastPath(t *testing.T) {
+	lines, _ := oracleSamples(t)
+	n := 0
+	for _, l := range append(lines, "", "12", "1-2", "-a", "a-", "a--b", "A 1", "1.2 Foo Bar!", "_x_", "a\x00b", " a  b ") {
+		for _, s := range []string{l, strings.TrimSpace(l)} {
+			if len(s) > 80 {
+				s = s[:80]
+			}
+			n++
+			if got, want := makeID(s), makeIDGeneral(s); got != want {
+				t.Fatalf("makeID(%q) = %q, want %q", s, got, want)
+			}
+		}
+	}
+	t.Logf("%d names", n)
+}

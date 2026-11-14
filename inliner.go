@@ -18,6 +18,7 @@ type inliner struct {
 	parent           *Node
 	memo             *memo
 	scratch          [2]*Node // backing array of short-lived result lists
+	procBuf          []*Node  // reused buffer for the result of parse
 }
 
 func newInliner(st *settings) *inliner {
@@ -44,13 +45,16 @@ func (inl *inliner) nodes2(a, b *Node) []*Node {
 	return inl.scratch[:2:2]
 }
 
+// parse mirrors Inliner.parse.  The returned node list is only valid until
+// the next call; callers copy it into an element right away.
 func (inl *inliner) parse(text string, lineno int, m *memo, parent *Node) ([]*Node, []*Node) {
 	inl.document = m.document
 	inl.reporter = m.document.reporter
 	inl.parent = parent
 	inl.memo = m
 	remaining := escape2null(text)
-	var processed, messages []*Node
+	var messages []*Node
+	processed := inl.procBuf[:0]
 	// unprocessed text is always a contiguous piece of the input, so it is
 	// tracked as a slice instead of a list of strings
 	unprocessed := ""
@@ -94,6 +98,7 @@ func (inl *inliner) parse(text string, lineno int, m *memo, parent *Node) ([]*No
 	if remaining != "" {
 		processed = inl.implicitInline(processed, remaining, lineno)
 	}
+	inl.procBuf = processed[:0]
 	return processed, messages
 }
 
@@ -234,6 +239,7 @@ func (inl *inliner) interpretedOrPhraseRef(s string, match initialMatch, lineno 
 func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string, []*Node, string, []*Node) {
 	var text, unescaped, rawtext, alias, aliastype string
 	var target *Node
+	var aliasValue any // alias as attribute value (boxed once)
 	if mstart, g2s, g2e, ok := searchEmbeddedLink(escaped); ok {
 		group1 := escaped[mstart : g2e+1]
 		text = escaped[:mstart]
@@ -263,7 +269,8 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 				alias = alias[:len(alias)-2] + "_"
 			}
 			target = newTextElem("target", group1, "")
-			target.setAttr("refuri", alias)
+			aliasValue = alias
+			target.setAttr("refuri", aliasValue)
 			target.referenced = true
 		}
 		if text == "" {
@@ -288,7 +295,7 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 			reference.setAttr("refname", alias)
 			inl.document.noteRefname(reference)
 		} else if target != nil && aliastype == "uri" {
-			reference.setAttr("refuri", alias)
+			reference.setAttr("refuri", aliasValue)
 		} else {
 			reference.setAttr("anonymous", true)
 		}
@@ -300,7 +307,7 @@ func (inl *inliner) phraseRef(before, after, rawsource, escaped string) (string,
 				inl.document.noteIndirectTarget(target)
 				inl.document.noteRefname(reference)
 			} else {
-				reference.setAttr("refuri", alias)
+				reference.setAttr("refuri", aliasValue)
 			}
 			inl.document.noteImplicitTarget(target, inl.parent)
 			nodeList = inl.nodes2(reference, target)

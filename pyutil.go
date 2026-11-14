@@ -44,7 +44,7 @@ func isBlank(s string) bool { return pyStrip(s) == "" }
 
 // pySplitlines is str.splitlines(keepends).
 func pySplitlines(s string, keepends bool) []string {
-	var out []string
+	out := make([]string, 0, strings.Count(s, "\n")+1)
 	start := 0
 	i := 0
 	for i < len(s) {

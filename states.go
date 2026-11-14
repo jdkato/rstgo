@@ -234,8 +234,37 @@ func (s *rstState) newSubsection(title string, lineno int, messages []*Node) {
 	s.setParent(sectionNode)
 }
 
-func (s *rstState) paragraph(lines []string, lineno int) (*Node, []*Node, bool) {
-	data := pyRstrip(strings.Join(lines, "\n"))
+// paragraph mirrors RSTState.paragraph; the paragraph text consists of the
+// lines of first followed by those of rest.
+func (s *rstState) paragraph(first, rest []string, lineno int) (*Node, []*Node, bool) {
+	var data string
+	if len(rest) == 0 {
+		data = strings.Join(first, "\n")
+	} else {
+		var b strings.Builder
+		size := len(first) + len(rest)
+		for _, l := range first {
+			size += len(l)
+		}
+		for _, l := range rest {
+			size += len(l)
+		}
+		b.Grow(size)
+		for i, l := range first {
+			if i > 0 {
+				b.WriteByte('\n')
+			}
+			b.WriteString(l)
+		}
+		for _, l := range rest {
+			if b.Len() > 0 || len(first) > 0 {
+				b.WriteByte('\n')
+			}
+			b.WriteString(l)
+		}
+		data = b.String()
+	}
+	data = pyRstrip(data)
 	var text string
 	literalnext := false
 	// data has no trailing whitespace, so the pattern can only match a

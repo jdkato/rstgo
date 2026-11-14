@@ -736,7 +736,7 @@ func substText(s *rstState, m lineMatch, context []string, nextState string) ([]
 // ---------------------------------------------------------------- Text
 
 func textBlank(s *rstState, m lineMatch, context []string, nextState string) ([]string, string) {
-	paragraph, messages, literalnext := s.paragraph(context, s.sm.absLineNumber()-1)
+	paragraph, messages, literalnext := s.paragraph(context, nil, s.sm.absLineNumber()-1)
 	s.parent().append(paragraph)
 	s.parent().extend(messages)
 	if literalnext {
@@ -806,8 +806,7 @@ func textText(s *rstState, m lineMatch, context []string, nextState string) ([]s
 		msg = s.reporter.error("Unexpected indentation.", nil,
 			atSrcLine(uerr.info.source, uerr.info.hasSource, uerr.line, true))
 	}
-	lines := append(append([]string{}, context...), block.data...)
-	paragraph, messages, literalnext := s.paragraph(lines, startline)
+	paragraph, messages, literalnext := s.paragraph(context, block.data, startline)
 	s.parent().append(paragraph)
 	s.parent().extend(messages)
 	s.parent().append(msg)

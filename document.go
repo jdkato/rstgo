@@ -377,6 +377,42 @@ var nonIDTranslate = map[rune]string{
 
 // makeID mirrors nodes.make_id.
 func makeID(s string) string {
+	// fast path for ASCII names
+	ascii := true
+	for i := 0; i < len(s); i++ {
+		if s[i] >= 0x80 {
+			ascii = false
+			break
+		}
+	}
+	if ascii {
+		var buf [64]byte
+		id := buf[:0]
+		pending := false // a run of other characters is waiting
+		for i := 0; i < len(s); i++ {
+			c := s[i]
+			if c >= 'A' && c <= 'Z' {
+				c += 'a' - 'A'
+			}
+			if (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9' && len(id) > 0) {
+				if pending && len(id) > 0 {
+					id = append(id, '-')
+				}
+				pending = false
+				id = append(id, c)
+			} else {
+				// digits and other characters at the start are dropped,
+				// later runs of non-alphanumerics become one hyphen
+				pending = true
+			}
+		}
+		return string(id)
+	}
+	return makeIDGeneral(s)
+}
+
+// makeIDGeneral is the general (Unicode) implementation of make_id.
+func makeIDGeneral(s string) string {
 	s = pyLower(s)
 	var b strings.Builder
 	for _, r := range s {
