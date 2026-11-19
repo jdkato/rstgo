@@ -122,6 +122,12 @@ func lookupRole(roleName string, m *memo, lineno int, rep *reporter) (*role, []*
 		m.roles.local[normname] = r
 		return r, messages
 	}
+	if st := m.document.settings; st != nil && st.unknownRole != nil {
+		if r := fallbackRole(normname, st.unknownRole(roleName)); r != nil {
+			m.roles.local[normname] = r
+			return r, messages
+		}
+	}
 	return nil, messages
 }
 

@@ -503,6 +503,10 @@ func extractExtensionOptions(fieldList *Node, spec map[string]optConv) (map[stri
 	options := map[string]any{}
 	for _, o := range optionList {
 		conv, ok := spec[o.name]
+		if !ok {
+			// A fallback directive accepts every option; see anyOptionSpec.
+			conv, ok = spec["*"]
+		}
 		if !ok || conv == nil {
 			return nil, fmt.Sprintf(`unknown option: "%s"`, o.name)
 		}

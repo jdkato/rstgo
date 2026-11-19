@@ -143,6 +143,13 @@ type Options struct {
 	ImageLoading string
 	// RootPrefix is the base directory for absolute include paths.
 	RootPrefix string
+
+	// UnknownDirective says what to do with a directive rstgo has no
+	// implementation for, given its name as written; nil reports it as
+	// Docutils does. See DirectiveFallback.
+	UnknownDirective func(name string) DirectiveFallback
+	// UnknownRole is the same for an interpreted text role; see RoleFallback.
+	UnknownRole func(name string) RoleFallback
 }
 
 func (o *Options) settings() *settings {
@@ -159,7 +166,8 @@ func (o *Options) settings() *settings {
 		rfcReferences: o.RFCReferences, rfcBaseURL: "https://tools.ietf.org/html/",
 		tabWidth: 8, trimFootnoteReferenceSpace: o.TrimFootnoteReferenceSpace,
 		syntaxHighlight: "long", characterLevelInlineMarkup: o.CharacterLevelInlineMarkup,
-		rootPrefix: o.RootPrefix, doctitleXform: !o.NoDocTitle, docinfoXform: !o.NoDocInfo,
+		rootPrefix: o.RootPrefix, unknownDirective: o.UnknownDirective, unknownRole: o.UnknownRole,
+		doctitleXform: !o.NoDocTitle, docinfoXform: !o.NoDocInfo,
 		sectsubtitleXform: o.SectionSubtitles, embedStylesheet: !o.LinkStylesheet,
 		compactLists: !o.NoCompactLists, compactFieldLists: !o.NoCompactFieldLists,
 		tableStyle: o.TableStyle, attribution: "dash", cloakEmailAddresses: o.CloakEmailAddresses,

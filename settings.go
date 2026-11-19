@@ -40,6 +40,8 @@ type settings struct {
 	smartQuotes                string
 	characterLevelInlineMarkup bool
 	rootPrefix                 string
+	unknownDirective           func(string) DirectiveFallback
+	unknownRole                func(string) RoleFallback
 
 	// reader
 	doctitleXform     bool

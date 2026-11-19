@@ -119,7 +119,12 @@ func lookupDirective(directiveName string, m *memo, doc *Document) (*directiveSp
 	}
 	spec, ok := directiveRegistry[canonicalname]
 	if !ok {
-		return nil, messages
+		if st := doc.settings; st != nil && st.unknownDirective != nil {
+			spec = fallbackDirectiveSpec(st.unknownDirective(directiveName))
+		}
+		if spec == nil {
+			return nil, messages
+		}
 	}
 	m.directives[normname] = spec
 	return spec, messages
